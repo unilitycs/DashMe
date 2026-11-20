@@ -1,0 +1,819 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20262.26.0912.1023                               -->
+<workbook _.fcp.WorkbookFingerprinting.true...author-id='03611aaff661ebdefea2ca9abecf098b87a41504b41841e8c19d0357ce45a6e0' _.fcp.WorkbookFingerprinting.true...creator-author-id='03611aaff661ebdefea2ca9abecf098b87a41504b41841e8c19d0357ce45a6e0' _.fcp.WorkbookFingerprinting.true...creator-license-type='public' _.fcp.WorkbookFingerprinting.true...creator-machine-id='03611aaff661ebdefea2ca9abecf098b87a41504b41841e8c19d0357ce45a6e0' _.fcp.WorkbookFingerprinting.true...license-type='public' _.fcp.WorkbookFingerprinting.true...machine-id='03611aaff661ebdefea2ca9abecf098b87a41504b41841e8c19d0357ce45a6e0' original-version='18.1' source-build='2026.2.3 (20262.26.0912.1023)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <AnimationOnByDefault />
+    <MarkAnimation />
+    <ObjectModelEncapsulateLegacy />
+    <ObjectModelExtractV2 />
+    <ObjectModelTableType />
+    <SchemaViewerObjectModel />
+    <SheetIdentifierTracking />
+    <VConnDownstreamExtractsWithWarnings />
+    <WindowsPersistSimpleIdentifiers />
+    <_.fcp.WorkbookFingerprinting.true...WorkbookFingerprinting />
+  </document-format-change-manifest>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource caption='Sheet1 (Usa_recalls)' inline='true' name='federated.1c5t1fs14y8upf1cq8u8p1h4f81k' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='Usa_recalls' name='excel-direct.1wka2ll140geb214j541e1q2535d'>
+            <connection class='excel-direct' cleaning='no' compat='no' dataRefreshTime='' filename='/Users/serenastefano/Desktop/prog_1/tableau_prog/Usa_recalls.xlsx' interpretationMode='0' password='' server='' validate='no' />
+          </named-connection>
+        </named-connections>
+        <relation connection='excel-direct.1wka2ll140geb214j541e1q2535d' name='Sheet1' table='[Sheet1$]' type='table'>
+          <columns gridOrigin='A1:Q10001:no:A1:Q10001:0' header='yes' outcome='2'>
+            <column datatype='string' name='FEI Number' ordinal='0' />
+            <column datatype='string' name='Recalling Firm Name' ordinal='1' />
+            <column datatype='string' name='Product Type' ordinal='2' />
+            <column datatype='string' name='Product Classification' ordinal='3' />
+            <column datatype='string' name='Status' ordinal='4' />
+            <column datatype='string' name='Distribution Pattern' ordinal='5' />
+            <column datatype='string' name='Recalling Firm City' ordinal='6' />
+            <column datatype='string' name='Recalling Firm State' ordinal='7' />
+            <column datatype='string' name='Recalling Firm Country' ordinal='8' />
+            <column datatype='date' name='Center Classification Date' ordinal='9' />
+            <column datatype='string' name='Reason for Recall' ordinal='10' />
+            <column datatype='string' name='Product Description' ordinal='11' />
+            <column datatype='integer' name='Event ID' ordinal='12' />
+            <column datatype='string' name='Event Classification' ordinal='13' />
+            <column datatype='integer' name='Product ID' ordinal='14' />
+            <column datatype='string' name='Center' ordinal='15' />
+            <column datatype='string' name='Recall Details' ordinal='16' />
+          </columns>
+        </relation>
+        <metadata-records>
+          <metadata-record class='capability'>
+            <remote-name />
+            <remote-type>0</remote-type>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias />
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='integer' name='context'>0</attribute>
+              <attribute datatype='string' name='gridOrigin'>&quot;A1:Q10001:no:A1:Q10001:0&quot;</attribute>
+              <attribute datatype='boolean' name='header'>true</attribute>
+              <attribute datatype='integer' name='outcome'>2</attribute>
+            </attributes>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>FEI Number</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[FEI Number]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>FEI Number</remote-alias>
+            <ordinal>0</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Recalling Firm Name</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Recalling Firm Name]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Recalling Firm Name</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Product Type</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Product Type]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Product Type</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Product Classification</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Product Classification]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Product Classification</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Status</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Status]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Status</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Distribution Pattern</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Distribution Pattern]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Distribution Pattern</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Recalling Firm City</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Recalling Firm City]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Recalling Firm City</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Recalling Firm State</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Recalling Firm State]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Recalling Firm State</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Recalling Firm Country</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Recalling Firm Country]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Recalling Firm Country</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Center Classification Date</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[Center Classification Date]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Center Classification Date</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>date</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;DATE&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Reason for Recall</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Reason for Recall]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Reason for Recall</remote-alias>
+            <ordinal>10</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Product Description</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Product Description]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Product Description</remote-alias>
+            <ordinal>11</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Event ID</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[Event ID]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Event ID</remote-alias>
+            <ordinal>12</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Event Classification</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Event Classification]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Event Classification</remote-alias>
+            <ordinal>13</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Product ID</remote-name>
+            <remote-type>20</remote-type>
+            <local-name>[Product ID]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Product ID</remote-alias>
+            <ordinal>14</ordinal>
+            <local-type>integer</local-type>
+            <aggregation>Sum</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;I8&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Center</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Center]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Center</remote-alias>
+            <ordinal>15</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>Recall Details</remote-name>
+            <remote-type>130</remote-type>
+            <local-name>[Recall Details]</local-name>
+            <parent-name>[Sheet1]</parent-name>
+            <remote-alias>Recall Details</remote-alias>
+            <ordinal>16</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <contains-null>true</contains-null>
+            <collation flag='1' name='LIT_RIT_S2' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;WSTR&quot;</attribute>
+            </attributes>
+            <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='Categoria Ragione di Richiamo' datatype='string' name='[Calculation_1000000000000000001]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='// Categorizzazione del campo Ragione di Richiamo ([Reason for Recall])&#13;&#10;IF CONTAINS(LOWER([Reason for Recall]), &quot;listeria&quot;) THEN&#13;&#10;    &quot;Listeria&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;salmonella&quot;) THEN&#13;&#10;    &quot;Salmonella&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;e. coli&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;e.coli&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;escherichia&quot;) THEN&#13;&#10;    &quot;E.Coli&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;sildenafil&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;tadalafil&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;vardenafil&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;sibutramine&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;phenolphthalein&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;dapoxetine&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;diclofenac&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;dexamethasone&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;steroid&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;pharmaceutical&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;unapproved new drug&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;undeclared active&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;undeclared drug&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;drug substance&quot;) THEN&#13;&#10;    &quot;adulterazioni farmaci&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;allergen&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;undeclared&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains milk&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains peanut&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains soy&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains egg&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains wheat&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains almond&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains walnut&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains cashew&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains pecan&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains hazelnut&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains pistachio&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains coconut&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains tree nut&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains fish&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains shellfish&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;contains sesame&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;sulfite&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;sulphite&quot;) THEN&#13;&#10;    &quot;Allergeni non dichiarati&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;foreign&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;metal&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;plastic&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;glass&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;wood&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;rubber&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;stone&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;rock&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;insect&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;rodent&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;bone&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;fragment&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;shaving&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;wire&quot;) THEN&#13;&#10;    &quot;Corpi estranei&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;adulterat&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;cgmp&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;subpotent&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;superpotent&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;impurity&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;impurities&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;ndma&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;nitrosamine&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;dissolution&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;sterility&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;penicillin&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;cross-contamination&quot;)&#13;&#10;    OR CONTAINS(LOWER([Reason for Recall]), &quot;cross contamination&quot;) THEN&#13;&#10;    &quot;adulterazioni farmaci&quot;&#13;&#10;ELSE&#13;&#10;    &quot;Altro&quot;&#13;&#10;END' />
+      </column>
+      <column caption='Città Notificante (IT)' datatype='string' name='[Calculation_1000000000000000002]' role='dimension' semantic-role='[City].[Name]' type='nominal'>
+        <calculation class='tableau' formula='// Traduzione in italiano e bonifica del campo Città Notificante ([Recalling Firm City])&#13;&#10;// Gestisce le omonimie con le città USA (es. Warsaw IN, Berlin CT, Geneva IL, Paris TX, Belgrade MT)&#13;&#10;IF TRIM([Recalling Firm City]) = &quot;-&quot;&#13;&#10;    OR TRIM([Recalling Firm City]) = &quot;Unknown&quot;&#13;&#10;    OR TRIM([Recalling Firm City]) = &quot;N/A&quot;&#13;&#10;    OR TRIM([Recalling Firm City]) = &quot;&quot; THEN&#13;&#10;    NULL&#13;&#10;&#13;&#10;// --- ITALIA ---&#13;&#10;ELSEIF [Recalling Firm Country] = &quot;Italy&quot; THEN&#13;&#10;    CASE LOWER(TRIM([Recalling Firm City]))&#13;&#10;        WHEN &quot;veronaverona&quot; THEN &quot;Verona&quot;&#13;&#10;        WHEN &quot;milan&quot; THEN &quot;Milano&quot;&#13;&#10;        WHEN &quot;milano&quot; THEN &quot;Milano&quot;&#13;&#10;        WHEN &quot;genoa&quot; THEN &quot;Genova&quot;&#13;&#10;        WHEN &quot;genova&quot; THEN &quot;Genova&quot;&#13;&#10;        WHEN &quot;saluggia, vc&quot; THEN &quot;Saluggia&quot;&#13;&#10;        WHEN &quot;solbiate olona (va)&quot; THEN &quot;Solbiate Olona&quot;&#13;&#10;        WHEN &quot;olgiate olona varese&quot; THEN &quot;Olgiate Olona&quot;&#13;&#10;        WHEN &quot;imola, bo&quot; THEN &quot;Imola&quot;&#13;&#10;        WHEN &quot;sovicille&quot; THEN &quot;Sovicille&quot;&#13;&#10;        WHEN &quot;san daniele del friuli&quot; THEN &quot;San Daniele del Friuli&quot;&#13;&#10;        ELSE TRIM([Recalling Firm City])&#13;&#10;    END&#13;&#10;&#13;&#10;// --- GERMANIA ---&#13;&#10;ELSEIF [Recalling Firm Country] = &quot;Germany&quot; THEN&#13;&#10;    CASE LOWER(TRIM([Recalling Firm City]))&#13;&#10;        WHEN &quot;hamburg&quot; THEN &quot;Amburgo&quot;&#13;&#10;        WHEN &quot;munich&quot; THEN &quot;Monaco di Baviera&quot;&#13;&#10;        WHEN &quot;munchen&quot; THEN &quot;Monaco di Baviera&quot;&#13;&#10;        WHEN &quot;freiburg im breisgau&quot; THEN &quot;Friburgo in Brisgovia&quot;&#13;&#10;        WHEN &quot;freiburg&quot; THEN &quot;Friburgo in Brisgovia&quot;&#13;&#10;        WHEN &quot;berlin&quot; THEN &quot;Berlino&quot;&#13;&#10;        WHEN &quot;stuttgart&quot; THEN &quot;Stoccarda&quot;&#13;&#10;        WHEN &quot;dresden&quot; THEN &quot;Dresda&quot;&#13;&#10;        WHEN &quot;lubeck&quot; THEN &quot;Lubecca&quot;&#13;&#10;        WHEN &quot;koeln&quot; THEN &quot;Colonia&quot;&#13;&#10;        WHEN &quot;ratisbon&quot; THEN &quot;Ratisbona&quot;&#13;&#10;        WHEN &quot;marburg&quot; THEN &quot;Marburgo&quot;&#13;&#10;        WHEN &quot;dusseldorf&quot; THEN &quot;Düsseldorf&quot;&#13;&#10;        WHEN &quot;wickede (ruhr)&quot; THEN &quot;Wickede&quot;&#13;&#10;        ELSE TRIM([Recalling Firm City])&#13;&#10;    END&#13;&#10;&#13;&#10;// --- SVIZZERA ---&#13;&#10;ELSEIF [Recalling Firm Country] = &quot;Switzerland&quot; THEN&#13;&#10;    CASE LOWER(TRIM([Recalling Firm City]))&#13;&#10;        WHEN &quot;geneva&quot; THEN &quot;Ginevra&quot;&#13;&#10;        WHEN &quot;geneva 15&quot; THEN &quot;Ginevra&quot;&#13;&#10;        WHEN &quot;zurich&quot; THEN &quot;Zurigo&quot;&#13;&#10;        WHEN &quot;basel&quot; THEN &quot;Basilea&quot;&#13;&#10;        WHEN &quot;basel town&quot; THEN &quot;Basilea&quot;&#13;&#10;        WHEN &quot;bern&quot; THEN &quot;Berna&quot;&#13;&#10;        WHEN &quot;lausanne&quot; THEN &quot;Losanna&quot;&#13;&#10;        WHEN &quot;schaffhausen&quot; THEN &quot;Sciaffusa&quot;&#13;&#10;        WHEN &quot;neuchatel&quot; THEN &quot;Neuchâtel&quot;&#13;&#10;        WHEN &quot;therwil, baselland&quot; THEN &quot;Therwil&quot;&#13;&#10;        WHEN &quot;4106 therwil&quot; THEN &quot;Therwil&quot;&#13;&#10;        ELSE TRIM([Recalling Firm City])&#13;&#10;    END&#13;&#10;&#13;&#10;// --- FRANCIA ---&#13;&#10;ELSEIF [Recalling Firm Country] = &quot;France&quot; THEN&#13;&#10;    CASE LOWER(TRIM([Recalling Firm City]))&#13;&#10;        WHEN &quot;paris&quot; THEN &quot;Parigi&quot;&#13;&#10;        WHEN &quot;paris 12e arrondissement&quot; THEN &quot;Parigi&quot;&#13;&#10;        WHEN &quot;paris france&quot; THEN &quot;Parigi&quot;&#13;&#10;        WHEN &quot;orleans&quot; THEN &quot;Orléans&quot;&#13;&#10;        WHEN &quot;orleans cedex 2&quot; THEN &quot;Orléans&quot;&#13;&#10;        WHEN &quot;besancon&quot; THEN &quot;Besançon&quot;&#13;&#10;        ELSE TRIM([Recalling Firm City])&#13;&#10;    END&#13;&#10;&#13;&#10;// --- REGNO UNITO ---&#13;&#10;ELSEIF [Recalling Firm Country] = &quot;United Kingdom&quot; THEN&#13;&#10;    CASE LOWER(TRIM([Recalling Firm City]))&#13;&#10;        WHEN &quot;london&quot; THEN &quot;Londra&quot;&#13;&#10;        WHEN &quot;edinburgh&quot; THEN &quot;Edimburgo&quot;&#13;&#10;        ELSE TRIM([Recalling Firm City])&#13;&#10;    END&#13;&#10;&#13;&#10;// --- SVEZIA ---&#13;&#10;ELSEIF [Recalling Firm Country] = &quot;Sweden&quot; THEN&#13;&#10;    CASE LOWER(TRIM([Recalling Firm City]))&#13;&#10;        WHEN &quot;stockholm&quot; THEN &quot;Stoccolma&quot;&#13;&#10;        WHEN &quot;goteborg&quot; THEN &quot;Göteborg&quot;&#13;&#10;        WHEN &quot;gothenburg&quot; THEN &quot;Göteborg&quot;&#13;&#10;        WHEN &quot;malmo&quot; THEN &quot;Malmö&quot;&#13;&#10;        WHEN &quot;malm¿&quot; THEN &quot;Malmö&quot;&#13;&#10;        ELSE TRIM([Recalling Firm City])&#13;&#10;    END&#13;&#10;&#13;&#10;// --- STATI UNITI ---&#13;&#10;ELSEIF [Recalling Firm Country] = &quot;United States&quot; THEN&#13;&#10;    CASE LOWER(TRIM([Recalling Firm City]))&#13;&#10;        WHEN &quot;baltimore&quot; THEN &quot;Baltimora&quot;&#13;&#10;        WHEN &quot;philadelphia&quot; THEN &quot;Filadelfia&quot;&#13;&#10;        WHEN &quot;new orleans&quot; THEN &quot;New Orleans&quot;&#13;&#10;        ELSE TRIM([Recalling Firm City])&#13;&#10;    END&#13;&#10;&#13;&#10;// --- RESTO DEL MONDO ---&#13;&#10;ELSE&#13;&#10;    CASE LOWER(TRIM([Recalling Firm City]))&#13;&#10;        WHEN &quot;beijing&quot; THEN &quot;Pechino&quot;&#13;&#10;        WHEN &quot;guangzhou&quot; THEN &quot;Canton&quot;&#13;&#10;        WHEN &quot;shanghaishi&quot; THEN &quot;Shanghai&quot;&#13;&#10;        WHEN &quot;yangjiangyangjiang&quot; THEN &quot;Yangjiang&quot;&#13;&#10;        WHEN &quot;jerusalem&quot; THEN &quot;Gerusalemme&quot;&#13;&#10;        WHEN &quot;caesarea&quot; THEN &quot;Cesarea&quot;&#13;&#10;        WHEN &quot;haifahaifa&quot; THEN &quot;Haifa&quot;&#13;&#10;        WHEN &quot;vienna&quot; THEN &quot;Vienna&quot;&#13;&#10;        WHEN &quot;wien&quot; THEN &quot;Vienna&quot;&#13;&#10;        WHEN &quot;barcelona&quot; THEN &quot;Barcellona&quot;&#13;&#10;        WHEN &quot;louvain la neuve&quot; THEN &quot;Lovanio la Nuova&quot;&#13;&#10;        WHEN &quot;louvain-la-neuve&quot; THEN &quot;Lovanio la Nuova&quot;&#13;&#10;        WHEN &quot;ottignies-louvain-la-neuve&quot; THEN &quot;Lovanio la Nuova&quot;&#13;&#10;        WHEN &quot;mechelen&quot; THEN &quot;Malines&quot;&#13;&#10;        WHEN &quot;kortrijk&quot; THEN &quot;Courtrai&quot;&#13;&#10;        WHEN &quot;dublin 15&quot; THEN &quot;Dublino&quot;&#13;&#10;        WHEN &quot;dublin 12&quot; THEN &quot;Dublino&quot;&#13;&#10;        WHEN &quot;prague 10&quot; THEN &quot;Praga&quot;&#13;&#10;        WHEN &quot;zagreb&quot; THEN &quot;Zagabria&quot;&#13;&#10;        WHEN &quot;belgrade&quot; THEN &quot;Belgrado&quot;&#13;&#10;        WHEN &quot;seoul&quot; THEN &quot;Seul&quot;&#13;&#10;        WHEN &quot;new delhi&quot; THEN &quot;Nuova Delhi&quot;&#13;&#10;        WHEN &quot;ciudad de mexico&quot; THEN &quot;Città del Messico&quot;&#13;&#10;        WHEN &quot;sao paulo&quot; THEN &quot;San Paolo&quot;&#13;&#10;        WHEN &quot;stenl?se&quot; THEN &quot;Stenløse&quot;&#13;&#10;        WHEN &quot;fin-33520 tampere&quot; THEN &quot;Tampere&quot;&#13;&#10;        WHEN &quot;toronto, on&quot; THEN &quot;Toronto&quot;&#13;&#10;        ELSE TRIM([Recalling Firm City])&#13;&#10;    END&#13;&#10;END' />
+      </column>
+      <column caption='Tipo Prodotto (Atomico)' datatype='string' name='[Calculation_1000000000000000003]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='// Separa l&apos;attributo multivalore Cibo/Cosmetici in Cibo e Bevande vs Cosmetici&#13;&#10;IF [Product Type] = &quot;Food/Cosmetics&quot; THEN&#13;&#10;    IF CONTAINS(LOWER([Product Description]), &quot;cosmetic&quot;)&#13;&#10;       OR CONTAINS(LOWER([Product Description]), &quot;shampoo&quot;)&#13;&#10;       OR CONTAINS(LOWER([Product Description]), &quot;lotion&quot;)&#13;&#10;       OR CONTAINS(LOWER([Product Description]), &quot;soap&quot;)&#13;&#10;       OR CONTAINS(LOWER([Product Description]), &quot;tattoo&quot;)&#13;&#10;       OR CONTAINS(LOWER([Product Description]), &quot;mouthwash&quot;)&#13;&#10;       OR CONTAINS(LOWER([Product Description]), &quot;toothpaste&quot;)&#13;&#10;       OR CONTAINS(LOWER([Product Description]), &quot;sunscreen&quot;)&#13;&#10;       OR CONTAINS(LOWER([Product Description]), &quot;eyebrow&quot;)&#13;&#10;       OR CONTAINS(LOWER([Product Description]), &quot;cleanser&quot;)&#13;&#10;       OR CONTAINS(LOWER([Product Description]), &quot;moisturizer&quot;) THEN&#13;&#10;        &quot;Cosmetici&quot;&#13;&#10;    ELSE&#13;&#10;        &quot;Cibo e Bevande&quot;&#13;&#10;    END&#13;&#10;ELSEIF [Product Type] = &quot;Devices&quot; THEN &quot;Dispositivi&quot;&#13;&#10;ELSEIF [Product Type] = &quot;Drugs&quot; THEN &quot;Medicinali&quot;&#13;&#10;ELSEIF [Product Type] = &quot;Biologics&quot; THEN &quot;Prodotti Biologici&quot;&#13;&#10;ELSEIF [Product Type] = &quot;Veterinary&quot; THEN &quot;Prodotti per Animali&quot;&#13;&#10;ELSEIF [Product Type] = &quot;Tobacco&quot; THEN &quot;Tabacco&quot;&#13;&#10;ELSE [Product Type]&#13;&#10;END' />
+      </column>
+      <column caption='Portata Distributiva' datatype='string' name='[Calculation_1000000000000000004]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='// Trasforma l&apos;attributo multivalore Modello di distribuzione in portata geografica atomica&#13;&#10;IF CONTAINS(LOWER([Distribution Pattern]), &quot;worldwide&quot;)&#13;&#10;   OR CONTAINS(LOWER([Distribution Pattern]), &quot;internat&quot;)&#13;&#10;   OR CONTAINS(LOWER([Distribution Pattern]), &quot;canada&quot;)&#13;&#10;   OR CONTAINS(LOWER([Distribution Pattern]), &quot;mexico&quot;)&#13;&#10;   OR CONTAINS(LOWER([Distribution Pattern]), &quot;foreign&quot;) THEN&#13;&#10;    &quot;Internazionale / Export&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Distribution Pattern]), &quot;nationwide&quot;)&#13;&#10;   OR CONTAINS(LOWER([Distribution Pattern]), &quot;national&quot;) THEN&#13;&#10;    &quot;Nazionale (Tutti gli USA)&quot;&#13;&#10;ELSEIF CONTAINS([Distribution Pattern], &quot;,&quot;)&#13;&#10;   OR CONTAINS(LOWER([Distribution Pattern]), &quot; and &quot;) THEN&#13;&#10;    &quot;Regionale (Multi-Stato)&quot;&#13;&#10;ELSE&#13;&#10;    &quot;Locale (Singolo Stato)&quot;&#13;&#10;END' />
+      </column>
+      <column caption='Distribuzione - Suddivisione 1' datatype='string' name='[Calculation_1000000000000000005]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='// 1° elemento estratto dalla lista multivalore di Modello di distribuzione&#13;&#10;TRIM(SPLIT(REPLACE([Distribution Pattern], &quot;_x000D_&quot;, &quot; &quot;), &quot;,&quot;, 1))' />
+      </column>
+      <column caption='Distribuzione - Suddivisione 2' datatype='string' name='[Calculation_1000000000000000006]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='// 2° elemento estratto dalla lista multivalore di Modello di distribuzione&#13;&#10;TRIM(SPLIT(REPLACE([Distribution Pattern], &quot;_x000D_&quot;, &quot; &quot;), &quot;,&quot;, 2))' />
+      </column>
+      <column caption='Distribuzione - Suddivisione 3' datatype='string' name='[Calculation_1000000000000000007]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='// 3° elemento estratto dalla lista multivalore di Modello di distribuzione&#13;&#10;TRIM(SPLIT(REPLACE([Distribution Pattern], &quot;_x000D_&quot;, &quot; &quot;), &quot;,&quot;, 3))' />
+      </column>
+      <column caption='Dettaglio Allergene' datatype='string' name='[Calculation_1000000000000000008]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='// Scompone gli allergeni in Ragione di Richiamo evidenziando anche i casi multivalore&#13;&#10;IF (IIF(CONTAINS(LOWER([Reason for Recall]), &quot;milk&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;dairy&quot;), 1, 0) +&#13;&#10;    IIF(CONTAINS(LOWER([Reason for Recall]), &quot;peanut&quot;), 1, 0) +&#13;&#10;    IIF(CONTAINS(LOWER([Reason for Recall]), &quot;soy&quot;), 1, 0) +&#13;&#10;    IIF(CONTAINS(LOWER([Reason for Recall]), &quot;wheat&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;gluten&quot;), 1, 0) +&#13;&#10;    IIF(CONTAINS(LOWER([Reason for Recall]), &quot;egg&quot;), 1, 0) +&#13;&#10;    IIF(CONTAINS(LOWER([Reason for Recall]), &quot;nut&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;almond&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;walnut&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;cashew&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;pecan&quot;), 1, 0) +&#13;&#10;    IIF(CONTAINS(LOWER([Reason for Recall]), &quot;sesame&quot;), 1, 0)) &gt; 1 THEN&#13;&#10;    &quot;Più Allergeni Contemporaneamente&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;milk&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;dairy&quot;) THEN &quot;Latte / Latticini&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;peanut&quot;) THEN &quot;Arachidi&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;nut&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;almond&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;walnut&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;cashew&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;pecan&quot;) THEN &quot;Frutta a guscio&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;soy&quot;) THEN &quot;Soia&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;wheat&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;gluten&quot;) THEN &quot;Grano / Glutine&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;egg&quot;) THEN &quot;Uova&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;sesame&quot;) THEN &quot;Sesamo&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;fish&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;shrimp&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;crab&quot;) THEN &quot;Pesce / Crostacei&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Reason for Recall]), &quot;sulfite&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;sulphite&quot;) THEN &quot;Solfiti&quot;&#13;&#10;ELSE &quot;Non applicabile / Altro&quot;&#13;&#10;END' />
+      </column>
+      <column caption='Numero Allergeni Coinvolti' datatype='integer' name='[Calculation_1000000000000000009]' role='dimension' type='ordinal'>
+        <calculation class='tableau' formula='// Conteggio del numero di allergeni distinti presenti nella stessa riga&#13;&#10;IIF(CONTAINS(LOWER([Reason for Recall]), &quot;milk&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;dairy&quot;), 1, 0) +&#13;&#10;IIF(CONTAINS(LOWER([Reason for Recall]), &quot;peanut&quot;), 1, 0) +&#13;&#10;IIF(CONTAINS(LOWER([Reason for Recall]), &quot;soy&quot;), 1, 0) +&#13;&#10;IIF(CONTAINS(LOWER([Reason for Recall]), &quot;wheat&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;gluten&quot;), 1, 0) +&#13;&#10;IIF(CONTAINS(LOWER([Reason for Recall]), &quot;egg&quot;), 1, 0) +&#13;&#10;IIF(CONTAINS(LOWER([Reason for Recall]), &quot;nut&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;almond&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;walnut&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;cashew&quot;) OR CONTAINS(LOWER([Reason for Recall]), &quot;pecan&quot;), 1, 0) +&#13;&#10;IIF(CONTAINS(LOWER([Reason for Recall]), &quot;sesame&quot;), 1, 0)' />
+      </column>
+      <column caption='Tipo Packaging' datatype='string' name='[Calculation_1000000000000000010]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='// Estrae il tipo di confezionamento dall&apos;attributo composto Descrizione Prodotto&#13;&#10;IF CONTAINS(LOWER([Product Description]), &quot;glass&quot;) OR CONTAINS(LOWER([Product Description]), &quot;jar&quot;) OR CONTAINS(LOWER([Product Description]), &quot;bottle&quot;) THEN &quot;Vetro / Bottiglia / Barattolo&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Product Description]), &quot;plastic&quot;) OR CONTAINS(LOWER([Product Description]), &quot;pouch&quot;) OR CONTAINS(LOWER([Product Description]), &quot;bag&quot;) THEN &quot;Plastica / Busta&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Product Description]), &quot;can&quot;) OR CONTAINS(LOWER([Product Description]), &quot;aluminum&quot;) OR CONTAINS(LOWER([Product Description]), &quot;metal&quot;) THEN &quot;Lattina / Metallo&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Product Description]), &quot;box&quot;) OR CONTAINS(LOWER([Product Description]), &quot;carton&quot;) OR CONTAINS(LOWER([Product Description]), &quot;paper&quot;) THEN &quot;Cartone / Scatola&quot;&#13;&#10;ELSE &quot;Altro / Non specificato&quot;&#13;&#10;END' />
+      </column>
+      <column caption='Modalità Conservazione' datatype='string' name='[Calculation_1000000000000000011]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='// Estrae il regime termico dall&apos;attributo composto Descrizione Prodotto&#13;&#10;IF CONTAINS(LOWER([Product Description]), &quot;frozen&quot;) OR CONTAINS(LOWER([Product Description]), &quot;ice cream&quot;) THEN &quot;Surgelato&quot;&#13;&#10;ELSEIF CONTAINS(LOWER([Product Description]), &quot;refrigerat&quot;) OR CONTAINS(LOWER([Product Description]), &quot;keep cold&quot;) OR CONTAINS(LOWER([Product Description]), &quot;fresh&quot;) THEN &quot;Refrigerato / Fresco&quot;&#13;&#10;ELSE &quot;Temperatura Ambiente / Altro&quot;&#13;&#10;END' />
+      </column>
+      <column caption='Stato Notificante (Pulito)' datatype='string' name='[Calculation_1000000000000000012]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+        <calculation class='tableau' formula='// Rimuove il segnaposto &quot;-&quot; dagli Stati esteri e traduce District of Columbia&#13;&#10;IF TRIM([Recalling Firm State]) = &quot;-&quot; OR TRIM([Recalling Firm State]) = &quot;N/A&quot; OR TRIM([Recalling Firm State]) = &quot;&quot; THEN&#13;&#10;    NULL&#13;&#10;ELSEIF [Recalling Firm State] = &quot;District of Columbia&quot; THEN&#13;&#10;    &quot;Distretto della Columbia&quot;&#13;&#10;ELSE&#13;&#10;    TRIM([Recalling Firm State])&#13;&#10;END' />
+      </column>
+      <column caption='Ragione Sociale (Pulita)' datatype='string' name='[Calculation_1000000000000000013]' role='dimension' type='nominal'>
+        <calculation class='tableau' formula='// Unifica i duplicati delle ragioni sociali rimuovendo punteggiatura e suffissi societari&#13;&#10;TRIM(&#13;&#10;    REPLACE(&#13;&#10;    REPLACE(&#13;&#10;    REPLACE(&#13;&#10;    REPLACE(&#13;&#10;    REPLACE(&#13;&#10;    REPLACE(&#13;&#10;        UPPER([Recalling Firm Name]),&#13;&#10;        &quot;,&quot;, &quot;&quot;),&#13;&#10;        &quot;.&quot;, &quot;&quot;),&#13;&#10;        &quot; INCORPORATED&quot;, &quot;&quot;),&#13;&#10;        &quot; CORPORATION&quot;, &quot;&quot;),&#13;&#10;        &quot; INC&quot;, &quot;&quot;),&#13;&#10;        &quot; LLC&quot;, &quot;&quot;)&#13;&#10;)' />
+      </column>
+      <column caption='Data Centro Classificazione' datatype='date' name='[Center Classification Date]' role='dimension' type='ordinal' />
+      <column caption='Centro' datatype='string' name='[Center]' role='dimension' type='nominal' />
+      <column caption='Modello di distribuzione' datatype='string' name='[Distribution Pattern]' role='dimension' type='nominal' />
+      <column caption='Classificazione Evento' datatype='string' name='[Event Classification]' role='dimension' type='nominal'>
+        <aliases>
+          <alias key='&quot;Class I&quot;' value='Classe I' />
+          <alias key='&quot;Class II&quot;' value='Classe II' />
+          <alias key='&quot;Class III&quot;' value='Classe III' />
+        </aliases>
+      </column>
+      <column caption='ID Evento' datatype='integer' name='[Event ID]' role='dimension' type='ordinal' />
+      <column caption='Numero FEI' datatype='string' name='[FEI Number]' role='dimension' type='nominal' />
+      <column caption='Classe Prodotto' datatype='string' name='[Product Classification]' role='dimension' type='nominal'>
+        <aliases>
+          <alias key='&quot;Class I&quot;' value='Classe I' />
+          <alias key='&quot;Class II&quot;' value='Classe II' />
+          <alias key='&quot;Class III&quot;' value='Classe III' />
+        </aliases>
+      </column>
+      <column caption='Descrizione Prodotto' datatype='string' name='[Product Description]' role='dimension' type='nominal' />
+      <column caption='ID Prodotto' datatype='integer' name='[Product ID]' role='dimension' type='ordinal' />
+      <column caption='Tipo Prodotto' datatype='string' name='[Product Type]' role='dimension' type='nominal'>
+        <aliases>
+          <alias key='&quot;Biologics&quot;' value='Prodotti Biologici' />
+          <alias key='&quot;Devices&quot;' value='Dispositivi' />
+          <alias key='&quot;Drugs&quot;' value='Medicinali' />
+          <alias key='&quot;Food/Cosmetics&quot;' value='Cibo/Cosmetici' />
+          <alias key='&quot;Tobacco&quot;' value='Tabacco' />
+          <alias key='&quot;Veterinary&quot;' value='Prodotti per Animali' />
+        </aliases>
+      </column>
+      <column caption='Ragione di Richiamo' datatype='string' name='[Reason for Recall]' role='dimension' type='nominal' />
+      <column datatype='string' hidden='true' name='[Recall Details]' role='dimension' type='nominal' />
+      <column caption='Città Notificante' datatype='string' name='[Recalling Firm City]' role='dimension' semantic-role='[City].[Name]' type='nominal' />
+      <column caption='Nazione Notificante' datatype='string' name='[Recalling Firm Country]' role='dimension' semantic-role='[Country].[ISO3166_2]' type='nominal'>
+        <aliases>
+          <alias key='&quot;Belgium&quot;' value='Belgio' />
+          <alias key='&quot;Brazil&quot;' value='Brasile' />
+          <alias key='&quot;Chile&quot;' value='Cile' />
+          <alias key='&quot;China&quot;' value='Cina' />
+          <alias key='&quot;Croatia&quot;' value='Croazia' />
+          <alias key='&quot;Czech Republic&quot;' value='Repubblica Ceca' />
+          <alias key='&quot;Denmark&quot;' value='Danimarca' />
+          <alias key='&quot;Dominican Republic (the)&quot;' value='Repubblica Dominicana' />
+          <alias key='&quot;Egypt&quot;' value='Egitto' />
+          <alias key='&quot;Fiji&quot;' value='Figi' />
+          <alias key='&quot;Finland&quot;' value='Finlandia' />
+          <alias key='&quot;France&quot;' value='Francia' />
+          <alias key='&quot;Germany&quot;' value='Germania' />
+          <alias key='&quot;Hong Kong SAR&quot;' value='Hong Kong' />
+          <alias key='&quot;Iceland&quot;' value='Islanda' />
+          <alias key='&quot;Ireland&quot;' value='Irlanda' />
+          <alias key='&quot;Israel&quot;' value='Israele' />
+          <alias key='&quot;Italy&quot;' value='Italia' />
+          <alias key='&quot;Japan&quot;' value='Giappone' />
+          <alias key='&quot;Jordan&quot;' value='Giordania' />
+          <alias key='&quot;Korea (the Republic of)&quot;' value='Corea del Sud' />
+          <alias key='&quot;Korea, Republic Of (South)&quot;' value='Corea del Sud' />
+          <alias key='&quot;Malaysia&quot;' value='Malesia' />
+          <alias key='&quot;Mexico&quot;' value='Messico' />
+          <alias key='&quot;Netherlands&quot;' value='Paesi Bassi' />
+          <alias key='&quot;New Zealand&quot;' value='Nuova Zelanda' />
+          <alias key='&quot;Norway&quot;' value='Norvegia' />
+          <alias key='&quot;Poland&quot;' value='Polonia' />
+          <alias key='&quot;Portugal&quot;' value='Portogallo' />
+          <alias key='&quot;South Africa&quot;' value='Sud Africa' />
+          <alias key='&quot;Spain&quot;' value='Spagna' />
+          <alias key='&quot;Sweden&quot;' value='Svezia' />
+          <alias key='&quot;Switzerland&quot;' value='Svizzera' />
+          <alias key='&quot;Thailand&quot;' value='Tailandia' />
+          <alias key='&quot;Turkey&quot;' value='Turchia' />
+          <alias key='&quot;United Arab Emirates&quot;' value='UAE' />
+          <alias key='&quot;United Kingdom&quot;' value='Regno Unito' />
+          <alias key='&quot;United States&quot;' value='Stati Uniti' />
+        </aliases>
+      </column>
+      <column caption='Ragione Sociale Notificante' datatype='string' name='[Recalling Firm Name]' role='dimension' type='nominal' />
+      <column caption='Stato Notificante' datatype='string' name='[Recalling Firm State]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+        <aliases>
+          <alias key='&quot;District of Columbia&quot;' value='Distretto della Columbia' />
+        </aliases>
+      </column>
+      <column caption='Stato' datatype='string' name='[Status]' role='dimension' type='nominal'>
+        <aliases>
+          <alias key='&quot;Completed&quot;' value='Completato' />
+          <alias key='&quot;Ongoing&quot;' value='In corso' />
+          <alias key='&quot;Terminated&quot;' value='Terminato' />
+        </aliases>
+      </column>
+      <column caption='Usa_Recall' datatype='table' name='[__tableau_internal_object_id__].[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]' role='measure' type='quantitative' />
+      <drill-paths>
+        <drill-path name='Recalling Firm Country, Recalling Firm State, Recalling Firm City'>
+          <field>[Recalling Firm Country]</field>
+          <field>[Recalling Firm State]</field>
+          <field>[Recalling Firm City]</field>
+        </drill-path>
+      </drill-paths>
+      <extract count='-1' enabled='true' object-id='' units='records' user-specific='false'>
+        <connection access_mode='readonly' author-locale='it_IT' class='hyper' dbname='/Users/serenastefano/Desktop/prog_1/tableau_prog/Usa_recalls.hyper' default-settings='hyper' schema='Extract' sslmode='' tablename='Extract' update-time='11/09/2026 05:33:37 PM' username='tableau_internal_user'>
+          <relation name='Extract' table='[Extract].[Extract]' type='table' />
+          <metadata-records>
+            <metadata-record class='column'>
+              <remote-name>FEI Number</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[FEI Number]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>FEI Number</remote-alias>
+              <ordinal>0</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>7627</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Recalling Firm Name</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Recalling Firm Name]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Recalling Firm Name</remote-alias>
+              <ordinal>1</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>7743</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Product Type</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Product Type]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Product Type</remote-alias>
+              <ordinal>2</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>5</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Product Classification</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Product Classification]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Product Classification</remote-alias>
+              <ordinal>3</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>3</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Status</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Status]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Status</remote-alias>
+              <ordinal>4</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>3</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Distribution Pattern</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Distribution Pattern]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Distribution Pattern</remote-alias>
+              <ordinal>5</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>10453</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Recalling Firm City</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Recalling Firm City]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Recalling Firm City</remote-alias>
+              <ordinal>6</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>3753</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Recalling Firm State</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Recalling Firm State]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Recalling Firm State</remote-alias>
+              <ordinal>7</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>64</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Recalling Firm Country</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Recalling Firm Country]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Recalling Firm Country</remote-alias>
+              <ordinal>8</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>61</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Center Classification Date</remote-name>
+              <remote-type>133</remote-type>
+              <local-name>[Center Classification Date]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Center Classification Date</remote-alias>
+              <ordinal>9</ordinal>
+              <family>Sheet1</family>
+              <local-type>date</local-type>
+              <aggregation>Year</aggregation>
+              <approx-count>9574</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Reason for Recall</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Reason for Recall]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Reason for Recall</remote-alias>
+              <ordinal>10</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>15587</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Product Description</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Product Description]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Product Description</remote-alias>
+              <ordinal>11</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>34716</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Event ID</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[Event ID]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Event ID</remote-alias>
+              <ordinal>12</ordinal>
+              <family>Sheet1</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>18931</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Event Classification</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Event Classification]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Event Classification</remote-alias>
+              <ordinal>13</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>3</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Product ID</remote-name>
+              <remote-type>20</remote-type>
+              <local-name>[Product ID]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Product ID</remote-alias>
+              <ordinal>14</ordinal>
+              <family>Sheet1</family>
+              <local-type>integer</local-type>
+              <aggregation>Sum</aggregation>
+              <approx-count>104537</approx-count>
+              <contains-null>true</contains-null>
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+            <metadata-record class='column'>
+              <remote-name>Center</remote-name>
+              <remote-type>129</remote-type>
+              <local-name>[Center]</local-name>
+              <parent-name>[Extract]</parent-name>
+              <remote-alias>Center</remote-alias>
+              <ordinal>15</ordinal>
+              <family>Sheet1</family>
+              <local-type>string</local-type>
+              <aggregation>Count</aggregation>
+              <approx-count>6</approx-count>
+              <contains-null>true</contains-null>
+              <collation flag='0' name='LIT_RIT' />
+              <object-id>[Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC]</object-id>
+            </metadata-record>
+          </metadata-records>
+        </connection>
+      </extract>
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-aliased-fields='true' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;Italy&quot;' />
+      </semantic-values>
+      <date-options start-of-week='monday' />
+      <object-graph>
+        <objects>
+          <object caption='Usa_Recall' id='Sheet1_7BC4ECC19BA34423AE09B26EEB8677BC'>
+            <properties context=''>
+              <relation connection='excel-direct.1wka2ll140geb214j541e1q2535d' name='Sheet1' table='[Sheet1$]' type='table'>
+                <columns gridOrigin='A1:Q10001:no:A1:Q10001:0' header='yes' outcome='2'>
+                  <column datatype='string' name='FEI Number' ordinal='0' />
+                  <column datatype='string' name='Recalling Firm Name' ordinal='1' />
+                  <column datatype='string' name='Product Type' ordinal='2' />
+                  <column datatype='string' name='Product Classification' ordinal='3' />
+                  <column datatype='string' name='Status' ordinal='4' />
+                  <column datatype='string' name='Distribution Pattern' ordinal='5' />
+                  <column datatype='string' name='Recalling Firm City' ordinal='6' />
+                  <column datatype='string' name='Recalling Firm State' ordinal='7' />
+                  <column datatype='string' name='Recalling Firm Country' ordinal='8' />
+                  <column datatype='date' name='Center Classification Date' ordinal='9' />
+                  <column datatype='string' name='Reason for Recall' ordinal='10' />
+                  <column datatype='string' name='Product Description' ordinal='11' />
+                  <column datatype='integer' name='Event ID' ordinal='12' />
+                  <column datatype='string' name='Event Classification' ordinal='13' />
+                  <column datatype='integer' name='Product ID' ordinal='14' />
+                  <column datatype='string' name='Center' ordinal='15' />
+                  <column datatype='string' name='Recall Details' ordinal='16' />
+                </columns>
+              </relation>
+            </properties>
+            <properties context='extract'>
+              <relation name='Extract' table='[Extract].[Extract]' type='table' />
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Foglio 1'>
+      <table>
+        <view>
+          <datasources />
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+        </panes>
+        <rows />
+        <cols />
+      </table>
+      <simple-id uuid='{7D19F463-DD47-417D-87DD-8ECEC3D08E3F}' />
+    </worksheet>
+  </worksheets>
+  <windows saved-dpi-scale-factor='1.25' source-height='37'>
+    <window class='worksheet' maximized='true' name='Foglio 1'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='title' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{ADE77A2D-A5BB-47DA-84E1-7465CFF9C57D}' />
+    </window>
+  </windows>
+  <thumbnails>
+    <thumbnail height='192' name='Foglio 1' width='192'>
+      iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAACXBIWXMAABJ0AAASdAHeZh94
+      AAACFUlEQVR4nO3TMQEAIAzAMMC/5yFjRxMFfXpnZg5Eve0A2GQA0gxAmgFIMwBpBiDNAKQZ
+      gDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFI
+      MwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQD
+      kGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBp
+      BiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA
+      0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDN
+      AKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxA
+      mgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZ
+      gDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFI
+      MwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKQZgDQDkGYA0gxAmgFIMwBpBiDNAKR9Y+0F
+      fBUOM1sAAAAASUVORK5CYII=
+    </thumbnail>
+  </thumbnails>
+</workbook>

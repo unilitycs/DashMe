@@ -1,0 +1,59 @@
+\section{Metodologia, Architettura Dati e Progettazione Visiva}
+\label{sec:methodology}
+
+\subsection{Dataset Sorgente e Struttura dei Dati Grezzi}
+La base informativa del progetto DashMe deriva dal dataset ufficiale dei richiami FDA consolidato nel file \texttt{data/recalls.xlsx} e successivamente materializzato in formato colonnare ad alte prestazioni all'interno dell'estrazione \texttt{data/dati\_trasformati\_tableau.hyper}, collegata alla cartella di lavoro Tableau \texttt{src/Tableau/dashsmash3.twb}.
+
+Lo schema sorgente si compone di 17 colonne originali che descrivono sia l'evento regolatorio sia il singolo prodotto coinvolto:
+\begin{itemize}
+    \item \textbf{Identificativi e anagrafica aziendale}: \texttt{FEI Number} (Firm Establishment Identifier), \texttt{Recalling Firm Name}, \texttt{Recalling Firm City}, \texttt{Recalling Firm State}, \texttt{Recalling Firm Country};
+    \item \textbf{Classificazione ed evento}: \texttt{Event ID}, \texttt{Event Classification}, \texttt{Center}, \texttt{Center Classification Date}, \texttt{Status}, \texttt{Recall Details};
+    \item \textbf{Attributi di prodotto e causa}: \texttt{Product ID}, \texttt{Product Type}, \texttt{Product Classification}, \texttt{Product Description}, \texttt{Reason for Recall};
+    \item \textbf{Copertura logistica}: \texttt{Distribution Pattern}.
+\end{itemize}
+
+È fondamentale osservare la granularità relazionale del dataset: un singolo \texttt{Event ID} (azione amministrativa di richiamo) può associarsi a uno o più \texttt{Product ID} distinti. Di conseguenza, le analisi volumetriche basate sul conteggio dei prodotti richiamati possono superare sensibilmente il numero di eventi univoci. \todo{Inserire l'intervallo temporale esatto delle date in Center Classification Date (data minima e massima), il numero totale di Event ID distinti, il numero di aziende univoche e la verifica della copertura geografica complessiva nel file recalls.xlsx.}
+
+\subsection{Pipeline ETL e Feature Engineering in Tableau}
+Secondo i principi del \textit{data warehousing} dimensionale \citep{kimball2013}, l'analisi affidabile di un registro amministrativo richiede una fase preliminare di pulizia, normalizzazione delle entità e derivazione di attributi analitici (\textit{feature engineering}) a partire dai campi testuali non strutturati. Nel rispetto delle funzionalità native di modellazione dell'ambiente Tableau \citep{tableau_docs}, il progetto ha introdotto 14 campi calcolati dedicati, progettati per risolvere tre criticità tipiche dei dati FDA:
+\begin{enumerate}
+    \item \textbf{Normalizzazione anagrafica e geografica}: la presenza di varianti ortografiche, suffissi societari eterogenei e codifiche statali/cittadine non uniformi richiede la standardizzazione di ragioni sociali, stati e città notificanti.
+    \item \textbf{Estrazione semantica da testo libero}: i campi \texttt{Reason for Recall}, \texttt{Product Description} e \texttt{Distribution Pattern} contengono informazioni cliniche, logistiche e tecnologiche espresse in linguaggio naturale; tramite espressioni condizionali e ricerca di parole chiave, tali stringhe vengono mappate su tassonomie discrete (cause di richiamo, allergeni, packaging, conservazione e portata distributiva).
+    \item \textbf{Definizione della metrica volumetrica}: per evitare ambiguità tra conteggio delle righe ed entità di prodotto, il volume è formalizzato mediante la misura \texttt{Conteggio prodotti} (\texttt{COUNT([Product ID])}).
+\end{enumerate}
+
+La Tabella~\ref{tab:calculated_fields} sintetizza i 14 campi calcolati implementati in \texttt{src/Tableau/dashsmash3.twb}, raggruppando la famiglia dei tre campi di scomposizione distributiva.
+
+\begin{table}[htbp]
+\centering
+\caption{Riepilogo dei 14 campi calcolati implementati in Tableau per pulizia, normalizzazione e derivazione analitica.}
+\label{tab:calculated_fields}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.8cm}>{\raggedright\arraybackslash}p{2.7cm}X@{}}
+\toprule
+\textbf{Campo Calcolato} & \textbf{Dimensione Analitica} & \textbf{Funzione nel Modello ETL e Analitico} \\
+\midrule
+\texttt{Conteggio prodotti} & Metrica volumetrica & Calcola \texttt{COUNT([Product ID])} per quantificare i singoli articoli coinvolti nei richiami. \\
+\texttt{Ragione Sociale (Pulita)} & Anagrafica aziende & Uniforma le denominazioni in \texttt{Recalling Firm Name} consolidando varianti testuali della medesima impresa. \\
+\texttt{Stato Notificante (Pulito)} & Geografia & Standardizza \texttt{Recalling Firm State} per garantire il corretto \textit{geocoding} cartografico. \\
+\texttt{Città Notificante (IT)} & Geografia & Normalizza e traduce/adatta per la vista italiana le informazioni relative a \texttt{Recalling Firm City}. \\
+\texttt{Tipo Prodotto (Atomico)} & Merceologia & Scompone e consolida \texttt{Product Type} in settori merceologici omogenei per il confronto di letalità. \\
+\texttt{Categoria Ragione di Richiamo} & Tassonomia causale & Classifica \texttt{Reason for Recall} in macro-cause (es.\ Salmonella, Listeria, E.Coli, allergeni, corpi estranei, adulterazioni). \\
+\texttt{Dettaglio Allergene} & Sicurezza alimentare & Estrae la tipologia specifica di allergene non dichiarato dalle stringhe descrittive e causali. \\
+\texttt{Numero Allergeni Coinvolti} & Sicurezza alimentare & Quantifica la molteplicità degli allergeni interessati per singolo record o evento di richiamo. \\
+\texttt{Tipo Packaging} & Confezionamento & Identifica il materiale/formato prevalente (es.\ Plastica/Busta, Vetro, Cartone, Lattina/Metallo) da \texttt{Product Description}. \\
+\texttt{Modalità Conservazione} & Logistica e freddo & Distingue il regime termico del prodotto (Temperatura Ambiente/Altro, Refrigerato/Fresco, Surgelato). \\
+\texttt{Portata Distributiva} & Estensione mercato & Classifica l'ampiezza geografica da \texttt{Distribution Pattern} (Locale, Regionale, Nazionale, Internazionale/Export). \\
+\texttt{Distribuzione - Suddivisione 1}, \texttt{2}, \texttt{3} & Parsing distribuzione & Famiglia di tre campi dedicati alla segmentazione progressiva della stringa \texttt{Distribution Pattern} per l'analisi granulare delle aree servite. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\todo{Documentare le regole puntuali (espressioni regolari o parole chiave) utilizzate nei campi calcolati Categoria Ragione di Richiamo, Tipo Packaging e Modalità Conservazione, verificando la percentuale esatta di record classificati nella categoria residuale ``Altro / Non specificato''.}
+
+\subsection{Scelte di Progettazione Visiva e Articolazione delle Dashboard}
+La progettazione delle viste segue i criteri di efficacia percettiva consolidati nella letteratura sulla \textit{Visual Analytics} \citep{few2013}:
+\begin{itemize}
+    \item \textbf{Gerarchia informativa e separazione dei contesti}: anziché sovraccaricare un'unica schermata, il modello è stato suddiviso in tre dashboard specializzate corrispondenti alle tre dimensioni delle domande di ricerca (geografia/responsabilità, tempo/cause, governance/logistica).
+    \item \textbf{Codifica cromatica coerente delle classi di rischio}: in tutte le viste in cui compare la severità clinica FDA, l'uso del colore è vincolato alle tre classi (Classe~I, Classe~II, Classe~III), consentendo all'osservatore di riconoscere immediatamente la quota di rischio critico rispetto a quella di rischio moderato o procedurale.
+    \item \textbf{Confronto quantitativo tramite lunghezze e matrici}: le classifiche aziendali, i profili settoriali e le correlazioni tra conservazione, packaging e cause ricorrono a barre orizzontali ordinate o impilate, mentre l'incrocio tra portata distributiva e severità clinica adotta una matrice tabellare a codifica di intensità per favorire la lettura simultanea di valori assoluti e incidenze relative.
+\end{itemize}

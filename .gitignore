@@ -16,5 +16,38 @@
 .codex
 superpowers
 
+# LaTeX intermediate files
+*.aux
+*.bbl
+*.blg
+*.bcf
+*.dvi
+*.fdb_latexmk
+*.fls
+*.idx
+*.ilg
+*.ind
+*.lof
+*.log
+*.lot
+*.nav
+*.out
+*.run.xml
+*.snm
+*.synctex.gz
+*.synctex(busy)
+*.toc
+*.vrb
+*.xdv
+*.acn
+*.acr
+*.alg
+*.glg
+*.glo
+*.gls
+*.ist
+*.loa
+*.lol
+
 
 

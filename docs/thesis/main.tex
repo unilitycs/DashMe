@@ -1,0 +1,59 @@
+% ============================================================================
+% main.tex -- Documento principale (Progetto DashMe)
+% Per passare a layout a due colonne sostituire la documentclass con:
+% \documentclass[10pt,a4paper,twocolumn]{article}
+% ============================================================================
+\documentclass[11pt,a4paper]{article}
+
+\input{preamble}
+
+\title{%
+  \vspace{-1.0cm}
+  {\Large\bfseries\color{primary} Analisi Business Intelligence dei Richiami FDA:\\
+  Geografia Industriale, Profili di Rischio e Governance Operativa}%
+}
+
+\author{%
+  Gabriele Vianello\\[0.4em]
+  \todo{Aggiungere eventuali coautori e matricole}\\[0.6em]
+  {\small\color{muted} Università Politecnica delle Marche -- Corso di Project Management \& Business Intelligence}%
+}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+\textbf{Contesto.} Il monitoraggio dei richiami di prodotto notificati dalla \emph{U.S. Food and Drug Administration} (FDA) rappresenta una sfida critica per la sicurezza dei consumatori, la continuità delle filiere produttive e la conformità regolatoria nei settori alimentare, farmaceutico, cosmetico e dei dispositivi medici.
+
+\smallskip\noindent
+\textbf{Obiettivo.} Il progetto \emph{DashMe} propone un sistema di Business Intelligence e Visual Analytics progettato per trasformare i dati grezzi degli eventi di richiamo FDA in viste decisionali integrate, capaci di supportare l'analisi geografica, l'individuazione dei profili di rischio clinico e il presidio operativo dei richiami ancora aperti sul mercato.
+
+\smallskip\noindent
+\textbf{Metodologia.} A partire dal dataset originale (\texttt{recalls.xlsx}) normalizzato in ambiente Tableau (\texttt{dati\_trasformati\_tableau.hyper}), sono state sviluppate regole di \emph{data cleansing} e campi calcolati in lingua italiana per la tassonomia settoriale, la classificazione delle cause di richiamo, il dettaglio degli allergeni, il packaging, le modalità di conservazione lungo la catena del freddo e la portata distributiva, articolando i risultati in tre dashboard analitiche.
+
+\smallskip\noindent
+\textbf{Principali Risultati.} Su un totale di 104.537 prodotti richiamati, l'analisi evidenzia una forte concentrazione territoriale in specifici hub statunitensi, profili di severità clinica marcatamente differenziati per settore merceologico (con incidenze elevate di Classe~I nei comparti alimentare e veterinario) e 18.555 richiami tuttora in corso che richiedono azioni mirate di governance operativa, controllo della catena del freddo e gestione del packaging.
+
+\medskip\noindent
+\textbf{Parole chiave:} Business Intelligence; Visual Analytics; Tableau; Richiami FDA; Gestione del Rischio.
+\end{abstract}
+
+% Decommentare la riga seguente per generare l'indice generale:
+% \tableofcontents\newpage
+
+\input{sections/01_introduction}
+\input{sections/02_methodology}
+\input{sections/03_dashboard_analysis}
+\input{sections/04_discussion}
+\input{sections/05_conclusions}
+
+\clearpage
+\addcontentsline{toc}{section}{Riferimenti Bibliografici}
+\bibliographystyle{unsrtnat}
+\bibliography{references}
+
+\end{document}

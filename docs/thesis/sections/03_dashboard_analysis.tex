@@ -1,0 +1,94 @@
+\section{Analisi delle Dashboard del Progetto DashMe}
+\label{sec:dashboard_analysis}
+
+\subsection{Dashboard 1: Geografia Industriale, Settori Merceologici e Responsabilità Aziendale}
+\label{subsec:dash1}
+
+La prima dashboard (\textit{``Geografia Industriale, Settori Merceologici e Responsabilità Aziendale''}, Figura~\ref{fig:dash1}) risponde alla domanda \textbf{RQ1}, integrando la dimensione spaziale statunitense con il profilo di pericolosità dei settori merceologici e la concentrazione dei volumi presso i singoli operatori.
+
+\dashboardfig{Dash1.jpeg}{Dashboard 1: Geografia Industriale, Settori Merceologici e Responsabilità Aziendale.}{fig:dash1}
+
+\subsubsection{Concentrazione Territoriale negli Stati Uniti}
+La vista cartografica ``Concentrazione Territoriale USA per Stato'' evidenzia una distribuzione fortemente asimmetrica degli eventi di richiamo sul territorio statunitense, con un intervallo che spazia da 1 fino a 4.522 eventi per singolo Stato. I principali poli di concentrazione emergono in California, Texas, Florida e lungo le direttrici industriali e logistiche del Nord-Est e del Midwest, cui si affianca una presenza rilevante a Puerto Rico (importante hub farmaceutico e biomedicale). Tale polarizzazione riflette congiuntamente la densità degli stabilimenti produttivi regolamentati, la presenza di centri di importazione e distribuzione e la specializzazione industriale regionale. \todo{Inserire i valori esatti dei primi 5 Stati per numero di eventi di richiamo dalla vista cartografica di Dashboard 1.}
+
+\subsubsection{Profilo di Letalità per Settore Merceologico}
+L'analisi incrociata tra \texttt{Tipo Prodotto (Atomico)} ed \texttt{Event Classification} (``Profilo di Letalità per Settore Merceologico'') mette in luce differenze strutturali marcate nella distribuzione percentuale tra Classe~I, Classe~II e Classe~III, sintetizzate nella Tabella~\ref{tab:sector_lethality}.
+
+\begin{table}[htbp]
+\centering
+\caption{Profilo di letalità per settore merceologico (incidenza percentuale per Classe di Rischio FDA rilevata nella Dashboard~1).}
+\label{tab:sector_lethality}
+\begin{tabularx}{\textwidth}{@{}Xrrr@{}}
+\toprule
+\textbf{Settore Merceologico} & \textbf{Classe I (\%)} & \textbf{Classe II (\%)} & \textbf{Classe III (\%)} \\
+\midrule
+Prodotti per Animali & 47,65 & 39,96 & 12,39 \\
+Cibo e Bevande & $\approx$ 43,57 & $\approx$ 50,43 & Quota residua \\
+Medicinali & 9,70 & 80,76 & 9,54 \\
+Dispositivi & 9,09 & 88,33 & Quota residua \\
+Cosmetici & Quota residua & 92,94 & Quota residua \\
+Prodotti Biologici & Quota marginale & 67,70 & 31,93 \\
+Tabacco & 0,00 & 100,00 & 0,00 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+I settori legati alla filiera alimentare e mangimistica mostrano la maggiore incidenza di rischio clinico estremo: nei \textit{Prodotti per Animali} la Classe~I raggiunge il 47,65\% (superando la Classe~II al 39,96\% e la Classe~III al 12,39\%), mentre in \textit{Cibo e Bevande} la Classe~I si attesta attorno al 43,57\% a fronte di circa il 50,43\% di Classe~II. Al contrario, \textit{Dispositivi} (88,33\% Classe~II, 9,09\% Classe~I), \textit{Medicinali} (80,76\% Classe~II, 9,70\% Classe~I, 9,54\% Classe~III) e \textit{Cosmetici} (92,94\% Classe~II) sono dominati dalla Classe~II. I \textit{Prodotti Biologici} presentano una quota particolarmente elevata di richiami procedurali di Classe~III (31,93\%) accanto al 67,70\% di Classe~II, mentre il \textit{Tabacco} ricade integralmente in Classe~II (100,00\%).
+
+\subsubsection{Classifica Top 15 Aziende per Volume e Gravità}
+Il pannello ``Classifica Top 15 Aziende per Volume e Gravità'' ordina i primi 15 operatori per numero di prodotti richiamati (\texttt{Conteggio prodotti}), scomponendo ciascuna barra per classe di severità:
+\begin{itemize}
+    \item \textbf{Prevalenza di operatori medicali, diagnostici ed ematologici (dominati da Classe~II/III)}: figurano ai vertici \textit{ICU Medical} (837 Classe~II, 87 Classe~I e una quota marginale in Classe~III), \textit{Zimmer Biomet} (872 Classe~II), \textit{Medline Industries LP - Northfield} (750 Classe~II e 72 Classe~I), \textit{Siemens Medical Solutions USA} (759 Classe~II), \textit{OneBlood} (664 Classe~II e 103 Classe~III), \textit{Siemens Healthcare Diagnostics} (643 Classe~II e 43 Classe~III), \textit{Boston Scientific} (507 Classe~II e 141 Classe~I), \textit{American National Red Cross} (455 Classe~II e 189 Classe~III), \textit{GE Healthcare} (522 Classe~II e 42 Classe~I), \textit{Medline Industries LP} (469 Classe~II e 87 Classe~I) e \textit{Aidapak Services} (538 Classe~II).
+    \item \textbf{Operatori ad altissima incidenza di Classe~I}: si distinguono per criticità clinica \textit{Customed} (412 Classe~I e 270 Classe~II), \textit{Newly Weds Foods} (432 Classe~II e 220 Classe~I), \textit{Garden-Fresh Foods} (610 Classe~I) e \textit{King Bio} (465 Classe~I).
+\end{itemize}
+Si rileva inoltre che la presenza separata di \textit{Medline Industries LP - Northfield} e \textit{Medline Industries LP} testimonia l'impatto della granularità delle sedi operative sul calcolo delle graduatorie aziendali, nonostante la normalizzazione introdotta da \texttt{Ragione Sociale (Pulita)}.
+
+\keyinsight{Evidenza Chiave -- Dashboard 1}{La severità clinica non coincide con il mero volume aggregato: mentre i settori dei dispositivi medici e dei farmaci generano i maggiori volumi assoluti presso grandi gruppi industriali (prevalentemente in Classe~II), i comparti \textit{Prodotti per Animali} (47,65\% Classe~I) e \textit{Cibo e Bevande} ($\approx$ 43,57\% Classe~I) concentrano la quota proporzionalmente più elevata di rischi critici per la salute, riflessa nella presenza di aziende alimentari e farmaceutiche ad alta quota di Classe~I tra le prime 15 posizioni.}
+
+\subsection{Dashboard 2: Analisi Temporale e Tassonomia delle Cause di Richiamo}
+\label{subsec:dash2}
+
+La seconda dashboard del progetto DashMe è dedicata alla domanda di ricerca \textbf{RQ2}, con l'obiettivo di esaminare l'andamento diacronico degli eventi regolatori, la scomposizione delle cause radice e l'incidenza specifica degli allergeni non dichiarati. Poiché la vista grafica definitiva non è ancora stata esportata in formato immagine, la Figura~\ref{fig:dash2} funge da segnaposto strutturato nell'attesa dell'inclusione della tavola finale.
+
+\dashboardfig{Dash2.png}{Dashboard 2: Analisi Temporale e Tassonomia delle Cause di Richiamo.}{fig:dash2}
+
+Per garantire piena coerenza analitica con le altre due dashboard, il completamento di questa sezione dovrà articolarsi lungo tre assi di indagine:
+\begin{enumerate}
+    \item \textbf{Evoluzione temporale e stagionalità}: analisi della serie storica basata su \texttt{Center Classification Date} per identificare eventuali trend pluriennali, picchi anomali associati a grandi richiami multi-prodotto e ciclicità stagionali (es.\ nei comparti alimentari freschi). \todo{Esportare Dash2.png da Tableau nella cartella docs/Tableau/ e descrivere l'andamento temporale (anni di picco, trend medio e stagionalità mensile) dei richiami.}
+    \item \textbf{Tassonomia delle cause di richiamo}: quantificazione del peso relativo delle categorie estratte nel campo calcolato \texttt{Categoria Ragione di Richiamo} (contaminazioni microbiologiche da Salmonella, Listeria ed E.Coli, allergeni non dichiarati, corpi estranei, difetti di sterilità o etichettatura, adulterazioni farmacologiche), distinguendo tra frequenza per evento e impatto in termini di \texttt{Conteggio prodotti}. \todo{Inserire la graduatoria quantitativa delle macro-cause in Categoria Ragione di Richiamo e la relativa incidenza per Classe I, II e III.}
+    \item \textbf{Focus sugli allergeni}: approfondimento mediante i campi calcolati \texttt{Dettaglio Allergene} e \texttt{Numero Allergeni Coinvolti} per individuare gli allergeni più ricorrenti (es.\ latte, frutta a guscio, soia, grano, uova, arachidi) e valutare la frequenza dei richiami multi-allergene. \todo{Riportare i valori estratti da Dettaglio Allergene e la distribuzione di Numero Allergeni Coinvolti dalla Dashboard 2.}
+\end{enumerate}
+
+\subsection{Dashboard 3: Governance Operativa, Portata Distributiva, Conservazione e Packaging}
+\label{subsec:dash3}
+
+La terza dashboard (\textit{``Governance Operativa, Portata Distributiva, Conservazione e Packaging''}, Figura~\ref{fig:dash3}) affronta la domanda \textbf{RQ3}, spostando il fuoco dall'origine geografica e settoriale alla gestione operativa del richiamo lungo la filiera logistica e di confezionamento.
+
+\dashboardfig{Dash3.png}{Dashboard 3: Governance Operativa, Portata Distributiva, Conservazione e Packaging.}{fig:dash3}
+
+\subsubsection{Quote di Richiami sul Mercato e Stato di Chiusura}
+Il pannello ``Quote di Richiami sul Mercato'' analizza la distribuzione di 104.537 prodotti richiamati complessivi rispetto al campo \texttt{Status}:
+\begin{itemize}
+    \item \textbf{Terminato} (\textit{Terminated}): 84.502 prodotti;
+    \item \textbf{In corso} (\textit{Ongoing}): 18.555 prodotti;
+    \item \textbf{Completato} (\textit{Completed}): 1.480 prodotti.
+\end{itemize}
+Sebbene la maggioranza dei prodotti rientri in procedure formalmente terminate, la persistenza di 18.555 prodotti in stato ``In corso'' rappresenta un carico operativo rilevante per il monitoraggio post-vendita e la verifica dell'effettivo ritiro dai canali distributivi.
+
+\subsubsection{Ruolo della Catena del Freddo}
+La vista ``Ruolo della Catena del Freddo'' incrocia il campo calcolato \texttt{Modalità Conservazione} con \texttt{Categoria Ragione di Richiamo}. In termini volumetrici, la categoria \textit{Temperatura Ambiente / Altro} concentra circa 38.000 prodotti richiamati, a fronte di circa 3.000 prodotti nel segmento \textit{Refrigerato / Fresco} e circa 2.500 nel segmento \textit{Surgelato}. Nonostante i volumi inferiori rispetto alla fascia a temperatura ambiente (che ingloba farmaci, dispositivi e prodotti secchi), le barre impilate mostrano come i regimi refrigerato e surgelato siano esposti in modo specifico a rischi biologici e di etichettatura --- in particolare \textit{Listeria}, \textit{Salmonella}, \textit{E.Coli}, allergeni non dichiarati e corpi estranei --- mentre nella fascia a temperatura ambiente emergono anche le adulterazioni dei farmaci accanto alle contaminazioni e agli allergeni. \todo{Verificare e riportare la ripartizione esatta dei volumi per ciascuna causa all'interno delle tre fasce di Modalità Conservazione.}
+
+\subsubsection{Correlazione tra Packaging e Rischi}
+Il grafico ``Correlazione tra Packaging e Rischi'' mette in relazione \texttt{Tipo Packaging} con \texttt{Categoria Ragione di Richiamo}. Tra le tipologie esplicitamente identificate dal parser testuale spiccano:
+\begin{itemize}
+    \item \textbf{Plastica / Busta}: oltre 8.000 prodotti richiamati;
+    \item \textbf{Vetro / Bottiglia / Barattolo}: circa 4.800 prodotti;
+    \item \textbf{Cartone / Scatola}: circa 2.300 prodotti;
+    \item \textbf{Lattina / Metallo}: circa 2.100 prodotti.
+\end{itemize}
+Le categorie \textit{Plastica / Busta} e \textit{Vetro / Bottiglia / Barattolo} risultano dominate da richiami per \textit{Salmonella}, allergeni non dichiarati e \textit{Listeria}, segnalando la stretta interdipendenza tra imballaggi primari di prodotti alimentari freschi o pronti al consumo e rischi di contaminazione microbiologica o di errore nel confezionamento/etichettatura.
+
+\subsubsection{Matrice Portata Distributiva vs Severità Clinica}
+Infine, la matrice ``Portata Distributiva vs Severità Clinica'' incrocia i quattro livelli di \texttt{Portata Distributiva} (\textit{Internazionale / Export}, \textit{Nazionale (Tutti gli USA)}, \textit{Regionale (Multi-Stato)}, \textit{Locale (Singolo Stato)}) con le tre classi FDA (\textit{Classe I}, \textit{Classe II}, \textit{Classe III}). Complessivamente la \textit{Classe~II} costituisce il segmento numericamente predominante attraverso le diverse ampiezze di distribuzione; tuttavia, la matrice evidenzia una presenza significativa di richiami in \textit{Classe~I} proprio nelle fasce a maggiore estensione geografica e complessità logistica, segnatamente \textit{Internazionale / Export} e \textit{Regionale (Multi-Stato)}. \todo{Inserire i conteggi esatti delle 12 celle della matrice Portata Distributiva vs Severità Clinica direttamente dai tooltip di Tableau.}
+
+\keyinsight{Evidenza Chiave -- Dashboard 3}{La vulnerabilità operativa dei richiami non risiede soltanto nella produzione, ma nell'intersezione tra logistica, imballaggio e governance di chiusura: 18.555 prodotti risultano ancora ``In corso'' su 104.537 totali, i rischi microbiologici e allergenici si concentrano su imballaggi in plastica/busta ($>8\text{K}$) e vetro ($\approx 4,8\text{K}$), e una quota significativa di eventi critici di Classe~I interessa catene distributive regionali multi-stato e internazionali.}

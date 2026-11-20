@@ -1,0 +1,170 @@
+% ============================================================================
+% preamble.tex -- Pacchetti, palette cromatica, layout e macro personalizzate
+% Progetto DashMe -- Università Politecnica delle Marche (UnivPM)
+% Compatibile con Tectonic (XeTeX + BibTeX), pdfLaTeX, XeLaTeX e LuaLaTeX
+% ============================================================================
+
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+\else
+  \usepackage{fontspec}
+  \usepackage{lmodern}
+\fi
+
+\usepackage[italian]{babel}
+\usepackage[a4paper, margin=2.3cm, headheight=14pt]{geometry}
+
+\usepackage{graphicx}
+\graphicspath{{../Tableau/}{figures/}}
+
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{microtype}
+\usepackage[numbers,sort&compress]{natbib}
+
+% ----------------------------------------------------------------------------
+% Palette cromatica accademica
+% ----------------------------------------------------------------------------
+\definecolor{primary}{HTML}{1B365D}
+\definecolor{accent}{HTML}{D95F02}
+\definecolor{muted}{HTML}{5A6577}
+\definecolor{softbg}{HTML}{F4F6F9}
+\definecolor{todobg}{HTML}{FFF3CD}
+\definecolor{todoborder}{HTML}{B78103}
+
+% ----------------------------------------------------------------------------
+% Tipografia di titoli, didascalie ed elenchi
+% ----------------------------------------------------------------------------
+\titleformat{\section}{\large\bfseries\color{primary}}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{primary}}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{muted}}{\thesubsubsection}{0.6em}{}
+
+\captionsetup{
+  font=small,
+  labelfont={bf,color=primary},
+  labelsep=period
+}
+
+\setlist{nosep, leftmargin=1.5em}
+
+% ----------------------------------------------------------------------------
+% Intestazione e piè di pagina (fancyhdr)
+% ----------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\footnotesize\color{muted}Analisi BI dei Richiami FDA -- Progetto DashMe}
+\fancyhead[R]{\footnotesize\color{muted}UnivPM -- Project Management \& Business Intelligence}
+\fancyfoot[C]{\footnotesize\color{muted}\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{muted!40}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrulewidth}{0pt}
+
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyfoot[C]{\footnotesize\color{muted}\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}%
+}
+
+% ----------------------------------------------------------------------------
+% Macro pubbliche personalizzate
+% ----------------------------------------------------------------------------
+
+% 1) \todo{testo}: pill/box ambra per annotazioni o completamenti pendenti
+\newsavebox{\todobox}
+\newcommand{\todo}[1]{%
+  \sbox{\todobox}{\small\textbf{[DA COMPLETARE:} #1\textbf{]}}%
+  \ifdim\wd\todobox>0.88\linewidth
+    \par\smallskip\noindent
+    {%
+      \setlength{\fboxsep}{5pt}%
+      \fcolorbox{todoborder}{todobg}{%
+        \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+          \small\color{black}\textcolor{todoborder}{\textbf{[DA COMPLETARE:}} #1\textcolor{todoborder}{\textbf{]}}%
+        }%
+      }%
+    }%
+    \par\smallskip
+  \else
+    \fcolorbox{todoborder}{todobg}{%
+      \small\color{black}\textcolor{todoborder}{\textbf{[DA COMPLETARE:}} #1\textcolor{todoborder}{\textbf{]}}%
+    }%
+  \fi
+}
+
+% 2) \dashboardfig[width]{filename}{caption}{label}:
+%    cerca in ../Tableau/ e poi in figures/; se assente mostra un segnaposto pulito
+\newcommand{\dashboardfig}[4][\textwidth]{%
+  \begin{figure}[htbp]
+    \centering
+    \IfFileExists{../Tableau/#2}{%
+      \includegraphics[width=#1,keepaspectratio]{../Tableau/#2}%
+    }{%
+      \IfFileExists{figures/#2}{%
+        \includegraphics[width=#1,keepaspectratio]{figures/#2}%
+      }{%
+        {%
+          \setlength{\fboxsep}{10pt}%
+          \setlength{\fboxrule}{0.8pt}%
+          \fcolorbox{muted}{softbg}{%
+            \parbox{\dimexpr0.92\linewidth-2\fboxsep-2\fboxrule\relax}{%
+              \centering\vspace{1.2em}
+              {\large\bfseries\color{primary}[Figura segnaposto: \texttt{\detokenize{#2}}]}\\[0.6em]
+              {\small\color{muted}Immagine non ancora esportata. Esportare la dashboard da Tableau e salvare il file in \texttt{docs/Tableau/\detokenize{#2}} (oppure in \texttt{docs/thesis/figures/\detokenize{#2}}), quindi ricompilare il documento.}%
+              \vspace{1.2em}
+            }%
+          }%
+        }%
+      }%
+    }%
+    \caption{#3}%
+    \label{#4}%
+  \end{figure}%
+}
+
+% 3) \keyinsight{titolo}{corpo}: box di sintesi con sfondo softbg e bordo primary
+\newcommand{\keyinsight}[2]{%
+  \par\medskip\noindent
+  {%
+    \setlength{\fboxsep}{8pt}%
+    \setlength{\fboxrule}{0.8pt}%
+    \fcolorbox{primary}{softbg}{%
+      \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+        {\color{primary}\bfseries #1}\par\smallskip
+        {\small #2}%
+      }%
+    }%
+  }%
+  \par\medskip
+}
+
+% ----------------------------------------------------------------------------
+% Hyperref (caricato per ultimo)
+% ----------------------------------------------------------------------------
+\PassOptionsToPackage{hyphens}{url}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=primary,
+  citecolor=primary,
+  urlcolor=primary,
+  pdfborder={0 0 0},
+  pdftitle={Analisi Business Intelligence dei Richiami FDA: Geografia Industriale, Profili di Rischio e Governance Operativa},
+  pdfauthor={Gabriele Vianello},
+  pdfsubject={Project Management e Business Intelligence -- Università Politecnica delle Marche},
+  pdfkeywords={Business Intelligence, Visual Analytics, Tableau, Richiami FDA, Gestione del Rischio}
+}

@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guida Operativa Dashboard 2 — Power BI Contamination Analytics</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --slate-600: #475569;
+            --slate-500: #64748b;
+            --pbi-gold: #d97706;
+            --pbi-amber: #f59e0b;
+            --pbi-dark-gold: #b45309;
+            --blue: #1d4ed8;
+            --sky: #0284c7;
+            --emerald: #059669;
+            --amber: #d97706;
+            --red: #dc2626;
+            --purple: #7c3aed;
+            --bg-page: #f1f5f9;
+            --bg-card: #ffffff;
+            --bg-soft: #f8fafc;
+            --border: #e2e8f0;
+            --border-strong: #cbd5e1;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--slate-800);
+            line-height: 1.65;
+            padding: 24px 16px 60px 16px;
+        }
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: 0 10px 35px -8px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+        }
+
+        .top-nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(8px);
+            padding: 12px 32px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .nav-brand {
+            color: #fef3c7;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .nav-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 0.81rem;
+            font-weight: 600;
+            padding: 6px 11px;
+            border-radius: 8px;
+            transition: all 0.15s ease;
+        }
+
+        .nav-links a:hover {
+            background: rgba(245, 158, 11, 0.18);
+            color: #fde68a;
+        }
+
+        header.hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #b45309 100%);
+            color: #ffffff;
+            padding: 42px 52px;
+        }
+
+        .badge-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(245, 158, 11, 0.2);
+            color: #fde68a;
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 9999px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 14px;
+            border: 1px solid rgba(245, 158, 11, 0.45);
+        }
+
+        header.hero h1 {
+            font-size: 2.05rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        header.hero p.lead {
+            font-size: 1rem;
+            color: #e2e8f0;
+            max-width: 920px;
+            margin-bottom: 22px;
+        }
+
+        .title-box {
+            background: rgba(15, 23, 42, 0.65);
+            border: 2px solid #f59e0b;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-top: 10px;
+        }
+
+        .title-box-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #fde68a;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .title-box-text {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: 0.01em;
+        }
+
+        .content-wrap {
+            padding: 40px 52px 56px 52px;
+        }
+
+        section { margin-top: 44px; }
+        section:first-child { margin-top: 0; }
+
+        h2 {
+            font-size: 1.48rem;
+            font-weight: 800;
+            color: var(--navy);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sec-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: var(--navy);
+            color: #fde68a;
+            font-size: 0.95rem;
+            font-weight: 800;
+            flex-shrink: 0;
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--pbi-dark-gold);
+            margin-top: 22px;
+            margin-bottom: 10px;
+        }
+
+        h4 {
+            font-size: 1.03rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        p { margin-bottom: 12px; font-size: 0.96rem; color: var(--slate-700); }
+        ul, ol { margin: 8px 0 16px 22px; color: var(--slate-700); font-size: 0.95rem; }
+        li { margin-bottom: 7px; }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            background: #f1f5f9;
+            color: #0f172a;
+            border: 1px solid #e2e8f0;
+            padding: 1px 6px;
+            border-radius: 5px;
+            font-size: 0.83rem;
+            font-weight: 600;
+        }
+
+        pre {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 16px 20px;
+            border-radius: 10px;
+            overflow-x: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            margin: 12px 0 18px 0;
+        }
+
+        .callout {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-left: 5px solid var(--sky);
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin: 18px 0;
+            font-size: 0.94rem;
+        }
+        .callout.warn {
+            background: #fffbeb;
+            border-color: #fde68a;
+            border-left-color: var(--amber);
+        }
+        .callout.success {
+            background: #ecfdf5;
+            border-color: #a7f3d0;
+            border-left-color: var(--emerald);
+        }
+        .callout.pbi {
+            background: #fefce8;
+            border-color: #fde047;
+            border-left-color: var(--pbi-dark-gold);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            margin: 16px 0 24px 0;
+        }
+
+        .info-card {
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px 20px;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 9999px;
+            font-size: 0.74rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+        .pill.dark { background: #0f172a; color: #f8fafc; }
+        .pill.amber { background: #fef3c7; color: #b45309; }
+        .pill.green { background: #d1fae5; color: #047857; }
+        .pill.blue { background: #dbeafe; color: #1d4ed8; }
+        .pill.red { background: #fee2e2; color: #b91c1c; }
+
+        /* Wireframe Layout */
+        .wireframe-ui {
+            background: #0f172a;
+            border-radius: 16px;
+            padding: 20px;
+            margin: 18px 0 28px 0;
+            color: #f8fafc;
+        }
+
+        .wf-titlebar {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.14);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 12px;
+            font-weight: 800;
+            font-size: 1.02rem;
+            color: #ffffff;
+        }
+
+        .wf-filters {
+            background: rgba(255,255,255,0.05);
+            border: 1px dashed rgba(245, 158, 11, 0.5);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.82rem;
+        }
+
+        .wf-chip {
+            background: rgba(245, 158, 11, 0.18);
+            border: 1px solid rgba(245, 158, 11, 0.45);
+            color: #fde68a;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.77rem;
+        }
+
+        .wf-layout {
+            display: grid;
+            grid-template-columns: 1.15fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 12px;
+        }
+
+        .wf-slot {
+            background: rgba(30, 41, 59, 0.92);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 10px;
+            padding: 16px 18px;
+        }
+
+        .wf-slot.tall {
+            grid-row: 1 / span 2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .wf-slot-head {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #fbbf24;
+            margin-bottom: 5px;
+        }
+
+        .wf-slot-chart {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .wf-slot-desc {
+            font-size: 0.82rem;
+            color: #cbd5e1;
+        }
+
+        /* Sheet Cards */
+        .sheet-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            margin: 24px 0;
+            overflow: hidden;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+        }
+
+        .sheet-card-header {
+            background: linear-gradient(90deg, #f8fafc 0%, #fefce8 100%);
+            padding: 16px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .sheet-card-header h4 { margin: 0; font-size: 1.08rem; color: var(--navy); }
+
+        .sheet-card-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .quad {
+            padding: 18px 22px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .quad:nth-child(odd) { border-right: 1px solid #f1f5f9; }
+        .quad:nth-child(3), .quad:nth-child(4) { border-bottom: none; }
+
+        .quad-title {
+            font-size: 0.79rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 9px;
+        }
+        .quad-title.spec { color: var(--sky); }
+        .quad-title.filter { color: var(--red); }
+        .quad-title.how { color: var(--pbi-dark-gold); }
+        .quad-title.rel { color: var(--emerald); }
+
+        .quad p, .quad li { font-size: 0.9rem; color: var(--slate-700); }
+        .quad ul, .quad ol { margin: 4px 0 6px 18px; }
+
+        details.formula-box {
+            margin-top: 12px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 16px;
+        }
+        details.formula-box summary {
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: var(--pbi-dark-gold);
+            user-select: none;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 16px 0 24px 0;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        table { width: 100%; border-collapse: collapse; font-size: 0.89rem; text-align: left; }
+        thead { background: #f8fafc; }
+        th {
+            padding: 11px 14px;
+            font-weight: 700;
+            color: var(--navy);
+            border-bottom: 2px solid var(--border);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        td {
+            padding: 10px 14px;
+            border-bottom: 1px solid #f1f5f9;
+            color: var(--slate-700);
+            vertical-align: top;
+        }
+        tr:last-child td { border-bottom: none; }
+
+        footer {
+            background: #f8fafc;
+            border-top: 1px solid var(--border);
+            padding: 24px 52px;
+            text-align: center;
+            color: var(--slate-500);
+            font-size: 0.85rem;
+        }
+
+        @media (max-width: 900px) {
+            .content-wrap, header.hero { padding: 28px 22px; }
+            .grid-2, .wf-layout, .sheet-card-body { grid-template-columns: 1fr; }
+            .wf-slot.tall { grid-row: auto; }
+            .quad:nth-child(odd) { border-right: none; }
+            .quad:nth-child(3) { border-bottom: 1px solid #f1f5f9; }
+        }
+
+        @media print {
+            body { background: #ffffff; padding: 0; }
+            .container { border: none; box-shadow: none; }
+            .top-nav { display: none; }
+            .sheet-card, .wireframe-ui { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="top-nav">
+            <div class="nav-brand">📊 Guida Operativa Dashboard 2 &bull; Power BI</div>
+            <div class="nav-links">
+                <a href="#layout">1. Titolo &amp; Layout</a>
+                <a href="#filtri">2. I 2 Filtri + Filtro Pagina</a>
+                <a href="#dax">3. Misura DAX Tachimetro</a>
+                <a href="#grafici">4. I 3 Grafici Step-by-Step</a>
+                <a href="#checklist">5. Checklist Screenshot</a>
+            </div>
+        </nav>
+
+        <header class="hero">
+            <div class="badge-header">Guida Pratica Power BI Desktop &bull; Versione Compatta a 3 Grafici</div>
+            <h1>Dashboard 2: Realizzazione Passo-Passo &amp; Testi per la Relazione</h1>
+            <p class="lead">
+                Istruzioni operative complete per assemblare la seconda pagina di <code>powerdash.pbix</code> in formato <strong>1920 &times; 1080 px</strong> con il layout arioso a <strong>3 visualizzazioni principali</strong>, i <strong>2 Slicer visibili</strong>, i <strong>filtri specifici su pagina e grafici</strong> e la <strong>misura DAX di benchmark</strong> per il Tachimetro Baby Food.
+            </p>
+            <div class="title-box">
+                <div class="title-box-label">Titolo Esatto da Inserire nella Casella di Testo (DIN 32pt Bold)</div>
+                <div class="title-box-text">Rischio Chimico per Filiera Alimentare, Fasce di Concentrazione (µg/kg) &amp; Focus Baby Food</div>
+            </div>
+        </header>
+
+        <div class="content-wrap">
+
+            <!-- ========================================================= -->
+            <!-- SEZIONE 1: IMPOSTAZIONE PAGINA & WIREFRAME                -->
+            <!-- ========================================================= -->
+            <section id="layout">
+                <h2><span class="sec-num">1</span>Impostazione Pagina, Titolo e Mappa Visiva</h2>
+
+                <div class="callout pbi">
+                    <strong>Dimensioni Area di Disegno (uguali a Dashboard1):</strong> Clicca sullo sfondo vuoto della pagina &rarr; <strong>Pennello (Formato pagina)</strong> &rarr; <strong>Impostazioni area di disegno</strong> &rarr; Tipo: <code>Personalizzato</code> &rarr; <strong>Altezza: <code>1080</code> px</strong> &bull; <strong>Larghezza: <code>1920</code> px</strong>.<br>
+                    <strong>Titolo (Textbox in alto):</strong> Copia la casella di testo da <code>Dashboard1</code> (font <code>DIN</code>, <code>32 pt</code>, <strong>Grassetto</strong>) e sostituisci il testo con:<br>
+                    <code>Rischio Chimico per Filiera Alimentare, Fasce di Concentrazione (µg/kg) &amp; Focus Baby Food</code>
+                </div>
+
+                <div class="wireframe-ui">
+                    <div class="wf-titlebar">
+                        📌 Rischio Chimico per Filiera Alimentare, Fasce di Concentrazione (µg/kg) &amp; Focus Baby Food
+                    </div>
+                    <div class="wf-filters">
+                        <span>🎛️ <strong>2 FILTRI VISIBILI IN PAGINA:</strong></span>
+                        <span class="wf-chip">[Bottoni Riquadro] Dim_Contaminanti[Famiglia Contaminante]</span>
+                        <span class="wf-chip">[Menu a Tendina] Dim_GruppiAlimentari[Gruppo Alimentare (IT) / FoodGroupName]</span>
+                    </div>
+                    <div class="wf-layout">
+                        <div class="wf-slot tall">
+                            <div class="wf-slot-head">Grafico 1 &bull; Metà Sinistra (50% a tutta altezza)</div>
+                            <div class="wf-slot-chart">🌳 Albero di Scomposizione (Decomposition Tree)</div>
+                            <div class="wf-slot-desc">
+                                Esplora i <strong>635.913 test positivi specifici</strong> su 4 livelli:<br>
+                                <code>Famiglia Contaminante</code> &rarr; <code>Gruppo Alimentare</code> &rarr; <code>Contaminante (IT)</code> &rarr; <code>FoodName</code>.
+                            </div>
+                        </div>
+                        <div class="wf-slot">
+                            <div class="wf-slot-head">Grafico 2 &bull; In Alto a Destra (50% &times; metà altezza)</div>
+                            <div class="wf-slot-chart">📊 Grafico a Barre in Pila al 100% — Fasce di Concentrazione (µg/kg)</div>
+                            <div class="wf-slot-desc">
+                                Confronta la gravità delle dosi tra le 4 Famiglie Chimiche filtrando solo le <strong>5 fasce positive</strong> (<code>2. Ultra-Tracce</code> &rarr; <code>6. Critica &gt; 1.000</code>).
+                            </div>
+                        </div>
+                        <div class="wf-slot">
+                            <div class="wf-slot-head">Grafico 3 &bull; In Basso a Destra (50% &times; metà altezza)</div>
+                            <div class="wf-slot-chart">👶 Tachimetro (Misuratore / Gauge) — Focus Baby Food (FoodGroupID = 18)</div>
+                            <div class="wf-slot-desc">
+                                Confronta il <code>[Tasso di Positività %]</code> degli alimenti per l'infanzia con la stanghetta di riferimento <code>[Positività Benchmark Generale %]</code>.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- SEZIONE 2: I FILTRI (PAGINA + SLICER)                     -->
+            <!-- ========================================================= -->
+            <section id="filtri">
+                <h2><span class="sec-num">2</span>Configurazione dei Filtri (Visibili in Pagina &amp; Pannello Laterale)</h2>
+
+                <div class="grid-2">
+                    <div class="info-card">
+                        <h4>🔘 Filtro Visibile 1 (A Sinistra): Bottoni <code>Famiglia Contaminante</code></h4>
+                        <ol>
+                            <li>Clicca sullo sfondo vuoto della pagina e scegli l'icona <strong>Filtro dei dati</strong> (tabellina con imbuto).</li>
+                            <li>Trascina dentro <code>Dim_Contaminanti[Famiglia Contaminante]</code>.</li>
+                            <li>Vai su <strong>Pennello</strong> &rarr; <em>Impostazioni filtro dei dati</em> &rarr; <em>Opzioni</em> &rarr; <strong>Stile: <code>Riquadro</code></strong> (così appaiono come 4 pulsanti orizzontali sotto il titolo).</li>
+                            <li><strong>Per lo screenshot:</strong> non selezionare alcun bottone (lascia visibili tutte e 4 le famiglie).</li>
+                        </ol>
+                    </div>
+
+                    <div class="info-card">
+                        <h4>🍎 Filtro Visibile 2 (A Destra): Tendina <code>Gruppo Alimentare</code></h4>
+                        <ol>
+                            <li>Clicca sullo sfondo vuoto e inserisci un secondo <strong>Filtro dei dati</strong>.</li>
+                            <li>Trascina dentro <code>Dim_GruppiAlimentari[Gruppo Alimentare (IT)]</code> (oppure <code>FoodGroupName</code> se hai lasciato i nomi inglesi).</li>
+                            <li>Vai su <strong>Pennello</strong> &rarr; <em>Impostazioni filtro dei dati</em> &rarr; <em>Opzioni</em> &rarr; <strong>Stile: <code>Elenco a discesa</code></strong>.</li>
+                            <li>Clicca <code>...</code> sul filtro e attiva <strong>Cerca</strong>. <strong>Per lo screenshot:</strong> lascialo su <code>Tutti</code> per non tagliare i 22 gruppi.</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <div class="callout warn">
+                    <strong>🛡️ Filtro Globale di Pagina (Pannello laterale <em>Filtri &rarr; Filtri in questa pagina</em>):</strong><br>
+                    Trascina <code>Dim_Contaminanti[Contaminante Specifico]</code> nella sezione <strong>Filtri in questa pagina</strong> e metti la spunta SOLO su <strong><code>Sì (Analita Identificato)</code></strong>.<br>
+                    <em>Effetto:</em> Elimina automaticamente la categoria residuale generica <code>"Other"</code> (<code>702.718</code> righe non identificate) da tutta la pagina e dai bottoni del Filtro 1!
+                </div>
+
+                <details class="formula-box">
+                    <summary>🇮🇹 Opzionale (Consigliato): Codice Power Query (M) per avere <code>Dim_GruppiAlimentari</code> tradotta in Italiano</summary>
+                    <p style="margin-top:10px;">Se nei grafici e nel filtro a tendina vuoi leggere nomi corti e in italiano (es. <em>Pesce e prodotti ittici</em> al posto dei lunghi nomi inglesi EFSA), apri <strong>Trasforma dati &rarr; Dim_GruppiAlimentari &rarr; Editor avanzato</strong> e incolla:</p>
+                    <pre>let
+    TabellaGruppi = #table(
+        type table [
+            FoodGroupID = Int64.Type,
+            FoodGroupName_EN = text,
+            #"Gruppo Alimentare (IT)" = text,
+            #"Fascia Consumatore" = text
+        ],
+        {
+            {1,  "Cereals and cereal-based products", "Cereali e derivati", "Popolazione Generale"},
+            {2,  "Vegetables and vegetable products (including fungi)", "Verdura, ortaggi e funghi", "Popolazione Generale"},
+            {3,  "Starchy roots and tubers", "Radici e tuberi amidacei", "Popolazione Generale"},
+            {4,  "Legumes and pulses", "Legumi", "Popolazione Generale"},
+            {5,  "Nuts and oilseeds", "Frutta a guscio e semi oleosi", "Popolazione Generale"},
+            {6,  "Fruit and fruit products", "Frutta e derivati", "Popolazione Generale"},
+            {7,  "Meat and meat products (including edible offal)", "Carne e frattaglie", "Popolazione Generale"},
+            {8,  "Fish and other seafood (including amphibians, reptiles, snails and insects)", "Pesce e prodotti ittici", "Popolazione Generale"},
+            {9,  "Milk and dairy products", "Latte e latticini", "Popolazione Generale"},
+            {10, "Eggs and egg products", "Uova e ovoprodotti", "Popolazione Generale"},
+            {11, "Sugar and confectionary (including cocoa products)", "Zucchero, dolciumi e cacao", "Popolazione Generale"},
+            {12, "Fats and oils of animal and vegetable (excluding butter)", "Grassi e oli animali e vegetali", "Popolazione Generale"},
+            {13, "Fruit and vegetable juices", "Succhi di frutta e verdura", "Popolazione Generale"},
+            {14, "Non-alcoholic beverages (excluding milk, fruit and vegetable juice, water and stimulants)", "Bevande analcoliche", "Popolazione Generale"},
+            {15, "Alcoholic beverages", "Bevande alcoliche", "Popolazione Generale"},
+            {16, "Drinking water (water without any additives except carbon dioxide; includes water ice for consumption)", "Acqua potabile", "Popolazione Generale"},
+            {18, "Food for infants and small children", "Alimenti per lattanti e bambini (Baby Food)", "Pediatrico (Lattanti e Bambini)"},
+            {19, "Products for special nutritional use", "Prodotti dietetici e nutrizione speciale", "Nutrizione Speciale / Dietetica"},
+            {20, "Composite food (including frozen products)", "Piatti pronti e alimenti composti", "Popolazione Generale"},
+            {21, "Snacks and desserts", "Snack e dessert", "Popolazione Generale"},
+            {22, "Other foods", "Altri alimenti", "Popolazione Generale"},
+            {23, "Stimulant beverages, dried and diluted excluding cocoa products", "Caffè, tè e infusi", "Popolazione Generale"}
+        }
+    )
+in
+    TabellaGruppi</pre>
+                </details>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- SEZIONE 3: MISURA DAX PER IL TACHIMETRO                   -->
+            <!-- ========================================================= -->
+            <section id="dax">
+                <h2><span class="sec-num">3</span>Misura DAX da Creare per il Tachimetro Baby Food</h2>
+
+                <p>
+                    Per far comparire sul Tachimetro del <em>Baby Food</em> la <strong>stanghetta di riferimento</strong> (<em>Valore di destinazione</em>) che mostra la media europea di tutti gli alimenti, crea questa misura dentro <code>Fact_Contaminazioni</code> (<strong>Clic destro su <code>Fact_Contaminazioni</code> &rarr; Nuova misura</strong>):
+                </p>
+
+                <pre>// Benchmark fisso su tutto il dataset (39,6%): ignora sia il filtro FoodGroupID=18 del Tachimetro sia il filtro di pagina Contaminante Specifico
+Positività Benchmark Generale % =
+CALCULATE(
+    [Tasso di Positività %],
+    ALL(Dim_GruppiAlimentari),
+    ALL(Dim_Contaminanti)
+)</pre>
+
+                <div class="callout success">
+                    <strong>Formattazione e Alternative Rapide:</strong>
+                    <ul style="margin-bottom:0;">
+                        <li>Dopo aver premuto <strong>Invio</strong>, clicca su <code>Positività Benchmark Generale %</code>, vai in alto su <strong>Strumenti misura</strong> e clicca sul simbolo <strong><code>%</code></strong> (con 1 decimale) per mostrarla come <strong><code>39,6%</code></strong>.</li>
+                        <li><strong>Se preferisci il benchmark sui soli contaminanti specifici (<code>37,0%</code>):</strong> usa la formula <code>CALCULATE([Tasso di Positività %], ALL(Dim_GruppiAlimentari))</code> (senza <code>ALL(Dim_Contaminanti)</code>).</li>
+                        <li><strong>Alternativa senza creare nessuna misura:</strong> lascia vuoto <em>Valore di destinazione</em> e scrivi <code>0,396</code> (o <code>0,37</code>) manualmente in <em>Formato oggetto visivo &rarr; Asse del misuratore &rarr; Destinazione</em>.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- SEZIONE 4: I 3 GRAFICI STEP-BY-STEP                     -->
+            <!-- ========================================================= -->
+            <section id="grafici">
+                <h2><span class="sec-num">4</span>Guida Dettagliata ai 3 Grafici &amp; Filtri Specifici</h2>
+
+                <!-- GRAFICO 1 -->
+                <div class="sheet-card">
+                    <div class="sheet-card-header">
+                        <h4>🌳 Grafico 1 (Metà Sinistra) &mdash; Albero di Scomposizione delle Filiere Chimiche</h4>
+                        <span class="pill dark">Decomposition Tree (Visual AI Nativo)</span>
+                    </div>
+                    <div class="sheet-card-body">
+                        <div class="quad">
+                            <div class="quad-title spec">📌 Campi da Inserire nel Visual</div>
+                            <ul>
+                                <li><strong>Icona:</strong> <em>Albero di scomposizione</em> (nel riquadro Visualizzazioni).</li>
+                                <li><strong>Analizza:</strong> <code>Fact_Contaminazioni[Analisi Positive (&gt; LOD)]</code></li>
+                                <li><strong>Spiega per</strong> (in quest'ordine esatto):
+                                    <ol>
+                                        <li><code>Dim_Contaminanti[Famiglia Contaminante]</code></li>
+                                        <li><code>Dim_GruppiAlimentari[Gruppo Alimentare (IT)]</code> <em>(o <code>FoodGroupName</code>)</em></li>
+                                        <li><code>Dim_Contaminanti[Contaminante (IT)]</code></li>
+                                        <li><code>Fact_Contaminazioni[FoodName]</code></li>
+                                    </ol>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="quad">
+                            <div class="quad-title filter">🛡️ Filtri Applicati a Questo Grafico</div>
+                            <ul>
+                                <li><strong>Eredita il filtro di pagina:</strong> <code>Contaminante Specifico = "Sì (Analita Identificato)"</code> (esclude <code>Other</code>, lasciando i <code>635.913</code> test positivi specifici).</li>
+                                <li><strong>Nessun filtro extra necessario</strong> sull'oggetto visivo: risponde dinamicamente ai 2 Slicer in alto (<code>Famiglia Contaminante</code> e <code>Gruppo Alimentare</code>).</li>
+                            </ul>
+                        </div>
+                        <div class="quad">
+                            <div class="quad-title how">🛠️ Come Espanderlo per lo Screenshot</div>
+                            <ol>
+                                <li>Clicca sul simbolo <strong><code>+</code></strong> a destra della barra principale e seleziona <strong><code>Famiglia Contaminante</code></strong> (o clicca <em>Valore alto</em> con la lampadina).</li>
+                                <li>Clicca su <strong><code>+</code></strong> accanto a <strong>Metalli Pesanti ed Elementi Tracce</strong> &rarr; scegli <code>Gruppo Alimentare (IT)</code>.</li>
+                                <li>Clicca su <strong><code>+</code></strong> accanto a <strong>Carne e frattaglie</strong> (o <em>Pesce e prodotti ittici</em>) &rarr; scegli <code>Contaminante (IT)</code>.</li>
+                                <li>Clicca su <strong><code>+</code></strong> accanto a <strong>Cadmio</strong> &rarr; scegli <code>FoodName</code>.</li>
+                            </ol>
+                        </div>
+                        <div class="quad">
+                            <div class="quad-title rel">📝 Testo Pronto per la Relazione</div>
+                            <p style="margin-bottom:0;">
+                                <em>"L'Albero di Scomposizione esplora gerarchicamente i 635.913 rilevamenti positivi con analita identificato. I <strong>Metalli Pesanti</strong> rappresentano la prima famiglia critica (433.073 casi, 68,1%), guidati da Carne e frattaglie (100.984 positivi, dominati dal <strong>Cadmio</strong> con 65.604 rilevamenti) e dal comparto Ittico (91.028 positivi)."</em>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRAFICO 2 -->
+                <div class="sheet-card">
+                    <div class="sheet-card-header">
+                        <h4>📊 Grafico 2 (In Alto a Destra) &mdash; Distribuzione delle Fasce di Concentrazione (<code>µg/kg</code>)</h4>
+                        <span class="pill dark">Grafico a Barre in Pila al 100%</span>
+                    </div>
+                    <div class="sheet-card-body">
+                        <div class="quad">
+                            <div class="quad-title spec">📌 Campi da Inserire nel Visual</div>
+                            <ul>
+                                <li><strong>Icona:</strong> <em>Grafico a barre in pila al 100%</em> (3ª icona nella prima riga del pannello Visualizzazioni).</li>
+                                <li><strong>Asse Y:</strong> <code>Dim_Contaminanti[Famiglia Contaminante]</code></li>
+                                <li><strong>Asse X:</strong> <code>Fact_Contaminazioni[Analisi Positive (&gt; LOD)]</code></li>
+                                <li><strong>Legenda:</strong> <code>Fact_Contaminazioni[Fascia Concentrazione]</code></li>
+                            </ul>
+                        </div>
+                        <div class="quad">
+                            <div class="quad-title filter">🛡️ Filtri Fondamentali su Questo Oggetto Visivo</div>
+                            <ul>
+                                <li>Seleziona il grafico &rarr; pannello <strong>Filtri</strong> &rarr; <strong>Filtri su questo oggetto visivo</strong> &rarr; espandi <code>Fact_Contaminazioni[Fascia Concentrazione]</code>.</li>
+                                <li>In <em>Filtro di base</em> <strong>deseleziona</strong> <code>0. Dato Mancante</code> e <code>1. Assente / &lt; LOD (0 µg/kg)</code>.</li>
+                                <li><strong>Lascia spuntate solo le 5 fasce positive:</strong>
+                                    <code>2. Ultra-Tracce (0–1 µg/kg)</code>, <code>3. Tracce Basse (1–10)</code>, <code>4. Moderata (10–100)</code>, <code>5. Elevata (100–1.000)</code>, <code>6. Critica / Macro (&gt; 1.000)</code>.
+                                </li>
+                                <li><em>Opzionale se vuoi analisi di dose pura:</em> aggiungi anche filtro <code>UnitID IN {2, 3}</code> per evitare gli outlier macro di <code>UnitID = 1</code>.</li>
+                            </ul>
+                        </div>
+                        <div class="quad">
+                            <div class="quad-title how">🛠️ Formattazione per lo Screenshot</div>
+                            <ol>
+                                <li>Apri il <strong>Pennello (Formato oggetto visivo)</strong> &rarr; attiva <strong>Etichette dati</strong> per leggere le percentuali esatte dentro ogni fascia colorata.</li>
+                                <li>In <em>Legenda</em> assicurati che le fasce compaiano in ordine da <code>2.</code> a <code>6.</code>, assegnando colori progressivi (es. dal verde/azzurro per Ultra-Tracce al giallo/arancio fino al rosso scuro per Critica <code>&gt; 1.000</code>).</li>
+                                <li>Titolo suggerito: <code>Profilo di Concentrazione (µg/kg) sui Soli Positivi per Famiglia Chimica</code>.</li>
+                            </ol>
+                        </div>
+                        <div class="quad">
+                            <div class="quad-title rel">📝 Testo Pronto per la Relazione</div>
+                            <p style="margin-bottom:0;">
+                                <em>"Poiché le quattro famiglie chimiche operano su ordini di grandezza incompatibili, la discretizzazione in fasce logaritmiche evidenzia il divario tra frequenza e intensità: le <strong>Diossine e Furani</strong> si concentrano al 100% nelle Ultra-Tracce (0–1 µg/kg, media 0,002 µg/kg), mentre <strong>Metalli Pesanti</strong>, <strong>Micotossine</strong> (es. DON) e <strong>Contaminanti di Processo</strong> mostrano code significative nelle fasce Elevate e Critiche (&gt; 100 µg/kg)."</em>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GRAFICO 3 -->
+                <div class="sheet-card">
+                    <div class="sheet-card-header">
+                        <h4>👶 Grafico 3 (In Basso a Destra) &mdash; Tachimetro Focus Baby Food (<code>FoodGroupID = 18</code>)</h4>
+                        <span class="pill dark">Misuratore (Gauge Visual)</span>
+                    </div>
+                    <div class="sheet-card-body">
+                        <div class="quad">
+                            <div class="quad-title spec">📌 Campi da Inserire nel Visual</div>
+                            <ul>
+                                <li><strong>Icona:</strong> <em>Misuratore (Gauge)</em>.</li>
+                                <li><strong>Valore:</strong> <code>Fact_Contaminazioni[Tasso di Positività %]</code> <em>(formattato come <code>%</code>)</em>.</li>
+                                <li><strong>Valore di destinazione:</strong> <code>Fact_Contaminazioni[Positività Benchmark Generale %]</code> <em>(la misura creata nella Sezione 3)</em>.</li>
+                            </ul>
+                        </div>
+                        <div class="quad">
+                            <div class="quad-title filter">🛡️ Filtri su Questo Grafico &amp; Blocco Interazioni</div>
+                            <ul>
+                                <li>Seleziona il Tachimetro &rarr; pannello <strong>Filtri</strong> &rarr; <strong>Filtri su questo oggetto visivo</strong> &rarr; trascina <code>Dim_GruppiAlimentari[FoodGroupID]</code>.</li>
+                                <li>Imposta <em>Filtro di base</em> e spunta <strong>solo <code>18</code></strong> (<em>Alimenti per lattanti e bambini</em>).</li>
+                                <li><strong>Blocca il filtro a tendina in alto (Modifica interazioni):</strong> clicca sul filtro a tendina <code>Gruppo Alimentare</code> in alto &rarr; menu in alto <strong>Formato &rarr; Modifica interazioni</strong> &rarr; clicca sull'icona di divieto <strong><code>⊘</code> (Nessuno)</strong> sopra il Tachimetro. Così il Tachimetro resta sempre bloccato sui bambini!</li>
+                                <li><em>Nota:</em> Con il filtro di pagina <code>Contaminante Specifico = Sì</code> vedrai il valore <code>23,6%</code> (o <code>26,6%</code> sul totale grezzo comprensivo di <code>Other</code>), sempre ben al di sotto della stanghetta di benchmark.</li>
+                            </ul>
+                        </div>
+                        <div class="quad">
+                            <div class="quad-title how">🛠️ Formattazione Asse &amp; Titolo</div>
+                            <ol>
+                                <li>Vai su <strong>Pennello &rarr; Asse del misuratore</strong>: imposta <strong>Min = <code>0</code></strong> e <strong>Max = <code>1</code></strong> (oppure <code>0,6</code> per dare più risalto visivo alla barra).</li>
+                                <li>In <strong>Pennello &rarr; Generale &rarr; Titolo</strong> scrivi:<br><code>Focus Baby Food (FoodGroupID 18) vs Media Generale Europea</code></li>
+                                <li>In <em>Colori</em> puoi impostare la barra del valore in verde/blu scuro e la linea di destinazione in rosso/arancione.</li>
+                            </ol>
+                        </div>
+                        <div class="quad">
+                            <div class="quad-title rel">📝 Testo Pronto per la Relazione</div>
+                            <p style="margin-bottom:0;">
+                                <em>"L'indicatore dedicato alla fascia pediatrica (<code>FoodGroupID = 18</code>, 58.764 test su pappe ai cereali, latte in polvere e omogeneizzati) evidenzia l'efficacia delle soglie restrittive UE per l'infanzia: il tasso di positività resta nettamente inferiore al benchmark della popolazione generale (stanghetta di riferimento al 39,6% complessivo / 37,0% su analiti specifici), grazie soprattutto al crollo delle micotossine al 6,7%."</em>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ========================================================= -->
+            <!-- SEZIONE 5: CHECKLIST SCREENSHOT                           -->
+            <!-- ========================================================= -->
+            <section id="checklist">
+                <h2><span class="sec-num">5</span>Checklist Rapida Prima di Salvare lo Screenshot per la Relazione</h2>
+                <div class="callout success">
+                    <ol style="margin-bottom:0;">
+                        <li>Verifica che l'area di disegno sia <strong>1920 &times; 1080 px</strong> e il titolo sia su una riga sola: <code>Rischio Chimico per Filiera Alimentare, Fasce di Concentrazione (µg/kg) &amp; Focus Baby Food</code>.</li>
+                        <li>Controlla che i <strong>2 Slicer in alto</strong> (<code>Famiglia Contaminante</code> a bottoni e <code>Gruppo Alimentare</code> a tendina) non abbiano selezioni attive (tutti deselezionati / su <code>Tutti</code>) così nello screenshot compaiono i dati completi.</li>
+                        <li>Verifica nel pannello laterale che il filtro di pagina <code>Contaminante Specifico = "Sì (Analita Identificato)"</code> sia attivo.</li>
+                        <li>Controlla che l'<strong>Albero di Scomposizione</strong> sia aperto su tutti e 4 i livelli (es. <em>Metalli Pesanti &rarr; Carne e frattaglie &rarr; Cadmio &rarr; Alimento</em>).</li>
+                        <li>Controlla che il <strong>Grafico a barre al 100%</strong> mostri le percentuali inside e solo le fasce dalla <code>2.</code> alla <code>6.</code>.</li>
+                        <li>Controlla che il <strong>Tachimetro Baby Food</strong> abbia il filtro <code>FoodGroupID = 18</code> e la linea di destinazione visibile con <code>[Positività Benchmark Generale %]</code>.</li>
+                    </ol>
+                </div>
+
+                <h3>Tabella Riassuntiva dei Filtri Usati nella Dashboard 2</h3>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Livello Filtro</th>
+                                <th>Campo del Modello</th>
+                                <th>Valore / Configurazione</th>
+                                <th>Scopo Analitico</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><span class="pill blue">Slicer in Pagina 1</span></td>
+                                <td><code>Dim_Contaminanti[Famiglia Contaminante]</code></td>
+                                <td>Stile <strong>Riquadro</strong> (bottoni) &bull; Nessun bottone bloccato nello screenshot</td>
+                                <td>Permette all'utente di isolare Metalli, Micotossine, Diossine o Processo con 1 clic.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="pill blue">Slicer in Pagina 2</span></td>
+                                <td><code>Dim_GruppiAlimentari[Gruppo Alimentare (IT)]</code> <em>(o <code>FoodGroupName</code>)</em></td>
+                                <td>Stile <strong>Elenco a discesa</strong> con Cerca &bull; Su <code>Tutti</code> nello screenshot</td>
+                                <td>Permette il filtro rapido su una delle 22 filiere alimentari.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="pill amber">Filtro di Pagina</span></td>
+                                <td><code>Dim_Contaminanti[Contaminante Specifico]</code></td>
+                                <td><code>"Sì (Analita Identificato)"</code></td>
+                                <td>Esclude le <code>702.718</code> righe non specificate (<code>Other</code>) da tutti i grafici.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="pill red">Filtro Grafico 2</span></td>
+                                <td><code>Fact_Contaminazioni[Fascia Concentrazione]</code></td>
+                                <td>Solo fasce <code>2.</code> &rarr; <code>6.</code> (esclusi <code>0. Null</code> e <code>1. &lt; LOD</code>)</td>
+                                <td>Calcola il 100% delle barre sulle sole analisi positive con concentrazione misurata.</td>
+                            </tr>
+                            <tr>
+                                <td><span class="pill green">Filtro Grafico 3</span></td>
+                                <td><code>Dim_GruppiAlimentari[FoodGroupID]</code></td>
+                                <td>Solo <strong><code>18</code></strong> (<em>Baby Food</em>) + Interazione bloccata da Slicer 2</td>
+                                <td>Isola i <code>58.764</code> test su alimenti per neonati confrontandoli con il benchmark UE.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+
+        <footer>
+            Guida Operativa Dashboard 2 &bull; Allineata allo Star Schema di <code>powerdash.pbix</code> (<code>Fact_Contaminazioni</code>, <code>Dim_Geografia</code>, <code>Dim_Contaminanti</code>, <code>Dim_GruppiAlimentari</code>).
+        </footer>
+    </div>
+</body>
+</html>

@@ -5,6 +5,9 @@
 .venv
 .env
 
+# Data & Too large files
+data/raw
+
 # IDEs
 .idea
 .vscode

@@ -1,7 +1,7 @@
-\section{Metodologia, Architettura Dati e Progettazione Visiva}
+\chapter{Metodologia, Architettura Dati e Progettazione Visiva}
 \label{sec:methodology}
 
-\subsection{Dataset Sorgente e Struttura dei Dati Grezzi}
+\section{Dataset Sorgente e Struttura dei Dati Grezzi}
 La base informativa del progetto DashMe deriva dal dataset ufficiale dei richiami FDA consolidato nel file \texttt{data/recalls.xlsx} e successivamente materializzato in formato colonnare ad alte prestazioni all'interno dell'estrazione \texttt{data/dati\_trasformati\_tableau.hyper}, collegata alla cartella di lavoro Tableau \texttt{src/Tableau/dashsmash3.twb}.
 
 Lo schema sorgente si compone di 17 colonne originali che descrivono sia l'evento regolatorio sia il singolo prodotto coinvolto:
@@ -14,7 +14,7 @@ Lo schema sorgente si compone di 17 colonne originali che descrivono sia l'event
 
 È fondamentale osservare la granularità relazionale del dataset: un singolo \texttt{Event ID} (azione amministrativa di richiamo) può associarsi a uno o più \texttt{Product ID} distinti. Di conseguenza, le analisi volumetriche basate sul conteggio dei prodotti richiamati possono superare sensibilmente il numero di eventi univoci. \todo{Inserire l'intervallo temporale esatto delle date in Center Classification Date (data minima e massima), il numero totale di Event ID distinti, il numero di aziende univoche e la verifica della copertura geografica complessiva nel file recalls.xlsx.}
 
-\subsection{Pipeline ETL e Feature Engineering in Tableau}
+\section{Pipeline ETL e Feature Engineering in Tableau}
 Secondo i principi del \textit{data warehousing} dimensionale \citep{kimball2013}, l'analisi affidabile di un registro amministrativo richiede una fase preliminare di pulizia, normalizzazione delle entità e derivazione di attributi analitici (\textit{feature engineering}) a partire dai campi testuali non strutturati. Nel rispetto delle funzionalità native di modellazione dell'ambiente Tableau \citep{tableau_docs}, il progetto ha introdotto 14 campi calcolati dedicati, progettati per risolvere tre criticità tipiche dei dati FDA:
 \begin{enumerate}
     \item \textbf{Normalizzazione anagrafica e geografica}: la presenza di varianti ortografiche, suffissi societari eterogenei e codifiche statali/cittadine non uniformi richiede la standardizzazione di ragioni sociali, stati e città notificanti.
@@ -50,7 +50,7 @@ La Tabella~\ref{tab:calculated_fields} sintetizza i 14 campi calcolati implement
 
 \todo{Documentare le regole puntuali (espressioni regolari o parole chiave) utilizzate nei campi calcolati Categoria Ragione di Richiamo, Tipo Packaging e Modalità Conservazione, verificando la percentuale esatta di record classificati nella categoria residuale ``Altro / Non specificato''.}
 
-\subsection{Scelte di Progettazione Visiva e Articolazione delle Dashboard}
+\section{Scelte di Progettazione Visiva e Articolazione delle Dashboard}
 La progettazione delle viste segue i criteri di efficacia percettiva consolidati nella letteratura sulla \textit{Visual Analytics} \citep{few2013}:
 \begin{itemize}
     \item \textbf{Gerarchia informativa e separazione dei contesti}: anziché sovraccaricare un'unica schermata, il modello è stato suddiviso in tre dashboard specializzate corrispondenti alle tre dimensioni delle domande di ricerca (geografia/responsabilità, tempo/cause, governance/logistica).

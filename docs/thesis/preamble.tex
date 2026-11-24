@@ -8,14 +8,16 @@
 \ifPDFTeX
   \usepackage[utf8]{inputenc}
   \usepackage[T1]{fontenc}
-  \usepackage{lmodern}
 \else
   \usepackage{fontspec}
-  \usepackage{lmodern}
 \fi
 
 \usepackage[italian]{babel}
-\usepackage[a4paper, margin=2.3cm, headheight=14pt]{geometry}
+\addto\captionsitalian{%
+  \renewcommand{\abstractname}{Abstract}%
+  \renewcommand{\bibname}{Riferimenti Bibliografici}%
+}
+\usepackage[a4paper, margin=2.3cm, headheight=15pt]{geometry}
 
 \usepackage{graphicx}
 \graphicspath{{../Tableau/}{figures/}}
@@ -37,25 +39,21 @@
 \usepackage[numbers,sort&compress]{natbib}
 
 % ----------------------------------------------------------------------------
-% Palette cromatica accademica
+% Tipografia di titoli, didascalie ed elenchi (stile monocromatico nero)
 % ----------------------------------------------------------------------------
-\definecolor{primary}{HTML}{1B365D}
-\definecolor{accent}{HTML}{D95F02}
-\definecolor{muted}{HTML}{5A6577}
-\definecolor{softbg}{HTML}{F4F6F9}
-\definecolor{todobg}{HTML}{FFF3CD}
-\definecolor{todoborder}{HTML}{B78103}
-
-% ----------------------------------------------------------------------------
-% Tipografia di titoli, didascalie ed elenchi
-% ----------------------------------------------------------------------------
-\titleformat{\section}{\large\bfseries\color{primary}}{\thesection}{0.75em}{}
-\titleformat{\subsection}{\normalsize\bfseries\color{primary}}{\thesubsection}{0.6em}{}
-\titleformat{\subsubsection}{\normalsize\bfseries\color{muted}}{\thesubsubsection}{0.6em}{}
+\titleformat{\chapter}[display]
+  {\normalfont\raggedright\bfseries}
+  {\large\chaptertitlename\ \thechapter}
+  {4pt}
+  {\huge}
+\titlespacing*{\chapter}{0pt}{-25pt}{18pt}
+\titleformat{\section}{\normalfont\raggedright\Large\bfseries}{\thesection}{0.75em}{}
+\titleformat{\subsection}{\normalfont\raggedright\large\bfseries}{\thesubsection}{0.6em}{}
+\titleformat{\subsubsection}{\normalfont\raggedright\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
 
 \captionsetup{
   font=small,
-  labelfont={bf,color=primary},
+  labelfont=bf,
   labelsep=period
 }
 
@@ -66,25 +64,39 @@
 % ----------------------------------------------------------------------------
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\footnotesize\color{muted}Analisi BI dei Richiami FDA -- Progetto DashMe}
-\fancyhead[R]{\footnotesize\color{muted}UnivPM -- Project Management \& Business Intelligence}
-\fancyfoot[C]{\footnotesize\color{muted}\thepage}
-\renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\headrule}{\hbox to\headwidth{\color{muted!40}\leaders\hrule height \headrulewidth\hfill}}
+\fancyhead[L]{\footnotesize Analisi BI dei Richiami FDA -- Progetto DashMe}
+\fancyhead[R]{\footnotesize UnivPM -- Project Management \& Business Intelligence}
+\fancyfoot[C]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 
 \fancypagestyle{plain}{%
   \fancyhf{}%
-  \fancyfoot[C]{\footnotesize\color{muted}\thepage}%
+  \fancyfoot[C]{\footnotesize\thepage}%
   \renewcommand{\headrulewidth}{0pt}%
   \renewcommand{\footrulewidth}{0pt}%
+}
+
+% ----------------------------------------------------------------------------
+% Pagina dedicata per l'Abstract
+% ----------------------------------------------------------------------------
+\renewenvironment{abstract}{%
+  \clearpage
+  \thispagestyle{plain}%
+  \vspace*{\stretch{1}}%
+  \begin{center}%
+    {\Large\bfseries\abstractname\par}%
+  \end{center}%
+  \vspace{1.2em}%
+}{%
+  \par\vspace*{\stretch{2}}\clearpage
 }
 
 % ----------------------------------------------------------------------------
 % Macro pubbliche personalizzate
 % ----------------------------------------------------------------------------
 
-% 1) \todo{testo}: pill/box ambra per annotazioni o completamenti pendenti
+% 1) \todo{testo}: riquadro monocromatico per annotazioni o completamenti pendenti
 \newsavebox{\todobox}
 \newcommand{\todo}[1]{%
   \sbox{\todobox}{\small\textbf{[DA COMPLETARE:} #1\textbf{]}}%
@@ -92,16 +104,16 @@
     \par\smallskip\noindent
     {%
       \setlength{\fboxsep}{5pt}%
-      \fcolorbox{todoborder}{todobg}{%
+      \fcolorbox{black!60}{black!5}{%
         \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
-          \small\color{black}\textcolor{todoborder}{\textbf{[DA COMPLETARE:}} #1\textcolor{todoborder}{\textbf{]}}%
+          \small\color{black}\textbf{[DA COMPLETARE:} #1\textbf{]}%
         }%
       }%
     }%
     \par\smallskip
   \else
-    \fcolorbox{todoborder}{todobg}{%
-      \small\color{black}\textcolor{todoborder}{\textbf{[DA COMPLETARE:}} #1\textcolor{todoborder}{\textbf{]}}%
+    \fcolorbox{black!60}{black!5}{%
+      \small\color{black}\textbf{[DA COMPLETARE:} #1\textbf{]}%
     }%
   \fi
 }
@@ -120,11 +132,11 @@
         {%
           \setlength{\fboxsep}{10pt}%
           \setlength{\fboxrule}{0.8pt}%
-          \fcolorbox{muted}{softbg}{%
+          \fcolorbox{black!60}{black!4}{%
             \parbox{\dimexpr0.92\linewidth-2\fboxsep-2\fboxrule\relax}{%
               \centering\vspace{1.2em}
-              {\large\bfseries\color{primary}[Figura segnaposto: \texttt{\detokenize{#2}}]}\\[0.6em]
-              {\small\color{muted}Immagine non ancora esportata. Esportare la dashboard da Tableau e salvare il file in \texttt{docs/Tableau/\detokenize{#2}} (oppure in \texttt{docs/thesis/figures/\detokenize{#2}}), quindi ricompilare il documento.}%
+              {\large\bfseries [Figura segnaposto: \texttt{\detokenize{#2}}]}\\[0.6em]
+              {\small Immagine non ancora esportata. Esportare la dashboard da Tableau e salvare il file in \texttt{docs/Tableau/\detokenize{#2}} (oppure in \texttt{docs/thesis/figures/\detokenize{#2}}), quindi ricompilare il documento.}%
               \vspace{1.2em}
             }%
           }%
@@ -136,15 +148,15 @@
   \end{figure}%
 }
 
-% 3) \keyinsight{titolo}{corpo}: box di sintesi con sfondo softbg e bordo primary
+% 3) \keyinsight{titolo}{corpo}: box di sintesi monocromatico
 \newcommand{\keyinsight}[2]{%
   \par\medskip\noindent
   {%
     \setlength{\fboxsep}{8pt}%
-    \setlength{\fboxrule}{0.8pt}%
-    \fcolorbox{primary}{softbg}{%
+    \setlength{\fboxrule}{0.6pt}%
+    \fcolorbox{black}{black!3}{%
       \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
-        {\color{primary}\bfseries #1}\par\smallskip
+        {\bfseries #1}\par\smallskip
         {\small #2}%
       }%
     }%
@@ -153,18 +165,24 @@
 }
 
 % ----------------------------------------------------------------------------
-% Hyperref (caricato per ultimo)
+% Hyperref (caricato per ultimo) e integrazione bibliografia nell'indice
 % ----------------------------------------------------------------------------
 \PassOptionsToPackage{hyphens}{url}
 \usepackage{hyperref}
 \hypersetup{
-  colorlinks=true,
-  linkcolor=primary,
-  citecolor=primary,
-  urlcolor=primary,
-  pdfborder={0 0 0},
+  hidelinks,
+  plainpages=false,
   pdftitle={Analisi Business Intelligence dei Richiami FDA: Geografia Industriale, Profili di Rischio e Governance Operativa},
   pdfauthor={Gabriele Vianello},
   pdfsubject={Project Management e Business Intelligence -- Università Politecnica delle Marche},
   pdfkeywords={Business Intelligence, Visual Analytics, Tableau, Richiami FDA, Gestione del Rischio}
 }
+
+\makeatletter
+\renewcommand{\bibsection}{%
+  \chapter*{\bibname}%
+  \@mkboth{\MakeUppercase{\bibname}}{\MakeUppercase{\bibname}}%
+  \phantomsection
+  \addcontentsline{toc}{chapter}{\bibname}%
+}
+\makeatother

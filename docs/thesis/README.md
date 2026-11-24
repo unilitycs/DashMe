@@ -10,12 +10,12 @@ docs/
 │   ├── Dash1.jpeg              # Dashboard 1 (già presente)
 │   └── Dash3.png               # Dashboard 3 (già presente)
 └── thesis/
-    ├── main.tex                # Documento principale (titolo, abstract, sezioni, bibliografia)
+    ├── main.tex                # Documento principale (copertina, abstract, capitoli, bibliografia)
     ├── preamble.tex            # Pacchetti, palette colori, header/footer e macro custom
     ├── references.bib          # Bibliografia in formato BibTeX (natbib + unsrtnat)
     ├── figures/                # Eventuali figure aggiuntive locali al documento
     │   └── .gitkeep
-    ├── sections/               # Sezioni dell'elaborato (01_introduction ... 05_conclusions)
+    ├── sections/               # Capitoli dell'elaborato (01_introduction ... 05_conclusions)
     └── README.md               # Questa guida
 ```
 
@@ -23,10 +23,10 @@ docs/
 
 Nelle sezioni (`docs/thesis/sections/*.tex`) è possibile utilizzare le seguenti macro:
 
-- **`\todo{testo}`**: inserisce un riquadro o pillola ambra `[DA COMPLETARE: testo]` per segnalare parti da integrare manualmente (sicuro sia inline sia come breve paragrafo).
+- **`\todo{testo}`**: inserisce un riquadro monocromatico `[DA COMPLETARE: testo]` per segnalare parti da integrare manualmente (sicuro sia inline sia come breve paragrafo).
 - **`\dashboardfig[larghezza]{nome_file}{didascalia}{etichetta}`**: inserisce una figura centrata cercando prima in `docs/Tableau/<nome_file>` e poi in `docs/thesis/figures/<nome_file>`. Se l'immagine non esiste ancora (es. `Dash2.png`), genera automaticamente un riquadro segnaposto senza errori di compilazione.
   - Esempio: `\dashboardfig{Dash1.jpeg}{Geografia industriale e profili di rischio.}{fig:dash1}`
-- **`\keyinsight{titolo}{corpo}`**: inserisce un riquadro evidenziato di sintesi (sfondo grigio chiaro `#F4F6F9`, bordo blu primario `#1B365D`) per mettere in risalto i principali risultati analitici.
+- **`\keyinsight{titolo}{corpo}`**: inserisce un riquadro evidenziato di sintesi in scala di grigi (bordo nero, sfondo grigio neutro) per mettere in risalto i principali risultati analitici.
 
 ## Aggiungere `Dash2.png`
 

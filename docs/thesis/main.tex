@@ -1,30 +1,55 @@
 % ============================================================================
 % main.tex -- Documento principale (Progetto DashMe)
-% Per passare a layout a due colonne sostituire la documentclass con:
-% \documentclass[10pt,a4paper,twocolumn]{article}
+% Template report accademico con copertina dedicata, Abstract e capitoli
 % ============================================================================
-\documentclass[11pt,a4paper]{article}
+\documentclass[11pt,a4paper]{report}
 
 \input{preamble}
 
-\title{%
-  \vspace{-1.0cm}
-  {\Large\bfseries\color{primary} Analisi Business Intelligence dei Richiami FDA:\\
-  Geografia Industriale, Profili di Rischio e Governance Operativa}%
-}
-
-\author{%
-  Gabriele Vianello\\[0.4em]
-  \todo{Aggiungere eventuali coautori e matricole}\\[0.6em]
-  {\small\color{muted} Università Politecnica delle Marche -- Corso di Project Management \& Business Intelligence}%
-}
-
-\date{\today}
-
 \begin{document}
 
-\maketitle
+\pagenumbering{Alph}
+\begin{titlepage}
+  \thispagestyle{empty}
+  \centering
 
+  \vspace*{0.4cm}
+  {\Large\bfseries UNIVERSITÀ POLITECNICA DELLE MARCHE\par}
+  \vspace{0.35cm}
+  {\large Corso di Project Management \& Business Intelligence\par}
+
+  \vfill
+
+  {\huge\bfseries Analisi Business Intelligence dei Richiami FDA\par}
+  \vspace{0.45cm}
+  {\Large Geografia Industriale, Profili di Rischio e Governance Operativa\par}
+  \vspace{0.55cm}
+  {\normalsize\textit{Progetto DashMe}\par}
+
+  \vfill
+
+  \noindent
+  \begin{minipage}[t]{0.46\textwidth}
+    \raggedright
+    {\bfseries Docenti del corso:}\\[0.4em]
+    Prof.\ D.\ Ursino\\
+    Prof.\ F.\ Parlapiano
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[t]{0.46\textwidth}
+    \raggedleft
+    {\bfseries Studente:}\\[0.4em]
+    Gabriele Vianello
+    % Aggiungere qui eventuali coautori e matricole
+  \end{minipage}
+
+  \vfill
+
+  {\normalsize \today\par}
+  \vspace*{0.2cm}
+\end{titlepage}
+
+\pagenumbering{roman}
 \begin{abstract}
 \noindent
 \textbf{Contesto.} Il monitoraggio dei richiami di prodotto notificati dalla \emph{U.S. Food and Drug Administration} (FDA) rappresenta una sfida critica per la sicurezza dei consumatori, la continuità delle filiere produttive e la conformità regolatoria nei settori alimentare, farmaceutico, cosmetico e dei dispositivi medici.
@@ -43,16 +68,15 @@
 \end{abstract}
 
 % Decommentare la riga seguente per generare l'indice generale:
-% \tableofcontents\newpage
+% \tableofcontents\clearpage
 
+\pagenumbering{arabic}
 \input{sections/01_introduction}
 \input{sections/02_methodology}
 \input{sections/03_dashboard_analysis}
 \input{sections/04_discussion}
 \input{sections/05_conclusions}
 
-\clearpage
-\addcontentsline{toc}{section}{Riferimenti Bibliografici}
 \bibliographystyle{unsrtnat}
 \bibliography{references}
 

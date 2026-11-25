@@ -1,0 +1,144 @@
+\chapter{Analisi Qlik Sense: Sistema Europeo di Allerta Rapida RASFF}
+\label{chap:qlik}
+
+Il presente capitolo illustra i risultati analitici del modulo sviluppato in \textit{Qlik Sense} sul dataset europeo del sistema di allerta rapida per gli alimenti e i mangimi RASFF (\texttt{data/raw/RASFF\_window.csv}). A valle delle operazioni di profilazione e pulizia del tracciato sorgente, la base dati esaminata comprende \textbf{11.787} notifiche distinte e valide su \textbf{11.788} record grezzi coprenti l'orizzonte temporale \textbf{2012--2025}. L'architettura analitica è articolata in quattro fogli interattivi complementari, progettati secondo criteri di percezione visiva orientati alla sintesi esecutiva e all'esplorazione associativa multidimensionale \citep{few2013,sharda2020}: la sintesi generale e l'evoluzione diacronica del rischio (Dashboard~1), la geopolitica dei controlli e i respingimenti frontalieri (Dashboard~2), la tassonomia dei contaminanti chimici e biologici rispetto alle matrici alimentari (Dashboard~3) e la tracciabilità dei flussi di fornitura lungo la catena distributiva europea (Dashboard~4).
+
+% ============================================================================
+\section{Dashboard 1: Sintesi Esecutiva e Valutazione dei Rischi}
+\label{sec:qlik_dash1}
+% ============================================================================
+
+Il primo foglio dell'applicazione (\textit{``Sintesi Esecutiva e Valutazione dei Rischi''}, Figura~\ref{fig:qlik_dash1}) fornisce una vista di monitoraggio direzionale sull'intero perimetro RASFF, integrando quattro filtri di selezione rapida collocati nel quadrante superiore sinistro (\texttt{Anno}, \texttt{PaeseOrigine}, \texttt{Mese}, \texttt{PaeseNotificante}) con quattro indicatori sintetici di prestazione (KPI Card):
+\begin{itemize}
+    \item \textbf{Totale Notifiche}: \textbf{11,79k} (corrispondenti esattamente alle 11.787 notifiche distinte validate);
+    \item \textbf{Totale Paesi Notificanti}: \textbf{30}, corrispondenti ai 27 Stati membri dell'Unione Europea affiancati dai Paesi EFTA e dalla Commissione Europea, ottenuti in seguito all'esclusione delle 4 righe CSV corrotte in fase di caricamento;
+    \item \textbf{\% Allarmi Immediati}: \textbf{43,73\%}, quota che misura l'incidenza delle segnalazioni caratterizzate da urgenza operativa;
+    \item \textbf{Totale Paesi di Origine}: \textbf{141}, a testimonianza della portata globale delle filiere agroalimentari e mangimistiche monitorate alle frontiere e sul mercato interno europeo.
+\end{itemize}
+
+\dashboardfig{qlik_sintesi_esecutiva.png}{Dashboard 1 Qlik Sense: Sintesi Esecutiva e Valutazione dei Rischi.}{fig:qlik_dash1}
+
+\subsection{Profilo di Gravità del Rischio e Incidenza dei Macro-Settori}
+Il grafico a torta \textit{``Distribuzione percentuale per livello di gravità del rischio''}, costruito sulla dimensione \texttt{LivelloRischio}, evidenzia una marcata concentrazione delle non conformità nei livelli di maggiore criticità sanitaria: la classe \textbf{Grave} assorbe da sola il \textbf{66,8\%} del totale, seguita da \textbf{Non grave} (\textbf{13,8\%}), \textbf{Potenzialmente grave} (\textbf{10,6\%}), \textbf{Rischio potenziale} (\textbf{8,0\%}) e da una quota residuale classificata come \textbf{Nessun rischio} pari a circa lo \textbf{0,8\%}. Ne consegue che oltre tre notifiche su quattro (77,4\% sommando le classi \textit{Grave} e \textit{Potenzialmente grave}) richiedono un'attenzione regolatoria prioritaria.
+
+Sul versante merceologico, la treemap gerarchica \textit{``Incidenza dei macro-settori per classe di notifica.''} incrocia \texttt{TipoProdotto} con \texttt{TipoNotifica}, mettendo in luce la netta predominanza del comparto \textbf{Alimenti} ($\approx 89\%$ del volume complessivo). All'interno di tale macro-settore si distinguono quattro modalità operative di gestione: \textit{Notifica di allerta} (\textbf{4,73k}), \textit{Informazione per attenzione} (\textbf{3,26k}), \textit{Informazione per follow-up} (\textbf{1,25k}) e \textit{Respingimento al confine} (\textbf{1,14k}). I comparti restanti presentano volumi sensibilmente inferiori e profili procedurali differenziati: nei \textbf{Mangimi} prevale l'\textit{Informazione per follow-up} (\textbf{484} casi) rispetto alla \textit{Notifica di allerta} (\textbf{176}, cui si aggiungono quote minori nelle altre classi), mentre nei \textbf{Materiali a contatto con gli alimenti} (\textit{Materiali...}, MOCA) la voce principale è costituita dalla \textit{Notifica di allerta} (\textbf{191}).
+
+\subsection{Dinamica Storica delle Notifiche e Cambio Strutturale della Gravità}
+Nella fascia inferiore della vista, il grafico combinato \textit{``Trend Storico Notifiche e \% Rischio Grave''} rappresenta l'andamento mensile sull'intero arco temporale \textbf{2012--2025} lungo l'asse \texttt{Anno e Mese}, associando le barre verticali della \textit{Quantità di Notifiche} (scala 0--250) alla spezzata della \textit{\% Rischio Grave} (scala 0,00\%--100,00\%).
+
+La lettura diacronica restituisce tre evidenze strutturali:
+\begin{enumerate}
+    \item \textbf{Periodo 2012--2019 a volumi trascurabili}: la finestra precedente al 2020 presenta pochissime osservazioni per singolo mese; ciò determina oscillazioni artificiali della spezzata percentuale tra lo 0\% e il 100\% in corrispondenza dei rari record del 2014 e del 2019, dovute alla ridotta numerosità del denominatore mensile.
+    \item \textbf{Espansione volumetrica dal 2020 e consolidamento 2023--2025}: a partire dal 2020 si registra un netto incremento della densità di segnalazione ($\approx 70$--$250$ notifiche al mese), che si mantiene su livelli sostenuti anche nel triennio \textbf{2023--2025}, con valori stabilmente compresi tra circa \textbf{150} e \textbf{245} notifiche mensili.
+    \item \textbf{Transizione strutturale della quota di rischio grave}: nel triennio \textbf{2020--2022} l'incidenza della classe \textit{Grave} oscilla stabilmente su valori molto elevati, compresi tra il \textbf{75\%} e l'\textbf{85\%}; a partire dal 2023 si osserva invece una discesa strutturale che porta la \textit{\% Rischio Grave} nella fascia del \textbf{50\%--65\%} fino al termine del 2025, segnale compatibile con un ampliamento dello spettro di sorveglianza verso non conformità di gravità intermedia o preventiva.
+\end{enumerate}
+
+% ============================================================================
+\section{Dashboard 2: Geopolitica dei Controlli e Respingimenti Frontalieri}
+\label{sec:qlik_dash2}
+% ============================================================================
+
+Il secondo foglio (\textit{``Geopolitica dei Controlli e Respingimenti Frontalieri''}, Figura~\ref{fig:qlik_dash2}) sposta l'analisi sulla dimensione geografica dell'origine delle merci e sull'efficacia del filtro doganale alle frontiere esterne dell'Unione Europea. La testata integra quattro filtri trasversali (\texttt{Anno Notifica}, \texttt{Tipologia Prodotto}, \texttt{Livello di Rischio}, \texttt{Categoria Merceologica}) che consentono di isolare specifici comparti produttivi o fasce di severità.
+
+\dashboardfig{qlik_geopolitica_controlli.png}{Dashboard 2 Qlik Sense: Geopolitica dei Controlli e Respingimenti Frontalieri.}{fig:qlik_dash2}
+
+\subsection{Mappa Globale delle Origini e Barriera Doganale}
+La mappa coropletica \textit{``Visione globale delle non conformità alimentari''} codifica cromaticamente il volume di notifiche per \texttt{Paese d'Origine} su una scala compresa tra \textbf{1} e \textbf{1.478} segnalazioni. Il picco massimo assoluto si registra in \textbf{Polonia} (\textbf{1.478} notifiche), seguita nell'ordine da \textbf{India}, \textbf{Turchia}, \textbf{Francia}, \textbf{Cina}, \textbf{Spagna}, \textbf{Germania}, \textbf{Italia}, \textbf{Brasile} e \textbf{Stati Uniti}, evidenziando la coesistenza di grandi esportatori extra-europei e di importanti poli produttivi intra-comunitari.
+
+Accanto alla mappa, il grafico a barre orizzontali raggruppate \textit{``Barriera Doganale e Rischio Mercato per Paese d'Origine''} riporta nel sottotitolo il KPI sintetico \textbf{Tasso medio di blocco: 10,6\% (1.255 carichi respinti)} e confronta direttamente i volumi delle partite \textit{Bloccate in Dogana} con quelli delle merci già \textit{Distribuite a Scaffale} per i principali Paesi interessati da respingimenti frontalieri:
+\begin{itemize}
+    \item \textbf{Turchia}: \textbf{188} partite bloccate in dogana contro \textbf{586} distribuite a scaffale;
+    \item \textbf{Brasile}: \textbf{161} partite bloccate in dogana contro \textbf{100} distribuite a scaffale, configurandosi come il solo tra i principali Paesi analizzati in cui la maggioranza assoluta delle non conformità viene intercettata direttamente alla frontiera;
+    \item \textbf{India}: \textbf{123} partite bloccate in dogana contro \textbf{717} già immesse nei canali distributivi;
+    \item \textbf{Egitto}: \textbf{106} partite bloccate in dogana contro \textbf{187} distribuite a scaffale;
+    \item \textbf{Cina}: collocata subito a seguire nella parte inferiore della vista con circa \textbf{97} carichi respinti al confine.
+\end{itemize}
+Tale divario sottolinea come, nonostante il presidio frontaliero intercetti oltre mille carichi non conformi, una quota rilevante delle partite provenienti da Paesi terzi ad alto volume (quali India e Turchia) raggiunga comunque i mercati interni rendendo necessari interventi di ritiro post-commercializzazione.
+
+\subsection{Matrice del Rischio Paese: Volume, Gravità ed Estensione Distributiva}
+Nella parte inferiore della dashboard, la matrice a bolle \textit{``Matrice del Rischio Paese: Volume vs Gravità delle Allerte''} posiziona ciascun Paese di origine in funzione del \textit{Totale Notifiche} (asse orizzontale) e della \textit{\% Rischio Grave} (asse verticale), utilizzando la dimensione della bolla per rappresentare il numero di Stati UE coinvolti (\texttt{Count(DISTINCT PaeseDestinazione)}) e l'intensità cromatica per ribadire la percentuale di allarmi gravi.
+
+La distribuzione nel piano cartesiano identifica chiaramente quattro profili di rischio geografico:
+\begin{enumerate}
+    \item \textbf{Alto volume a gravità medio-alta}: la \textbf{Polonia} occupa una posizione isolata all'estremo destro ($\approx 1.478$ notifiche; $\approx 60\%$ di rischio grave), seguita da un cluster intermedio ad ampia diffusione europea formato da \textbf{Francia} ($\approx 745$; $\approx 78\%$), \textbf{Cina} ($\approx 710$; $\approx 60\%$), \textbf{Spagna} ($\approx 640$; $\approx 76\%$) e \textbf{Germania} ($\approx 625$; $\approx 63\%$).
+    \item \textbf{Alto volume e altissima severità}: l'\textbf{India} ($\approx 840$ notifiche; $\approx 83\%$ di rischio grave) e la \textbf{Turchia} ($\approx 774$; $\approx 73\%$) combinano frequenze elevate con un'incidenza particolarmente severa di pericoli sanitari critici.
+    \item \textbf{Volumi medio-bassi a criticità estrema}: spiccano il \textbf{Brasile} ($\approx 261$ notifiche; $\approx 77\%$ di rischio grave) e soprattutto la \textbf{Nigeria} ($\approx 65$ notifiche; $\approx 86\%$ di rischio grave), dove quasi nove segnalazioni su dieci rivestono carattere grave.
+    \item \textbf{Outlier a bassa gravità}: l'\textbf{Ucraina} ($\approx 195$ notifiche; $\approx 23\%$ di rischio grave) si colloca nel quadrante inferiore sinistro, denotando un profilo di non conformità numericamente significativo ma prevalentemente associato a rischi non gravi o procedurali.
+\end{enumerate}
+
+% ============================================================================
+\section{Dashboard 3: Matrici Alimentari, Pericoli Chimici e Biologici}
+\label{sec:qlik_dash3}
+% ============================================================================
+
+La terza dashboard (\textit{``Matrici Alimentari, Pericoli Chimici e Biologici''}, Figura~\ref{fig:qlik_dash3}) approfondisce la natura chimica, microbiologica e tossicologica delle non conformità, mettendo in relazione i singoli agenti contaminanti con la stagionalità mensile e con le categorie alimentari colpite. I quattro selettori superiori consentono il filtraggio per \texttt{Anno Notifica}, \texttt{Tipologia Notifica}, \texttt{Livello di Rischio} e \texttt{Paese d'Origine}.
+
+\dashboardfig{qlik_matrici_alimentari.png}{Dashboard 3 Qlik Sense: Matrici Alimentari, Pericoli Chimici e Biologici.}{fig:qlik_dash3}
+
+\subsection{Graduatoria dei Top 15 Contaminanti Specifici}
+La treemap \textit{``Top Contaminanti Specifici per Volume di Allerte''} dimensiona i riquadri in base alla frequenza delle notifiche e li colora secondo la famiglia di pericolo di appartenenza. Un ruolo metodologico determinante è svolto dalla normalizzazione testuale tramite funzione \texttt{WildMatch} nello script di caricamento Qlik, che ha permesso di consolidare i molteplici sierotipi di \textit{Salmonella} in un'unica entità analitica. La Tabella~\ref{tab:qlik_top15_contaminants} riporta i primi 15 riquadri rilevati nella vista.
+
+\begin{table}[htbp]
+\centering
+\caption{Primi 15 contaminanti specifici per volume di allerte rilevati nella treemap della Dashboard~3 (Qlik Sense).}
+\label{tab:qlik_top15_contaminants}
+\begin{tabularx}{\textwidth}{@{}rXlr@{}}
+\toprule
+\textbf{Pos.} & \textbf{Contaminante Specifico} & \textbf{Famiglia di Pericolo} & \textbf{Notifiche} \\
+\midrule
+1 & \textit{Salmonella spp.} (unificata via \texttt{WildMatch}) & Microrganismi patogeni & 2.893 \\
+2 & Aflatossina B1 & Micotossine & 828 \\
+3 & \textit{Listeria monocytogenes} & Microrganismi patogeni & 624 \\
+4 & Ossido di etilene & Residui di pesticidi & 604 \\
+5 & Chlorpyrifos & Residui di pesticidi & 572 \\
+6 & Aflatossine totali & Micotossine & 568 \\
+7 & Ocratossina A & Micotossine & 280 \\
+8 & Cadmio & Metalli pesanti & 275 \\
+9 & Mercurio & Metalli pesanti & 208 \\
+10 & Piombo & Metalli pesanti & 187 \\
+11 & Alcaloidi pirrolizidinici & Tossine naturali & 172 \\
+12 & \textit{Escherichia coli} (STEC) & Microrganismi patogeni & 162 \\
+13 & Acetamiprid & Residui di pesticidi & 161 \\
+14 & \texttt{-} (dato non classificato / assente) & Non classificato & 139 \\
+15 & Ammine arom. primarie & Migrazione sostanze & 130 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+I dati mostrano una forte concentrazione su pochi agenti dominanti: \textit{Salmonella spp.} guida la classifica con \textbf{2.893} occorrenze --- oltre tre volte il secondo contaminante, l'\textit{Aflatossina B1} (\textbf{828}) --- seguita da \textit{Listeria monocytogenes} (\textbf{624}), dall'\textit{Ossido di etilene} (\textbf{604}, al centro di estese campagne di ritiro negli anni 2020--2022), dal \textit{Chlorpyrifos} (\textbf{572}) e dalle \textit{Aflatossine totali} (\textbf{568}). L'insieme dei tre metalli pesanti principali (\textit{Cadmio} 275, \textit{Mercurio} 208, \textit{Piombo} 187) raggiunge inoltre \textbf{670} segnalazioni complessive, mentre le \textit{Ammine arom. primarie} (\textbf{130}) rappresentano il principale indicatore di rischio legato alla migrazione da materiali a contatto con gli alimenti.
+
+\subsection{Stagionalità Mensile e Mappa di Calore per Categoria Alimentare}
+Il grafico multi-linea \textit{``Stagionalità Mensile dei Pericoli Alimentari''} aggrega i dati sull'arco dei dodici mesi (Gennaio--Dicembre) considerando otto famiglie di pericolo in legenda (\textit{Additivi e aromi}, \textit{Allergeni non dich.}, \textit{Composizione non conf.}, \textit{Contaminanti biologici}, \textit{Metalli pesanti}, \textit{Micotossine}, \textit{Microrganismi patogeni}, \textit{Residui di pesticidi}) e visualizzando le cinque famiglie prevalenti in ciascun mese. L'andamento stagionale evidenzia dinamiche nettamente differenziate:
+\begin{itemize}
+    \item \textbf{Microrganismi patogeni}: si mantengono al primo posto durante l'intero anno solare, crescendo da circa \textbf{230} notifiche a gennaio fino a un plateau estivo compreso tra circa \textbf{350} e \textbf{380} eventi nel trimestre maggio--luglio, per poi raggiungere il picco massimo di circa \textbf{410} notifiche nel mese di ottobre.
+    \item \textbf{Residui di pesticidi}: mostrano un'impennata marcata nei mesi autunnali e di inizio inverno, culminando a circa \textbf{325} notifiche a novembre e \textbf{310} a dicembre, in corrispondenza dei cicli di raccolta e importazione di ortofrutta e spezie.
+    \item \textbf{Micotossine}: registrano una progressione crescente nella stagione autunno-invernale fino a toccare circa \textbf{140} notifiche a dicembre, in coerenza con le condizioni di stoccaggio e trasporto umido di frutta secca, semi e cereali.
+    \item \textbf{Metalli pesanti}: mantengono un andamento più regolare lungo tutto l'anno, oscillando in una banda contenuta tra circa \textbf{30} e \textbf{70} segnalazioni mensili.
+\end{itemize}
+
+L'incrocio strutturale tra matrice alimentare e classe di pericolo è sintetizzato nella \textit{``Mappa di Calore del Rischio per Categoria di Prodotto''} (\textit{Totale visualizzato: 11.787}, scala cromatica da \textbf{1} a \textbf{1.620}), che confronta sei macro-categorie merceologiche (\textit{Frutta e verdura}, \textit{Pollame e derivati}, \textit{Frutta secca e semi}, \textit{Erbe e spezie}, \textit{Cereali e da forno}, \textit{Mangimi semplici}) con otto famiglie di pericolo. Emerge con estrema chiarezza un punto critico dominante (\textit{hotspot}) nella cella \textbf{Pollame e derivati $\times$ Microrganismi patogeni} con \textbf{1.620} notifiche --- guidato principalmente dalle positività alla \textit{Salmonella spp.} --- seguito a distanza dalle associazioni \textbf{Frutta e verdura $\times$ Residui di pesticidi} e \textbf{Frutta secca e semi $\times$ Micotossine}.
+
+% ============================================================================
+\section{Dashboard 4: Tracciabilità, Rete di Distribuzione e Supply Chain}
+\label{sec:qlik_dash4}
+% ============================================================================
+
+L'ultimo foglio del modulo Qlik Sense (\textit{``Tracciabilità, Rete di Distribuzione \& Supply Chain''}, Figura~\ref{fig:qlik_dash4}) esamina il comportamento operativo delle autorità nazionali notificanti e la topologia dei flussi transfrontalieri tra Paesi esportatori e Paesi segnalanti. In testata sono predisposti i filtri su \texttt{Anno}, \texttt{LivelloRischio}, \texttt{PaeseOrigine} e \texttt{PaeseDestinazione}.
+
+\dashboardfig{qlik_tracciabilita_supply_chain.png}{Dashboard 4 Qlik Sense: Tracciabilità, Rete di Distribuzione e Supply Chain.}{fig:qlik_dash4}
+
+\subsection{Attività di Follow-Up e Gestione Operativa del Rischio Grave}
+Il grafico a barre orizzontali \textit{``Classifica degli Stati per Richieste di Follow-Up''} quantifica il contributo dei diversi Stati notificanti alle attività di approfondimento istruttorio e verifica post-segnalazione: guidano la graduatoria la \textbf{Germania} ($\approx 404$ richieste) e il \textbf{Belgio} ($\approx 267$), seguiti da \textbf{Polonia} ($\approx 158$), \textbf{Italia} ($\approx 125$), \textbf{Paesi Bassi} ($\approx 117$), \textbf{Austria} ($\approx 81$), \textbf{Finlandia} ($\approx 76$), \textbf{Francia} ($\approx 70$) e \textbf{Lituania} ($\approx 67$), mentre il gruppo aggregato \textit{Altri} raccoglie circa \textbf{480} notifiche residue.
+
+Parallelamente, il grafico a torta \textit{``Gestione Operativa delle Notifiche a Rischio Grave''} isola i provvedimenti adottati dal sistema RASFF esclusivamente in presenza di prodotti ad alta pericolosità. La risposta regolatoria risulta fortemente orientata all'azione urgente sul mercato: la \textbf{Notifica di allerta} copre il \textbf{60,3\%} dei casi gravi, l'\textbf{Informazione per attenzione} il \textbf{28,3\%}, il \textbf{Respingimento al confine} il \textbf{10,9\%} e l'\textbf{Informazione per follow-up} una quota residuale pari a circa lo \textbf{0,5\%}. Ciò conferma che, quando la non conformità è classificata come grave, quasi nove volte su dieci il prodotto richiede una comunicazione rapida o un monitoraggio diretto sulla rete distributiva europea (88,6\% tra allerte e informazioni per attenzione), mentre circa un decimo dei casi viene neutralizzato preventivamente in frontiera.
+
+\subsection{Topologia dei Flussi: Origine verso Paese Notificante}
+Nella sezione inferiore della dashboard, il diagramma di Sankey \textit{``Flusso del Rischio: Dal Paese di Origine al Paese Notificante''} mappa i collegamenti principali tra i cinque maggiori Paesi esportatori --- \textbf{Polonia} (\textbf{749}), \textbf{Francia} (\textbf{549}), \textbf{India} (\textbf{430}), \textbf{Turchia} (\textbf{404}) e \textbf{Cina} (\textbf{222}) --- e i sei principali Paesi notificanti: \textbf{Germania} (\textbf{630}), \textbf{Polonia} (\textbf{605}), \textbf{Paesi Bassi} (\textbf{426}), \textbf{Francia} (\textbf{407}), \textbf{Lituania} ($\approx 144$) e \textbf{Belgio} ($\approx 142$).
+
+L'analisi dei flussi mette in evidenza un duplice modello strutturale nella sorveglianza europea:
+\begin{itemize}
+    \item \textbf{Convergenza dei flussi extra-UE sui grandi \textit{gateway} logistici}: le partite provenienti da \textbf{India}, \textbf{Turchia} e \textbf{Cina} convergono prevalentemente sui nodi di ingresso e smistamento portuale e terrestre rappresentati da \textbf{Germania} e \textbf{Paesi Bassi}, che insieme totalizzano \textbf{1.056} notifiche nel sottoinsieme esaminato (630 Germania + 426 Paesi Bassi).
+    \item \textbf{Auto-notifica e sorveglianza di prossimità nei flussi intra-UE}: per i grandi produttori interni quali \textbf{Polonia} e \textbf{Francia} emerge un'elevata incidenza di auto-segnalazione da parte delle autorità nazionali di controllo, integrata dalle notifiche emesse dai rispettivi partner confinanti e di transito diretto, segnatamente la \textbf{Lituania} per i flussi originati in Polonia e il \textbf{Belgio} per quelli originati in Francia.
+\end{itemize}
+
+\keyinsight{Evidenza Chiave -- Modulo Qlik Sense (RASFF)}{L'analisi integrata delle 11.787 notifiche RASFF (2012--2025) mostra che il rischio alimentare europeo è dominato dal comparto \textit{Alimenti} ($\approx 89\%$) e da segnalazioni di livello \textit{Grave} (66,8\%), con una netta transizione dal 2020 verso volumi mensili stabilmente elevati (150--245 nel 2023--2025) accompagnata però da una riduzione della quota grave dal 75\%--85\% (2020--2022) al 50\%--65\% (2023--2025). Sul piano operativo, il presidio frontaliero blocca in media il 10,6\% dei carichi (1.255 respingimenti), lasciando transitare flussi critici verso i mercati interni e concentrando il rischio biologico sul binomio \textit{Pollame e derivati} $\times$ \textit{Salmonella spp.} (1.620 eventi nella matrice di calore; 2.893 occorrenze totali di \textit{Salmonella spp.}). Infine, il grafo Sankey svela una chiara bipartizione della sorveglianza: i flussi extra-UE (\textit{India}, \textit{Turchia}, \textit{Cina}) vengono intercettati soprattutto dai gateway portuali e logistici (\textit{Germania} e \textit{Paesi Bassi}, 1.056 notifiche), mentre i flussi intra-UE (\textit{Polonia}, \textit{Francia}) attivano meccanismi di auto-notifica e controllo di prossimità con gli Stati confinanti.}

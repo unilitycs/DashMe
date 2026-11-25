@@ -20,9 +20,9 @@
 
   \vfill
 
-  {\huge\bfseries Analisi Business Intelligence dei Richiami FDA\par}
+  {\huge\bfseries Analisi Business Intelligence per la Sicurezza Alimentare e Regolatoria\par}
   \vspace{0.45cm}
-  {\Large Geografia Industriale, Profili di Rischio e Governance Operativa\par}
+  {\Large Un Approccio Multi-Piattaforma su Dati RASFF, FDA e EFSA tramite Qlik Sense, Tableau e Power BI\par}
   \vspace{0.55cm}
   {\normalsize\textit{Progetto DashMe}\par}
 
@@ -40,7 +40,6 @@
     \raggedleft
     {\bfseries Studente:}\\[0.4em]
     Gabriele Vianello
-    % Aggiungere qui eventuali coautori e matricole
   \end{minipage}
 
   \vfill
@@ -52,30 +51,31 @@
 \pagenumbering{roman}
 \begin{abstract}
 \noindent
-\textbf{Contesto.} Il monitoraggio dei richiami di prodotto notificati dalla \emph{U.S. Food and Drug Administration} (FDA) rappresenta una sfida critica per la sicurezza dei consumatori, la continuità delle filiere produttive e la conformità regolatoria nei settori alimentare, farmaceutico, cosmetico e dei dispositivi medici.
+\textbf{Contesto.} La tutela della sicurezza alimentare e la sorveglianza sui prodotti regolamentati richiedono l'integrazione di segnali provenienti da stadi complementari della catena del valore: le allerte rapide di confine, i richiami post-vendita sul mercato e il monitoraggio analitico preventivo dei contaminanti chimici. La frammentazione di tali registri pubblici tra autorità europee e statunitensi rende tuttavia complesso un governo unitario del rischio lungo le filiere globali.
 
 \smallskip\noindent
-\textbf{Obiettivo.} Il progetto \emph{DashMe} propone un sistema di Business Intelligence e Visual Analytics progettato per trasformare i dati grezzi degli eventi di richiamo FDA in viste decisionali integrate, capaci di supportare l'analisi geografica, l'individuazione dei profili di rischio clinico e il presidio operativo dei richiami ancora aperti sul mercato.
+\textbf{Obiettivo.} Il progetto \emph{DashMe} progetta e valuta un ecosistema multi-piattaforma di \emph{Business Intelligence} e \emph{Visual Analytics} volto a trasformare tre basi dati istituzionali --- RASFF (Unione Europea), FDA (Stati Uniti) ed EFSA / WHO GEMS (sorveglianza chimica europea) --- in dieci dashboard interattive orientate al supporto decisionale, confrontando al contempo le architetture di \emph{Qlik Sense}, \emph{Tableau} e \emph{Microsoft Power BI}.
 
 \smallskip\noindent
-\textbf{Metodologia.} A partire dal dataset originale (\texttt{recalls.xlsx}) normalizzato in ambiente Tableau (\texttt{dati\_trasformati\_tableau.hyper}), sono state sviluppate regole di \emph{data cleansing} e campi calcolati in lingua italiana per la tassonomia settoriale, la classificazione delle cause di richiamo, il dettaglio degli allergeni, il packaging, le modalità di conservazione lungo la catena del freddo e la portata distributiva, articolando i risultati in tre dashboard analitiche.
+\textbf{Metodologia.} Ciascun modulo è stato sviluppato seguendo una pipeline rigorosa di profilazione, pulizia e modellazione analitica: (i) in \emph{Qlik Sense}, caricamento associativo delle notifiche RASFF con logica di controllo qualità e quattro fogli esplorativi; (ii) in \emph{Tableau}, normalizzazione anagrafica e semantica da \texttt{recalls.xlsx} con ingegnerizzazione di 14 campi calcolati in italiano per tre dashboard sui richiami FDA; (iii) in \emph{Power BI}, implementazione di uno \emph{Star Schema} (1 \emph{Fact Table} e 4 dimensioni) con misure DAX esplicite al netto dei valori nulli e moduli di intelligenza artificiale visiva su tre dashboard per il monitoraggio EFSA / WHO GEMS.
 
 \smallskip\noindent
-\textbf{Principali Risultati.} Su un totale di 104.537 prodotti richiamati, l'analisi evidenzia una forte concentrazione territoriale in specifici hub statunitensi, profili di severità clinica marcatamente differenziati per settore merceologico (con incidenze elevate di Classe~I nei comparti alimentare e veterinario) e 18.555 richiami tuttora in corso che richiedono azioni mirate di governance operativa, controllo della catena del freddo e gestione del packaging.
+\textbf{Principali Risultati.} Nel modulo \emph{Qlik Sense (RASFF)}, l'analisi di 11.787 notifiche pulite (2012--2025) attraverso 30 Paesi notificanti e 141 Paesi di origine evidenzia un 43,73\% di allarmi immediati, un 66,8\% di segnalazioni a rischio grave, il 10,6\% (1.255 casi) di respingimenti alla frontiera e il primato di \emph{Salmonella spp.} come causa biologica più frequente (2.893 occorrenze). Nel modulo \emph{Tableau (FDA)}, su 104.537 prodotti richiamati in 37.848 eventi (2012--2026), emerge una forte incidenza della Classe~I di rischio clinico nei comparti \emph{Prodotti per Animali} (47,65\%) e \emph{Cibo e Bevande} (43,57\%), la permanenza di 18.555 richiami nello stato \emph{In corso} e una marcata prevalenza di adulterazioni farmacologiche nel packaging in vetro (74,4\%). Infine, nel modulo \emph{Power BI (EFSA / WHO GEMS)}, su 2.424.475 rilevazioni laboratoristiche (1984--2017), la depurazione dai 3.330 valori nulli fissa il tasso di positività globale al 39,63\% (43,44\% sui soli 32 Stati nazionali nella Dashboard~1 e 36,96\% sugli analiti specifici nella Dashboard~2), portando alla luce il bioaccumulo di cadmio nelle frattaglie (65.604 positivi nella carne) e i fattori determinanti di positività stimati tramite \emph{Key Influencers} (fino a 2,53x).
 
 \medskip\noindent
-\textbf{Parole chiave:} Business Intelligence; Visual Analytics; Tableau; Richiami FDA; Gestione del Rischio.
+\textbf{Parole chiave:} Business Intelligence; Visual Analytics; Qlik Sense; Tableau; Power BI; RASFF; FDA; EFSA; Sicurezza Alimentare; Gestione del Rischio.
 \end{abstract}
 
-% Decommentare la riga seguente per generare l'indice generale:
-% \tableofcontents\clearpage
+\tableofcontents\clearpage
 
 \pagenumbering{arabic}
 \input{sections/01_introduction}
 \input{sections/02_methodology}
-\input{sections/03_dashboard_analysis}
-\input{sections/04_discussion}
-\input{sections/05_conclusions}
+\input{sections/03_qlik_analysis}
+\input{sections/04_tableau_analysis}
+\input{sections/05_powerbi_analysis}
+\input{sections/06_discussion}
+\input{sections/07_conclusions}
 
 \bibliographystyle{unsrtnat}
 \bibliography{references}

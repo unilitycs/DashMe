@@ -1,0 +1,119 @@
+\chapter{Discussione: Sintesi Trasversale, Confronto Tecnologico e Limiti}
+\label{chap:discussion}
+
+% ============================================================================
+\section{Sintesi Trasversale tra Sorveglianza UE, Richiami USA e Monitoraggio Chimico}
+\label{sec:disc_synthesis}
+% ============================================================================
+
+L'analisi integrata dei tre moduli sviluppati nel progetto DashMe --- la sorveglianza alle frontiere e sul mercato interno europeo tramite RASFF in Qlik Sense (Capitolo~\ref{chap:qlik}), la gestione dei richiami post-commercializzazione FDA in Tableau (Capitolo~\ref{chap:tableau}) e il monitoraggio chimico preventivo EFSA/WHO GEMS in Power BI (Capitolo~\ref{chap:powerbi}) --- consente di ricomporre il ciclo completo del rischio alimentare e sanitario lungo tre stadi regolatori complementari~\citep{rasff_portal,fda_recalls_portal,who_gems_efsa}. Nonostante la diversità di giurisdizione, unità di analisi e orizzonte temporale, la lettura congiunta fa emergere quattro convergenze strutturali.
+
+In primo luogo, in tutti e tre gli ecosistemi si manifesta una marcata \textbf{dissociazione tra volume assoluto delle segnalazioni e severità clinica o tossicologica}. Nel sistema europeo RASFF (11.787 notifiche valide nel periodo 2012--2025), il comparto \textit{Alimenti} assorbe circa l'89\% del totale e il 66,8\% dell'intero archivio ricade nella classe di rischio \textit{Grave} (77,4\% includendo il livello \textit{Potenzialmente grave}); tuttavia, sul piano della risposta operativa, il presidio doganale intercetta in media solo il 10,6\% dei carichi (1.255 respingimenti al confine), lasciando transitare verso la distribuzione interna flussi rilevanti provenienti da grandi esportatori quali India (123 partite bloccate contro 717 a scaffale) e Turchia (188 contro 586), con la sola eccezione del Brasile in cui prevale il blocco preventivo (161 contro 100). Negli Stati Uniti, il registro FDA (104.537 prodotti distribuiti in 37.848 eventi univoci) mostra un'analoga inversione tra numerosità e letalità: i settori a maggiore volume --- \textit{Dispositivi} (40.311 prodotti, 88,33\% in Classe~II) e \textit{Medicinali} (18.048 prodotti, 80,76\% in Classe~II) --- mantengono un profilo prevalentemente moderato, laddove la massima concentrazione di Classe~I (rischio di conseguenze gravi o fatali~\citep{fda_recall_classes}) si sposta sui comparti \textit{Prodotti per Animali} (47,65\% in Classe~I) e \textit{Cibo e Bevande} (43,57\% in Classe~I). Il medesimo schema si ripropone a livello causale sulle sei macro-cause epidemiologiche (43.856 prodotti): le \textit{adulterazioni farmaci} guidano per frequenza (17.574 prodotti, 86,49\% in Classe~II), mentre \textit{Salmonella} (86,68\% in Classe~I), \textit{Listeria} (82,09\% in Classe~I) ed \textit{E.Coli} (64,12\% in Classe~I) concentrano la pericolosità clinica. Sul versante chimico preventivo (2,42Mln di rilevazioni EFSA/WHO GEMS, con tasso di positività globale del 39,63\% su 2.421.145 misure valide e del 43,44\% sui 32 Stati nazionali), la dissociazione assume natura tossicologica: \textit{Diossine e Furani (POPs)} si collocano per il 99,99\% nella fascia \textit{Ultra-Tracce} (0--1~$\mu\text{g/kg}$), ma mantengono un'elevata criticità sanitaria anche a dosi infinitesimali, a fronte di \textit{Contaminanti di Processo e Alcaloidi} caratterizzati da macro-concentrazioni (38,89\% in fascia \textit{Elevata} 100--1.000~$\mu\text{g/kg}$ e 16,78\% in fascia \textit{Critica} $>1.000~\mu\text{g/kg}$).
+
+In secondo luogo, il confronto tra RASFF e FDA conferma la \textbf{centralità trasversale dei patogeni microbiologici nelle filiere proteiche, refrigerate e confezionate}. In ambito europeo, \textit{Salmonella spp.} (unificata tramite \texttt{WildMatch}) costituisce l'agente dominante in assoluto con 2.893 notifiche, polarizzate sull'hotspot \textit{Pollame e derivati} $\times$ \textit{Microrganismi patogeni} (1.620 segnalazioni). Nel mercato statunitense, \textit{Listeria} e \textit{Salmonella} rappresentano il cuore della letalità alimentare e risultano fortemente legate sia alle vulnerabilità termiche sia al confezionamento: nei regimi controllati della catena del freddo la \textit{Listeria} spiega il 55,8\% dei richiami nel \textit{Refrigerato / Fresco} (1.690 su 3.028 prodotti) e il 52,4\% nel \textit{Surgelato} (1.339 su 2.554). Sul fronte degli imballaggi (17.665 prodotti classificati sui quattro materiali principali), \textit{Plastica / Busta} (8.395 prodotti) è guidata da \textit{Listeria} (2.064; 24,6\%) e \textit{Allergeni non dichiarati} (1.951; 23,2%), mentre \textit{Vetro / Bottiglia / Barattolo} (4.800 prodotti) evidenzia una specializzazione netta sulle \textit{adulterazioni farmaci} (3.569 prodotti, pari al 74,4\%), riflettendo la separazione tecnologica tra filiere agroalimentari flessibili e comparto farmaceutico-integratori.
+
+In terzo luogo, l'analisi combinata dei flussi geografici e dei cicli di gestione evidenzia \textbf{asimmetrie logistiche e colli di bottiglia nella chiusura del rischio}. Il diagramma di Sankey in Qlik Sense dimostra una bipartizione della sorveglianza europea: i carichi extra-UE (\textit{India}, \textit{Turchia}, \textit{Cina}) convergono sui grandi \textit{gateway} portuali e logistici di \textit{Germania} (630 notifiche) e \textit{Paesi Bassi} (426), che assorbono insieme 1.056 segnalazioni nel sottoinsieme principale, mentre le filiere intra-UE (\textit{Polonia}, \textit{Francia}) attivano prevalentemente auto-notifiche nazionali e controlli di prossimità da parte dei partner confinanti (\textit{Lituania} e \textit{Belgio}). Nel contesto statunitense, l'ampiezza geografica amplifica il rischio post-notifica: i circuiti \textit{Regionale (Multi-Stato)} (32,43\% Classe~I, 7.700 prodotti critici) e \textit{Internazionale / Export} (20,99\% Classe~I, 6.958 prodotti) risultano i più esposti a eventi gravi, e sull'intero universo FDA permangono tuttora \textbf{18.555 richiami in stato ``In corso''} (17,75\% del totale), a conferma di come la segnalazione amministrativa preceda spesso di molto il completamento fisico della logistica inversa.
+
+Infine, il modulo EFSA/WHO in Power BI illumina il potenziale della \textbf{prevenzione analitica a monte rispetto ai richiami reattivi a valle}. Da un lato, la scomposizione gerarchica (\textit{Decomposition Tree}) dimostra come i \textit{Metalli Pesanti ed Elementi Tracce} (433.073 positività sulle 635.913 ad analita identificato) si concentrino nella filiera carnea (100.984) per effetto del bioaccumulo del \textit{Cadmio} (65.604) nelle frattaglie suine e bovine (\textit{Suino, rene} 12.366; \textit{Suino, fegato} 10.798; \textit{Bovino, fegato} 8.211; \textit{Bovino, rene} 4.314). Dall'altro lato, l'analisi dei pannelli laboratoristici svela l'effetto leva dello \textbf{screening multi-residuo ($>10$ analiti)}, in cui appena circa 20K (0,02Mln) campioni fisici generano circa 540K (0,54Mln) determinazioni analitiche e circa 290K (0,29Mln) positività rilevate, moltiplicando la capacità di intercettazione precoce prima che le partite non conformi raggiungano la distribuzione commerciale e inneschino allerte RASFF o richiami FDA.
+
+% ============================================================================
+\section{Confronto Critico tra Qlik Sense, Tableau e Power BI}
+\label{sec:disc_platforms}
+% ============================================================================
+
+L'implementazione parallela del progetto DashMe su tre piattaforme leader di mercato consente di valutare in modo empirico i compromessi architetturali tra Qlik Sense, Tableau e Microsoft Power BI rispetto ai principi di progettazione dimensionale e visiva~\citep{kimball2013,few2013,sharda2020}. La Tabella~\ref{tab:platform_comparison} sintetizza il confronto lungo cinque dimensioni tecniche e operative.
+
+\begin{table}[htbp]
+\centering
+\caption{Confronto tecnico-funzionale tra le tre piattaforme di Business Intelligence impiegate nel progetto DashMe.}
+\label{tab:platform_comparison}
+{\small
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.5cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Dimensione} & \textbf{Qlik Sense (RASFF)} & \textbf{Tableau (FDA)} & \textbf{Power BI (EFSA/WHO)} \\
+\midrule
+\textbf{Motore dati e architettura} &
+Motore associativo \textit{in-memory} (QIX) basato su indicizzazione relazionale e stato selezioni verde-bianco-grigio~\citep{qlik_docs}. &
+Motore colonnare \textit{Hyper} (estrazione \texttt{.hyper}) o connessione \textit{Live}, ottimizzato per query visive interattive~\citep{tableau_docs}. &
+Motore colonnare \textit{VertiPaq} su modello \textit{Star Schema} alimentato da ETL in \textit{Power Query M}~\citep{powerbi_docs}. \\
+\addlinespace[0.35em]
+\textbf{Linguaggio analitico e ETL} &
+Script di caricamento (\texttt{WildMatch}, pulizia inline) ed espressioni con \textit{Set Analysis} per metriche contestuali. &
+Campi calcolati condizionali, funzioni stringa (\texttt{CONTAINS}) e aggregazioni distinte (\texttt{CNTD}) a livello di vista. &
+Trasformazioni strutturate in M e misure riusabili in \textit{DAX} (\texttt{CALCULATE}, gestione nulli e fasce). \\
+\addlinespace[0.35em]
+\textbf{Espressività visiva e UX} &
+Forte esplorazione multidimensionale su quattro fogli coordinati; treemap, matrici a bolle, mappe e diagramma di Sankey. &
+Massima flessibilità compositiva e narrativa: mappe, barre impilate, \textit{packed bubbles} e matrici di densità multi-livello. &
+Layout rigido ma coerente su griglia; \textit{Azure Maps}, \textit{Ribbon}, \textit{Waterfall}, \textit{Gauge} e \textit{Decomposition Tree}. \\
+\addlinespace[0.35em]
+\textbf{AI integrata e analytics avanzata} &
+Assente nelle viste standard sviluppate; analisi guidata dalla scoperta associativa dei valori esclusi. &
+Funzionalità statistiche opzionali (trend, cluster) non richieste dal flusso causale basato su regole esplicite. &
+Componenti nativi di ML (\textit{Key Influencers} e \textit{Segmenti Principali} ad albero decisionale) integrati nel report. \\
+\addlinespace[0.35em]
+\textbf{Trade-off operativi} &
+Ottimo per individuare correlazioni impreviste e flussi di rete; più sensibile a sporcizia CSV in fase di ingestione. &
+Eccellente prototipazione visiva rapida; logica \textit{rule-based} nei campi calcolati soggetta a collisioni lessicali se non testata. &
+Elevata scalabilità su $>2,4\text{Mln}$ di righe e governance rigorosa delle misure; richiede disciplina di modellazione dimensionale. \\
+\bottomrule
+\end{tabularx}
+}
+\end{table}
+
+Dal confronto emergono implicazioni progettuali chiare per la scelta dello strumento in contesti di \textit{Risk Management} e sorveglianza regolatoria:
+\begin{itemize}
+    \item \textbf{Esplorazione associativa contro interrogazione gerarchica}: il motore QIX di Qlik Sense si rivela particolarmente efficace nell'analisi di tracciabilità e geopolitica RASFF perché preserva visivamente tanto i valori associati quanto quelli esclusi da una selezione, facilitando la scoperta rapida di corridoi anomali (come l'auto-notifica intra-UE rispetto ai gateway extra-UE). Per contro, l'assenza di una fase di tipizzazione e validazione rigida analoga a Power Query rende lo script di caricamento più vulnerabile a irregolarità sintattiche dei file testuali grezzi.
+    \item \textbf{Espressività visiva contro manutenibilità semantica}: Tableau offre la maggiore agilità nella composizione di dashboard dense e ad alto impatto comunicativo (come la sequenza di tre viste complementari sui richiami FDA, capace di bilanciare conteggi distinti \texttt{CNTD(ID Evento)} sulle mappe e volumi di prodotto sulle cause). Tuttavia, la comodità di implementare la tassonomia direttamente nei campi calcolati del workbook espone il modello a fragilità di manutenzione --- quali la collisione cromatica su \texttt{\#529ee0} o i conflitti tra sottostringhe --- quando le regole non vengono incapsulate in una pipeline ETL separata.
+    \item \textbf{Scalabilità colonnare, DAX e AI descrittiva}: Power BI dimostra la superiore tenuta architetturale su volumi superiori ai due milioni di righe, grazie alla separazione netta tra preparazione dei dati in Power Query M, modellazione a stella in VertiPaq~\citep{kimball2013} e definizione centralizzata delle misure DAX (fondamentale per escludere i 3.330 valori nulli dal denominatore del tasso di positività). L'integrazione nativa di \textit{Decomposition Tree} e \textit{Key Influencers} riduce inoltre la distanza tra Business Intelligence descrittiva e analisi diagnostica automatizzata~\citep{sharda2020}, permettendo al decisore non solo di osservare la positività media, ma di isolarne istantaneamente i moltiplicatori statistici (2,53x) e i segmenti ad alta incidenza (fino al 72,9\%).
+\end{itemize}
+
+% ============================================================================
+\section{Implicazioni per il Project Management e il Risk Management}
+\label{sec:disc_implications}
+% ============================================================================
+
+Traducendo le evidenze quantitative dei tre moduli in leve operative per i responsabili di progetto, qualità e \textit{supply chain}, si delineano quattro direttrici concrete di intervento:
+
+\begin{enumerate}
+    \item \textbf{Controlli frontalieri basati sul rischio per flussi extra-UE e hub portuali}: l'evidenza di un tasso medio di blocco doganale RASFF fermo al 10,6\% (1.255 respingimenti) a fronte della forte convergenza dei flussi da \textit{India}, \textit{Turchia} e \textit{Cina} sui nodi logistici di \textit{Germania} e \textit{Paesi Bassi} (1.056 notifiche congiunte) suggerisce di abbandonare schemi di campionamento uniformi in favore di piani ispettivi basati sul rischio. Le autorità portuali e gli importatori dovrebbero intensificare le verifiche documentali e microbiologiche pre-sdoganamento sui binomi ad alta severità --- in primis \textit{Pollame e derivati} per \textit{Salmonella spp.} (1.620 eventi nella heatmap) e frutta secca/spezie da origini ad alta gravità --- riducendo la quota di lotti non conformi già distribuiti a scaffale.
+
+    \item \textbf{Governance della chiusura per i 18.555 richiami FDA ``In corso''}: la presenza di 18.555 prodotti ancora in stato \textit{In corso} (17,75\% del totale FDA) dimostra che l'apertura formale di un richiamo non equivale alla rimozione effettiva del rischio dal mercato. Nel governo dei programmi di crisi (\textit{recall management}), ciascuna campagna dovrebbe essere gestita come un progetto con \textit{Work Breakdown Structure} dedicata, comprensiva di \textit{milestone} di conferma ricezione da parte dei distributori, riconciliazione quantitativa delle scorte rese o distrutte e soglie di escalation temporale. La priorità di chiusura deve concentrarsi sulle reti \textit{Regionale (Multi-Stato)} (32,43\% di Classe~I, 7.700 prodotti) e \textit{Internazionale / Export} (20,99\% di Classe~I, 6.958 prodotti), dove il coordinamento multi-giurisdizionale rallenta il rientro dei lotti.
+
+    \item \textbf{Presidio HACCP differenziato tra catena del freddo e linee di confezionamento}: le correlazioni rilevate in Dashboard~3 Tableau impongono una segmentazione mirata dei Punti Critici di Controllo (CCP). Nei comparti \textit{Refrigerato / Fresco} e \textit{Surgelato}, dove \textit{Listeria} supera stabilmente la metà delle sei macro-cause (rispettivamente 55,8\% e 52,4\%) e gli allergeni raggiungono il 26,4\% nel surgelato, i protocolli HACCP devono privilegiare il monitoraggio continuo delle escursioni termiche e la sanificazione ambientale delle linee post-cottura. Sul fronte del confezionamento, le linee in \textit{Plastica / Busta} (8.395 prodotti) richiedono doppi controlli su sigillatura e conformità di etichettatura (prevenendo contaminazioni da \textit{Listeria} al 24,6\%, errori allergenici al 23,2\% e \textit{Salmonella} al 16,7\%), mentre le linee in \textit{Vetro / Bottiglia / Barattolo} (4.800 prodotti) devono orientare l'audit verso il controllo chimico-farmacologico delle formulazioni (74,4\% di \textit{adulterazioni farmaci}, pari a 3.569 prodotti) e l'ispezione ottica contro la frammentazione vitrea (9,6\% di \textit{Corpi estranei}).
+
+    \item \textbf{Ottimizzazione dei piani di campionamento laboratoristico tramite pannelli multi-residuo e matrici bioaccumulanti}: i risultati Power BI dimostrano che l'adozione di pannelli \textit{Screening Multi-Residuo ($>10$ analiti)} consente di moltiplicare la resa informativa dei laboratori, generando circa 540K determinazioni e 290K positività da appena 20K campioni fisici. Le agenzie di controllo e i laboratori interni alle filiere dovrebbero quindi migrare dai test mono-analita verso protocolli multi-residuo sulle matrici a più alto rendimento diagnostico, dando priorità alle frattaglie suine e bovine per il monitoraggio del bioaccumulo di \textit{Cadmio} (65.604 positività nella filiera carnea) e calibrando i limiti strumentali sulle soglie \textit{Ultra-Tracce} (0--1~$\mu\text{g/kg}$) per i contaminanti organici persistenti quali \textit{Diossine e Furani} (99,99\% dei positivi nella fascia più bassa).
+\end{enumerate}
+
+% ============================================================================
+\section{Limiti Metodologici e Qualità dei Dati}
+\label{sec:disc_limits}
+% ============================================================================
+
+Un'interpretazione rigorosa dei risultati richiede di esplicitare le criticità di qualità del dato, di modellazione e di resa visiva emerse durante la validazione tecnica delle tre suite analitiche:
+
+\begin{itemize}
+    \item \textbf{Limiti del modulo Qlik Sense / RASFF}:
+    \begin{enumerate}
+        \item \textit{Fragilità di parsing CSV}: l'ingestione del file \texttt{RASFF\_window.csv} ha evidenziato 4 righe malformate contenenti doppi apici non gestiti nel campo testuale \texttt{subject}, determinandone l'esclusione in fase di caricamento (11.787 notifiche validate su 11.788 record grezzi).
+        \item \textit{Residui di mancata classificazione}: nella treemap dei Top 15 contaminanti specifici della Dashboard~3 permangono 139 occorrenze etichettate con il segnaposto \texttt{-} (dato non classificato o assente al 14\textdegree{} posto).
+        \item \textit{Asimmetria tra legenda e serie visualizzate}: il grafico multi-linea sulla stagionalità mensile espone in legenda 8 famiglie di pericolo a fronte delle sole 5 famiglie prevalenti effettivamente tracciate in ciascun mese.
+        \item \textit{Concentrazione diacronica}: oltre il 98,8\% delle notifiche valide si concentra nella finestra 2020--2025, mentre la scarsa densità campionaria del periodo 2012--2019 produce oscillazioni estreme (0\%--100\%) della \textit{\% Rischio Grave} prive di stabilità statistica.
+    \end{enumerate}
+
+    \item \textbf{Limiti del modulo Tableau / FDA}:
+    \begin{enumerate}
+        \item \textit{Ampiezza delle classi residuali da parsing testuale}: la classificazione tramite espressioni condizionali su testo libero genera categorie residuali molto ampie, pari al 58,05\% per \texttt{Altro} in \texttt{Categoria Ragione di Richiamo} (60.681 prodotti su 104.537), al 72,26\% per \texttt{Altro / Non specificato} in \texttt{Tipo Packaging} e al 92,60\% per \texttt{Temperatura Ambiente / Altro} in \texttt{Modalità Conservazione}.
+        \item \textit{Collisione lessicale ``peanut''/``nut'' negli allergeni}: nella logica di conteggio di \texttt{Dettaglio Allergene} e \texttt{Numero Allergeni Coinvolti}, la verifica simultanea delle sottostringhe \texttt{"peanut"} e \texttt{"nut"} fa sì che ogni menzione di arachide attivi entrambi i flag, dirottando 1.046 richiami mono-allergene da arachidi (su 1.600 menzioni complessive) nella bolla \textit{Più Allergeni Contemporaneamente} (2.766) ed eliminando visivamente la bolla autonoma delle arachidi.
+        \item \textit{Collisione cromatica nella Dashboard~3}: la condivisione del medesimo codice colore azzurro (\texttt{\#529ee0}) tra \textit{adulterazioni farmaci} e \textit{Salmonella} nella vista dedicata al packaging può indurre letture visive fuorvianti della barra \textit{Vetro / Bottiglia / Barattolo} (in realtà dominata al 74,4\% da adulterazioni farmacologiche).
+        \item \textit{Residua frammentazione anagrafica multi-sito}: nonostante la normalizzazione operata in \texttt{Ragione Sociale (Pulita)}, l'operatore \textit{Medline Industries LP} rimane suddiviso nella Top 15 tra \textit{Medline Industries LP - Northfield} (822 prodotti) e \textit{Medline Industries LP} (557 prodotti), anziché risultare consolidato in un unico gruppo da 1.379 prodotti.
+    \end{enumerate}
+
+    \item \textbf{Limiti del modulo Power BI / EFSA-WHO}:
+    \begin{enumerate}
+        \item \textit{Eterogeneità metrologica (\texttt{UnitID = 1}) sul P95}: nel calcolo del 95\textdegree{} percentile delle concentrazioni positive in Dashboard~1, l'inclusione di record con \texttt{UnitID = 1} non convertiti in $\mu\text{g/kg}$ distorce verso l'alto la dimensione della bolla riferita alla \textit{Francia}.
+        \item \textit{Impatto della classe \texttt{Non Specificato (Other)} e dei valori nulli}: il dataset contiene 702.718 righe prive di analita specifico (escluse dal filtro di pagina nella sola Dashboard~2) e 3.330 record con \texttt{ResultValue} nullo (esclusi dal denominatore delle misure di positività), determinando basi statistiche differenti tra le pagine (39,63\% globale, 43,44\% nazionale e 36,96\% sul sottoinsieme identificato).
+        \item \textit{Bias di campionamento mirato}: i tassi di positività elevati osservati in alcuni Paesi --- quali i Paesi nordici (68\%--85\%), l'\textit{Ucraina} prossima al 100\% su volumi ridotti o la \textit{Svizzera} identificata con moltiplicatore 2,53x nei \textit{Key Influencers} --- riflettono piani di sorveglianza mirati su matrici critiche e non vanno interpretati come stime di prevalenza casuale sull'intero mercato alimentare.
+        \item \textit{Disallineamento di versioning tra esportazioni e modello}: l'introduzione del campo \texttt{Gruppo Alimentare (breve)} nel file \texttt{.pbix} al commit \texttt{c693e38} comporta un lieve disallineamento nominale rispetto alle etichette estese presenti nel precedente artefatto esportato (\texttt{docs/\-PowerBI/\-dash1\_2.pdf}).
+    \end{enumerate}
+\end{itemize}

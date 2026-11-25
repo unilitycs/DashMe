@@ -1,44 +1,53 @@
 # Documentazione LaTeX -- Progetto DashMe
 
-Questa cartella contiene il sorgente LaTeX dell'elaborato accademico per il corso di **Project Management & Business Intelligence** (Università Politecnica delle Marche -- UnivPM).
+Questa cartella contiene il sorgente LaTeX dell'elaborato accademico per il corso di **Project Management & Business Intelligence** (Università Politecnica delle Marche -- UnivPM), dedicato all'analisi multi-piattaforma della sicurezza alimentare e regolatoria tramite **Qlik Sense (RASFF)**, **Tableau (FDA)** e **Microsoft Power BI (EFSA / WHO GEMS)**.
 
 ## Struttura della cartella
 
 ```text
 docs/
-├── Tableau/                    # Esportazioni immagini delle dashboard Tableau
-│   ├── Dash1.jpeg              # Dashboard 1 (già presente)
-│   └── Dash3.png               # Dashboard 3 (già presente)
+├── Tableau/                                # Esportazioni originali Tableau
+├── PowerBI/                                # Esportazioni originali Power BI (PDF)
 └── thesis/
-    ├── main.tex                # Documento principale (copertina, abstract, capitoli, bibliografia)
-    ├── preamble.tex            # Pacchetti, palette colori, header/footer e macro custom
-    ├── references.bib          # Bibliografia in formato BibTeX (natbib + unsrtnat)
-    ├── figures/                # Eventuali figure aggiuntive locali al documento
+    ├── main.tex                            # Documento principale (copertina, abstract, indice, 7 capitoli, bibliografia)
+    ├── preamble.tex                        # Pacchetti, tipografia, header/footer e macro custom
+    ├── references.bib                      # Bibliografia in formato BibTeX (natbib + unsrtnat)
+    ├── images/                             # Tutte le 10 tavole delle dashboard integrate nell'elaborato
+    │   ├── qlik_sintesi_esecutiva.png      # Qlik Sense - Dashboard 1
+    │   ├── qlik_geopolitica_controlli.png  # Qlik Sense - Dashboard 2
+    │   ├── qlik_matrici_alimentari.png     # Qlik Sense - Dashboard 3
+    │   ├── qlik_tracciabilita_supply_chain.png # Qlik Sense - Dashboard 4
+    │   ├── tableau_dash1.jpeg              # Tableau - Dashboard 1
+    │   ├── tableau_dash2.png               # Tableau - Dashboard 2
+    │   ├── tableau_dash3.png               # Tableau - Dashboard 3
+    │   ├── powerbi_dash1.png               # Power BI - Dashboard 1
+    │   ├── powerbi_dash2.png               # Power BI - Dashboard 2
+    │   └── powerbi_dash3.png               # Power BI - Dashboard 3
+    ├── figures/                            # Eventuali figure aggiuntive locali al documento
     │   └── .gitkeep
-    ├── sections/               # Capitoli dell'elaborato (01_introduction ... 05_conclusions)
-    └── README.md               # Questa guida
+    ├── sections/                           # I 7 capitoli dell'elaborato
+    │   ├── 01_introduction.tex             # Capitolo 1: Introduzione e Research Questions
+    │   ├── 02_methodology.tex              # Capitolo 2: Metodologia e Architettura Multi-Piattaforma
+    │   ├── 03_qlik_analysis.tex            # Capitolo 3: Analisi Qlik Sense (RASFF)
+    │   ├── 04_tableau_analysis.tex         # Capitolo 4: Analisi Tableau (FDA)
+    │   ├── 05_powerbi_analysis.tex         # Capitolo 5: Analisi Power BI (EFSA / WHO GEMS)
+    │   ├── 06_discussion.tex               # Capitolo 6: Discussione Trasversale e Comparazione BI
+    │   └── 07_conclusions.tex              # Capitolo 7: Conclusioni e Sviluppi Futuri
+    └── README.md                           # Questa guida
 ```
 
 ## Macro personalizzate disponibili (`preamble.tex`)
 
-Nelle sezioni (`docs/thesis/sections/*.tex`) è possibile utilizzare le seguenti macro:
+Nelle sezioni (`docs/thesis/sections/*.tex`) sono disponibili le seguenti macro personalizzate:
 
-- **`\todo{testo}`**: inserisce un riquadro monocromatico `[DA COMPLETARE: testo]` per segnalare parti da integrare manualmente (sicuro sia inline sia come breve paragrafo).
-- **`\dashboardfig[larghezza]{nome_file}{didascalia}{etichetta}`**: inserisce una figura centrata cercando prima in `docs/Tableau/<nome_file>` e poi in `docs/thesis/figures/<nome_file>`. Se l'immagine non esiste ancora (es. `Dash2.png`), genera automaticamente un riquadro segnaposto senza errori di compilazione.
-  - Esempio: `\dashboardfig{Dash1.jpeg}{Geografia industriale e profili di rischio.}{fig:dash1}`
+- **`\dashboardfig[larghezza]{nome_file}{didascalia}{etichetta}`**: inserisce una figura centrata cercando in sequenza nei percorsi `docs/thesis/images/<nome_file>`, `docs/thesis/figures/<nome_file>` e infine `docs/Tableau/<nome_file>`. Nel caso in cui il file non sia presente su disco, genera automaticamente un riquadro segnaposto pulito senza interrompere la compilazione LaTeX.
+  - Esempio: `\dashboardfig{qlik_sintesi_esecutiva.png}{Dashboard 1 Qlik Sense: Sintesi Esecutiva e Valutazione dei Rischi.}{fig:qlik_dash1}`
 - **`\keyinsight{titolo}{corpo}`**: inserisce un riquadro evidenziato di sintesi in scala di grigi (bordo nero, sfondo grigio neutro) per mettere in risalto i principali risultati analitici.
-
-## Aggiungere `Dash2.png`
-
-La Dashboard 2 non è ancora stata esportata. Per includerla automaticamente nell'elaborato:
-
-1. Esportare la dashboard da Tableau (`src/Tableau/dashsmash3.twb`) in formato PNG o JPEG.
-2. Salvare il file esattamente come `docs/Tableau/Dash2.png`.
-3. Ricompilare il documento: il segnaposto verrà sostituito automaticamente dall'immagine esportata.
+- **`\todo{testo}`**: inserisce un riquadro monocromatico `[DA COMPLETARE: testo]` per segnalare eventuali annotazioni redazionali pendenti (nessun `\todo` deve permanere nella versione finale).
 
 ## Compilazione e pulizia
 
-Dalla radice del repository è possibile compilare l'elaborato (tramite Tectonic o `latexmk`/TeX standard) e ripulire i file ausiliari utilizzando gli script dedicati:
+Dalla radice del repository è possibile compilare l'elaborato (tramite Tectonic, `latexmk` o distribuzione TeX standard) e ripulire i file ausiliari utilizzando gli script dedicati:
 
 - **macOS / Linux**:
   ```bash

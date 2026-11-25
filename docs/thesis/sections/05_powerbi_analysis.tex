@@ -1,0 +1,126 @@
+\chapter{Analisi Power BI: Sorveglianza Chimica Europea EFSA / WHO GEMS}
+\label{chap:powerbi}
+
+Il terzo modulo analitico del progetto DashMe sposta l'osservazione dalla gestione post-vendita dei richiami alla sorveglianza analitica preventiva lungo la filiera alimentare europea, esaminando il dataset \texttt{Contamination\_european\_food.csv} tramite Microsoft Power BI (\texttt{docs/PowerBI/dash1\_2.pdf} e \texttt{docs/PowerBI/dash3.pdf}). La base dati comprende complessivamente \textbf{2.424.475} rilevazioni laboratoristiche riferite a 33 entità geografiche, 50 contaminanti chimici, 22 gruppi alimentari e 348 alimenti distinti sull'arco temporale 1984--2017.
+
+Un primo aspetto metodologico dirimente riguarda la corretta computazione del tasso di positività globale. Sul totale delle 2.424.475 determinazioni, 3.330 record presentano campo \texttt{ResultValue} mancante (nullo); escludendo tali record dal denominatore si ottengono 2.421.145 misurazioni valide, di cui 959.424 risultano superiori al limite di rilevabilità (\textit{Limit of Detection}, LOD). Il tasso di positività effettivo dell'intero archivio si attesta pertanto esattamente al \textbf{39,63\%} ($959.424 / 2.421.145$), evitando la sottostima metodologica che deriverebbe dall'inclusione dei valori nulli nel calcolo percentuale. A partire da questa metrica di riferimento, l'architettura informativa è articolata in tre dashboard complementari dedicate alla geografia europea della sorveglianza, al profilo di rischio per filiera e fasce di concentrazione, nonché alle dinamiche multi-residuo e ai fattori di influenza chiave.
+
+\section{Dashboard 1: Geopolitica della Sorveglianza Europea, Volume vs Positività ed Evoluzione Storica}
+\label{sec:powerbi_dash1}
+
+La prima dashboard (Figura~\ref{fig:powerbi_dash1}) indaga la distribuzione territoriale ed evolutiva dei controlli chimici in Europa. Nella configurazione di analisi esaminata, lo slicer attivo \texttt{Tipo Entità Geografica = Stato Nazionale} isola i \textbf{32 Stati nazionali} europei, escludendo dal perimetro gli \textbf{804.987} record attribuiti all'aggregato sovranazionale \texttt{WHO European Region} per evitare duplicazioni o distorsioni di scala nella comparazione tra Paesi. Lo slicer \texttt{Famiglia Contaminante} è invece impostato su \texttt{Tutte}, mantenendo attive tutte le cinque classi chimiche censite.
+
+\dashboardfig{powerbi_dash1.png}{Dashboard 1 Power BI: Geopolitica della Sorveglianza Europa, Paradigma Volume vs Positività e Evoluzione Storica.}{fig:powerbi_dash1}
+
+La testata della dashboard espone quattro schede KPI riepilogative del sottoinsieme nazionale:
+\begin{itemize}
+    \item \textbf{Totale Analisi}: \textbf{1,62Mln} (\textbf{1.619.488} determinazioni analitiche su Stati nazionali);
+    \item \textbf{Campioni Fisici Distinti}: \textbf{724,23K} matrici fisiche campionate;
+    \item \textbf{Conteggio di Paese (IT)}: \textbf{32} entità nazionali rappresentate;
+    \item \textbf{Tasso di Positività \%}: \textbf{43,44\%}, valore superiore al benchmark globale dell'intero archivio (39,63\%) in ragione dell'esclusione dell'aggregato regionale \texttt{WHO European Region}.
+\end{itemize}
+
+L'esplorazione visiva della pagina si fonda su quattro visualizzazioni coordinate, progettate secondo principi di chiarezza percettiva per separare intensità di campionamento e incidenza delle non conformità~\citep{few2013}:
+
+\begin{enumerate}
+    \item \textbf{Grafico a dispersione (\textit{Totale Analisi, Tasso di Positività \% e Concentrazione P95 Positivi ($\mu\text{g/kg}$) per Paese (IT)})}: la vista correla su un piano cartesiano l'intensità di monitoraggio (asse X logaritmico da 1 a 1.000.000) e il tasso di positività (asse Y lineare da 0\% a 100\%), codificando nella dimensione della bolla il 95\textdegree{} percentile delle concentrazioni positive ($\mu\text{g/kg}$). Due linee di riferimento tratteggiate dividono lo spazio in quadranti operativi: la soglia orizzontale sul benchmark di positività del \textbf{39,6\%} e la linea verticale sulla media nazionale di volume analitico (circa \textbf{50,6K} analisi). Emerge con nitidezza il posizionamento della \textbf{Germania}, leader assoluto per capacità di sorveglianza con circa \textbf{638K} analisi e un tasso di positività del \textbf{38,1\%} circa, collocato immediatamente al di sotto del benchmark. Di segno opposto appare il cluster dei Paesi nordici, caratterizzato da tassi di positività sensibilmente superiori alla media europea --- \textbf{Finlandia} ($\approx 85\%$), \textbf{Svezia} ($\approx 72\%$) e \textbf{Norvegia} ($\approx 68\%$) --- riconducibili a strategie di campionamento mirate su matrici ittiche e contaminanti persistenti, mentre l'\textbf{Ucraina} raggiunge un valore prossimo al \textbf{100\%} su una numerosità campionaria esigua. Di particolare rilievo tecnico è inoltre la macro-bolla della \textbf{Francia} ($\approx 195\text{K}$ analisi, positività $\approx 51,6\%$): la dimensione abnorme del 95\textdegree{} percentile deriva dall'inclusione di record con \texttt{UnitID = 1} (unità di misura non omogeneizzata rispetto allo standard $\mu\text{g/kg}$), evidenziando l'importanza critica della normalizzazione metrologica nei flussi di integrazione dati.
+
+    \item \textbf{Grafico a nastro (\textit{Totale Analisi per Anno e Famiglia Contaminante})}: filtrato sulla finestra \textbf{2000--2015}, il grafico traccia l'evoluzione dei volumi analitici e i cambi di leadership relativa tra tutte e cinque le famiglie chimiche (inclusa la classe residuale \texttt{Non Specificato (Other)}). Nel quadriennio \textbf{2003--2006} il primato spetta a \textbf{Metalli Pesanti ed Elementi Tracce}; nel biennio \textbf{2007--2008} e nuovamente nel \textbf{2010} --- anno di picco complessivo attorno a \textbf{190--195K} analisi annue --- avviene il sorpasso della categoria \texttt{Non Specificato (Other)}, mentre le \textbf{Micotossine} assumono la leadership nel \textbf{2009} e nel biennio \textbf{2011--2012}. A partire dal \textbf{2013} e fino al \textbf{2015} si osserva infine una progressiva contrazione dei volumi nazionali censiti.
+
+    \item \textbf{Mappa Azure (\textit{Totale Analisi per Paese (IT)})}: resa in stile \texttt{Grayscale (Light)} con marcatori circolari blu uniformi proporzionali al volume di analisi, la carta geografica restituisce l'impronta spaziale dello sforzo ispettivo europeo, concentrato prevalentemente in Germania, Francia, Slovacchia, Regno Unito, Danimarca e nell'area scandinava. In questa vista la mappa privilegia la leggibilità immediata del volume assoluto, senza codifica cromatica del tasso di positività né tooltip nidificati.
+
+    \item \textbf{Grafico a cascata (\textit{Analisi Positive (\textgreater{} LOD) per Paese (IT)})}: l'istogramma a cascata elenca singolarmente tutti i \textbf{32 Stati nazionali} in ordine strettamente decrescente, cumulando progressivamente i contributi fino al totale di circa \textbf{0,70Mln} (\textbf{702.037} analisi positive). La graduatoria dei contributori principali è guidata nell'ordine da Germania, Francia, Slovacchia, Danimarca, Regno Unito, Norvegia, Finlandia, Svezia, Irlanda e Italia, confermando come pochi sistemi nazionali di controllo concentrino la grande maggioranza delle determinazioni positive europee.
+\end{enumerate}
+
+\section{Dashboard 2: Rischio Chimico per Filiera Alimentare e Fasce di Concentrazione}
+\label{sec:powerbi_dash2}
+
+La seconda dashboard (Figura~\ref{fig:powerbi_dash2}) approfondisce la composizione chimica e tossicologica delle non conformità rilevate, spostando l'analisi dal livello geopolitico a quello delle filiere alimentari. A livello di pagina è applicato il filtro \texttt{Contaminante Specifico = Sì (Analita Identificato)}, che esclude le \textbf{702.718} righe classificate come \texttt{Other} affinché la scomposizione per sostanza risulti analiticamente interpretabile. La barra superiore ospita inoltre due slicer interattivi: un selettore a pulsanti su \texttt{Famiglia Contaminante} e il filtro \texttt{Gruppo Alimentare (IT)} impostato su \texttt{Tutte}. Sotto il profilo architetturale, la pagina è composta esattamente da \textbf{tre visualizzazioni reali} (senza matrici con sparkline, piccoli multipli o parametri di campo).
+
+\dashboardfig{powerbi_dash2.png}{Dashboard 2 Power BI: Rischio Chimico per Filiera Alimentare e Fasce di Concentrazione.}{fig:powerbi_dash2}
+
+\begin{enumerate}
+    \item \textbf{Albero di scomposizione (\textit{Decomposition Tree})}: ancorato alla metrica \texttt{Analisi Positive (\textgreater{} LOD)} per un totale filtrato di \textbf{635.913} rilevazioni positive, l'albero è espanso lungo quattro livelli gerarchici che consentono di ripercorrere la catena causale dal gruppo chimico al singolo alimento:
+    \begin{itemize}
+        \item \textit{Livello 1 -- Famiglia Contaminante}: la quasi totalità delle positività identificate ricade nei \textbf{Metalli Pesanti ed Elementi Tracce} (\textbf{433.073} analisi), seguiti da \textbf{Micotossine} (\textbf{137.589}), \textbf{Diossine e Furani (POPs)} (\textbf{63.600}) e \textbf{Contaminanti di Processo e Alcaloidi} (\textbf{1.651}).
+        \item \textit{Livello 2 -- Gruppo Alimentare (IT)} (ramo \textit{Metalli Pesanti ed Elementi Tracce}): i primi dieci gruppi alimentari sono guidati da \texttt{Carne e prodotti a base di carne} (\textbf{100.984}), \texttt{Pesce e altri prodotti ittici} (\textbf{83.374}), \texttt{Cereali e prodotti a base di cereali} (\textbf{59.920}), \texttt{Ortaggi e prodotti vegetali} (\textbf{45.132}), \texttt{Radici amidacee e tuberi} (\textbf{21.501}), \texttt{Acqua potabile} (\textbf{19.758}), \texttt{Frutta a guscio e semi} (\textbf{14.120}), \texttt{Zucchero e prodotti dolciari} (\textbf{12.552}), \texttt{Latte e prodotti lattiero-caseari} (\textbf{12.412}) e \texttt{Frutta} (\textbf{11.781}).
+        \item \textit{Livello 3 -- Contaminante (IT)} (ramo \textit{Carne e prodotti a base di carne}): la contaminazione metallica nella filiera carnea è dominata dal \textbf{Cadmio} (\textbf{65.604}), seguito da \textbf{Piombo} (\textbf{18.555}), \textbf{Arsenico (totale)} (\textbf{11.480}) e \textbf{Mercurio} (\textbf{4.553}); completano il ramo metalli e specie chimiche minori quali \texttt{Rame} (239), \texttt{Zinco} (239), \texttt{Stagno} (189), \texttt{Alluminio} (117), \texttt{Arsenico inorganico} (5), \texttt{Metilmercurio} (2) e \texttt{Arsenico organico} (1).
+        \item \textit{Livello 4 -- Alimento (IT)} (ramo \textit{Cadmio}): l'esplosione al quarto livello restituisce una chiara evidenza tossicologica di bioaccumulo negli organi filtro e nelle frattaglie, con in testa \texttt{Suino, rene} (\textbf{12.366}), \texttt{Carne e prodotti n.c.a.} (\textbf{11.671}), \texttt{Suino, fegato} (\textbf{10.798}), \texttt{Bovino, fegato} (\textbf{8.211}), \texttt{Bovino, rene} (\textbf{4.314}) e \texttt{Pollo, frattaglie commestibili} (\textbf{2.620}), davanti ai tagli muscolari come \texttt{Carne bovina} (\textbf{2.371}) e \texttt{Carne suina} (\textbf{2.288}).
+    \end{itemize}
+
+    \item \textbf{Grafico a barre in pila al 100\% (\textit{Profilo di Concentrazione ($\mu\text{g/kg}$) sui Soli Positivi per Famiglia Chimica})}: la visualizzazione normalizzata al 100\% confronta la distribuzione delle sole determinazioni positive lungo le cinque fasce quantitative di concentrazione (escludendo la fascia 1 dei non rilevati), come dettagliato nella Tabella~\ref{tab:powerbi_conc_profile}. I profili mettono in luce differenze biochimiche strutturali: \textbf{Diossine e Furani (POPs)} si concentrano per il \textbf{99,99\%} nella fascia \textit{Ultra-Tracce (0--1 $\mu\text{g/kg}$)}, con appena lo \textbf{0,01\%} residuo nelle classi superiori, in piena coerenza con la tossicità estrema di tali composti organici persistenti anche a dosi infinitesimali. Le \textbf{Micotossine} mostrano una coda decrescente dalla fascia \textit{Ultra-Tracce} (41,78\%) fino alla fascia \textit{Critica} (1,12\%), mentre i \textbf{Metalli Pesanti ed Elementi Tracce} raggiungono la moda nella fascia \textit{Moderata (10--100 $\mu\text{g/kg}$)} con il 44,86\%. I \textbf{Contaminanti di Processo e Alcaloidi} presentano infine il profilo spostato verso le concentrazioni più elevate, con il 38,89\% in fascia \textit{Elevata} e il 16,78\% in fascia \textit{Critica} ($>1.000~\mu\text{g/kg}$).
+
+    \item \textbf{Misuratore a tachimetro (\textit{Gauge -- Tasso di Positività del Gruppo Alimentare Selezionato vs Media di Tutti i Gruppi})}: l'indicatore radiale confronta dinamicamente il tasso di positività della filiera filtrata rispetto alla linea obiettivo \texttt{Positività Benchmark Generale \% = 37,0\%}. Con lo slicer \texttt{Gruppo Alimentare (IT)} impostato su \texttt{Tutte}, il tachimetro registra un valore aggregato del \textbf{36,96\%}, sostanzialmente allineato al benchmark generale calcolato sul sottoinsieme ad analita identificato.
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\caption{Distribuzione percentuale delle analisi positive per fascia di concentrazione ($\mu\text{g/kg}$) e famiglia chimica (Dashboard~2 Power BI).}
+\label{tab:powerbi_conc_profile}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}Xrrrrr@{}}
+\toprule
+\textbf{Famiglia Chimica} & \textbf{2.\ Ultra-Tracce} & \textbf{3.\ Tracce Basse} & \textbf{4.\ Moderata} & \textbf{5.\ Elevata} & \textbf{6.\ Critica} \\
+ & \textbf{(0--1)} & \textbf{(1--10)} & \textbf{(10--100)} & \textbf{(100--1.000)} & \textbf{($>$1.000)} \\
+\midrule
+Diossine e Furani (POPs) & 99,99\% & \multicolumn{4}{r}{0,01\% (quota residua aggregata)} \\
+Micotossine & 41,78\% & 23,30\% & 22,10\% & 11,70\% & 1,12\% \\
+Metalli Pesanti ed Elem.\ Tracce & 6,79\% & 25,55\% & 44,86\% & 18,12\% & 4,68\% \\
+Contaminanti di Processo e Alc. & 2,84\% & 11,45\% & 30,04\% & 38,89\% & 16,78\% \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Dashboard 3: Monitoraggio Contaminanti, Multi-Residuo e Limiti di Rilevabilità}
+\label{sec:powerbi_dash3}
+
+La terza dashboard (Figura~\ref{fig:powerbi_dash3}) estende nuovamente il perimetro all'intero dataset completo (\textbf{2,42Mln} di righe, comprensive di tutte e cinque le famiglie incluso \texttt{Non Specificato (Other)}, con slicer \texttt{Famiglia Contaminante} e \texttt{Anno} impostati su \texttt{Tutte}), adottando un layout a griglia $2 \times 2$ composto da \textbf{quattro visualizzazioni} dedicate all'integrità del dato analitico, alla densità dei pannelli multi-residuo e alla modellazione statistica dei determinanti della positività~\citep{sharda2020}.
+
+\dashboardfig{powerbi_dash3.png}{Dashboard 3 Power BI: Monitoraggio Contaminanti: Positività, Multi-Residuo e Limiti di Rilevabilità.}{fig:powerbi_dash3}
+
+\begin{enumerate}
+    \item \textbf{Combo Chart (\textit{Totale Analisi e Tasso di Positività \% per Anno e Esito Analisi})}: il grafico combinato (barre impilate per i volumi e linea sovrapposta per il tasso di positività) copre l'intera serie storica \textbf{1984--2017}, scomponendo ogni annualità nelle tre classi di esito \texttt{Dato Mancante (Null)}, \texttt{Non Rilevato (\textless{} LOD)} e \texttt{Positivo Rilevato (\textgreater{} LOD)}. Prima del 2000 la curva di positività evidenzia una marcata volatilità statistica imputabile a volumi di campionamento ancora esigui; nel decennio successivo la capacità laboratoristica cresce progressivamente fino al massimo storico del \textbf{2010} (circa \textbf{0,26Mln} analisi complessive), accompagnato da una discesa tendenziale del tasso di positività fino a circa il \textbf{22\%} nel \textbf{2015}, prima dei volumi più contenuti registrati nel biennio conclusivo \textbf{2016--2017}.
+
+    \item \textbf{Grafico a colonne raggruppate (\textit{Campioni Fisici Distinti, Totale Analisi e Analisi Positive (\textgreater{} LOD) per Fascia Pannello Multi-Analita})}: la visualizzazione pone a confronto diretto i campioni fisici prelevati, le determinazioni analitiche generate e gli esiti positivi lungo quattro fasce di ampiezza del pannello di laboratorio (Tabella~\ref{tab:powerbi_multiresidue}). Il dato più significativo riguarda l'effetto moltiplicatore delle tecniche multiresiduo: mentre i test su singolo analita (\texttt{1. Singolo Analita (Mono-Test)}) mantengono un rapporto unitario tra campioni ($\approx 1,37\text{Mln}$) e analisi ($\approx 1,37\text{Mln}$), nella fascia \texttt{4. Screening Multi-Residuo (\textgreater{} 10 Analiti)} appena \textbf{0,02Mln} di campioni fisici generano circa \textbf{0,54Mln} di determinazioni analitiche e circa \textbf{0,29Mln} (\textbf{290K}) di positività rilevate. Ciò dimostra come l'adozione di protocolli multi-analita su un numero contenuto di matrici alimentari moltiplichi drasticamente la capacità di intercettazione chimica dei laboratori europei.
+
+    \item \textbf{Fattori di influenza chiave (\textit{Key Influencers}, scheda \textit{Fattori di influenza chiave})}: addestrato sulla variabile target \texttt{Esito Analisi = Positivo Rilevato (\textgreater{} LOD)} rispetto a una media di base (esclusi i fattori selezionati) pari al \textbf{39,54\%}, il visual di apprendimento automatico di Power BI identifica i cinque driver principali caratterizzati dallo stesso moltiplicatore massimo di probabilità (\textbf{2,53x}): \texttt{Paese (IT) è Svizzera}, \texttt{Contaminante (IT) è Zinco}, \texttt{Contaminante (IT) è Stagno}, \texttt{Contaminante (IT) è Metilmercurio} e \texttt{Contaminante (IT) è Rame}, seguiti da un sesto fattore con incremento pari a \textbf{2,34x}. Tali associazioni riflettono da un lato la presenza di oligoelementi metallici naturalmente rilevabili sopra LOD nelle matrici biologiche e, dall'altro, la specificità dei programmi di controllo nazionali.
+
+    \item \textbf{Segmenti principali (\textit{Key Influencers}, scheda \textit{Segmenti principali})}: nella seconda scheda del medesimo componente, l'albero decisionale integrato individua sei segmenti omogenei ad alta incidenza di positività, ordinati in modo decrescente per tasso di positività rispetto alla media globale (Tabella~\ref{tab:powerbi_segments}). Il \textbf{Segmento~1} raggiunge il \textbf{72,9\%} di positività su una popolazione di \textbf{178.968} record, mentre i segmenti successivi si attestano progressivamente fino al \textbf{45,9\%} del \textbf{Segmento~6}, che copre la base più ampia con \textbf{348.205} rilevazioni, fornendo una segmentazione quantitativa immediata delle sottopopolazioni analitiche a maggiore probabilità di superamento del limite di rilevabilità.
+\end{enumerate}
+
+\begin{table}[htbp]
+\centering
+\caption{Confronto tra campioni fisici, totale analisi e positività per fascia di pannello multi-analita (Dashboard~3 Power BI).}
+\label{tab:powerbi_multiresidue}
+\begin{tabularx}{\textwidth}{@{}Xrrr@{}}
+\toprule
+\textbf{Fascia Pannello Multi-Analita} & \textbf{Campioni Fisici} & \textbf{Totale Analisi} & \textbf{Analisi Positive (\textgreater{} LOD)} \\
+\midrule
+1.\ Singolo Analita (Mono-Test) & $\approx$ 1,37Mln & $\approx$ 1,37Mln & $\approx$ 0,50Mln \\
+2.\ Pannello Mirato (2--4 Analiti) & $\approx$ 0,07Mln & $\approx$ 0,20Mln & $\approx$ 0,06Mln \\
+3.\ Pannello Esteso (5--10 Analiti) & $\approx$ 0,05Mln & $\approx$ 0,30Mln & $\approx$ 0,11Mln \\
+4.\ Screening Multi-Residuo (\textgreater{} 10 Analiti) & $\approx$ 0,02Mln & $\approx$ 0,54Mln & $\approx$ 0,29Mln \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Segmenti principali scoperti dall'albero decisionale integrato in Power BI per \texttt{Esito Analisi = Positivo Rilevato (\textgreater{} LOD)}.}
+\label{tab:powerbi_segments}
+\begin{tabularx}{\textwidth}{@{}Xrr@{}}
+\toprule
+\textbf{Segmento Principale} & \textbf{Tasso di Positività (\%)} & \textbf{Dimensione Popolazione (record)} \\
+\midrule
+Segmento 1 & 72,9\% & 178.968 \\
+Segmento 2 & 65,3\% & 127.737 \\
+Segmento 3 & 59,9\% & 130.641 \\
+Segmento 4 & 57,5\% & 150.852 \\
+Segmento 5 & 48,1\% & 248.480 \\
+Segmento 6 & 45,9\% & 348.205 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\keyinsight{Evidenza Chiave -- Modulo Power BI (EFSA / WHO GEMS)}{L'analisi delle 2.424.475 rilevazioni laboratoristiche europee dimostra che il tasso di positività effettivo (39,63\% al netto dei 3.330 valori nulli) è governato da tre dinamiche strutturali: (1) la separazione tra capacità volumetrica e selettività del rischio, con la Germania leader di volume ($\approx 638\text{K}$ test e $\approx 38,1\%$ di positività) e i Paesi nordici polarizzati su elevata incidenza ($\approx 68\%$--$85\%$), unitamente alla sensibilità metrologica delle misure percentili (\texttt{UnitID = 1} in Francia); (2) la concentrazione delle 635.913 positività ad analita identificato nei metalli pesanti (433.073), con particolare criticità per il bioaccumulo di cadmio nelle frattaglie suine e bovine e un profilo di tossicità estrema a dosi ultra-tracce ($0$--$1~\mu\text{g/kg}$) per il 99,99\% delle diossine e dei furani; (3) la leva operativa dello screening multi-residuo ($>10$ analiti), capace di generare circa 0,54 milioni di analisi e 290K positività da soli 0,02 milioni di campioni fisici, supportata da driver statistici e segmenti decisionali (fino al 72,9\% di positività nel Segmento~1) utili a orientare i piani di campionamento mirati.}

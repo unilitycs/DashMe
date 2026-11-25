@@ -1,59 +1,150 @@
-\chapter{Metodologia, Architettura Dati e Progettazione Visiva}
-\label{sec:methodology}
+\chapter{Metodologia, Architetture Dati e Progettazione Visiva}
+\label{chap:methodology}
 
-\section{Dataset Sorgente e Struttura dei Dati Grezzi}
-La base informativa del progetto DashMe deriva dal dataset ufficiale dei richiami FDA consolidato nel file \texttt{data/recalls.xlsx} e successivamente materializzato in formato colonnare ad alte prestazioni all'interno dell'estrazione \texttt{data/dati\_trasformati\_tableau.hyper}, collegata alla cartella di lavoro Tableau \texttt{src/Tableau/dashsmash3.twb}.
+L'architettura analitica del progetto DashMe integra tre piattaforme di Business Intelligence --- \textit{Qlik Sense}, \textit{Tableau} e \textit{Microsoft Power BI} --- applicate rispettivamente alla sorveglianza europea delle allerte alimentari (RASFF), al monitoraggio regolatorio statunitense dei richiami di prodotto (FDA) e alla rilevazione laboratoristica preventiva dei contaminanti chimici in Europa (EFSA / WHO GEMS). Ciascun modulo adotta il paradigma di modellazione ed estrazione più aderente alla struttura del proprio dataset sorgente, mantenendo al contempo criteri condivisi di pulizia del dato, normalizzazione linguistica in italiano e progettazione visiva \citep{kimball2013,few2013}.
 
-Lo schema sorgente si compone di 17 colonne originali che descrivono sia l'evento regolatorio sia il singolo prodotto coinvolto:
+% ============================================================================
+\section{Pipeline Qlik Sense e Modello Associativo RASFF}
+\label{sec:method_qlik}
+% ============================================================================
+
+Il primo flusso metodologico opera sul dataset europeo del sistema di allerta rapida per alimenti e mangimi RASFF (\texttt{data/raw/RASFF\_window.csv}) \citep{rasff_portal}. Il tracciato grezzo si compone di \textbf{11.788} record descritti da \textbf{14} colonne originali: \texttt{reference}, \texttt{category}, \texttt{type}, \texttt{subject}, \texttt{date}, \texttt{notifying\_country}, \texttt{classification}, \texttt{risk\_decision}, \texttt{distribution}, \texttt{forAttention}, \texttt{forFollowUp}, \texttt{operator}, \texttt{origin} e \texttt{hazards}. L'arco temporale complessivo si estende dal \textbf{24/01/2012} al \textbf{31/12/2025}, con oltre il \textbf{98,8\%} delle notifiche concentrate nel periodo \textbf{2020--2025}.
+
+\subsection{Profilazione Qualitativa e Gestione delle Anomalie CSV}
+L'ispezione preliminare del file sorgente ha evidenziato una specifica anomalia sintattica su \textbf{4} righe del tracciato (\texttt{2024.6416}, \texttt{2024.4612}, \texttt{2023.7176} e \texttt{2021.2621}): la presenza di doppi apici non correttamente gestiti all'interno del campo testuale \texttt{subject} provocava, in fase di lettura grezza, uno slittamento di colonna verso destra che trasferiva frammenti descrittivi dentro il campo \texttt{notifying\_country}, generando false entità nazionali. Il trattamento di parsing e validazione implementato nello script di caricamento Qlik Sense ha risolto tali disallineamenti consolidando un perimetro valido pari a \textbf{11.787} notifiche distinte (\textbf{11,79k}), \textbf{30} Paesi/entità notificanti effettive (i 27 Stati membri dell'Unione Europea affiancati dai Paesi EFTA e dalla Commissione Europea) e \textbf{141} Paesi di origine delle merci.
+
+\subsection{Modello Associativo, Normalizzazione \texttt{1:N} e Set Analysis}
+In coerenza con il motore associativo in-memory di Qlik Sense \citep{qlik_docs}, il modello evita la denormalizzazione piatta dei campi multivalore attraverso una struttura stellata centrata sulla tabella dei fatti \texttt{[Notifiche]}, identificata dalla chiave primaria testuale \texttt{NotificationID = Text(reference)}. I campi contenenti liste separate da delimitatori vengono scomposti mediante la funzione \texttt{SubField()} in tabelle ponte con cardinalità \texttt{1:N}:
 \begin{itemize}
-    \item \textbf{Identificativi e anagrafica aziendale}: \texttt{FEI Number} (Firm Establishment Identifier), \texttt{Recalling Firm Name}, \texttt{Recalling Firm City}, \texttt{Recalling Firm State}, \texttt{Recalling Firm Country};
-    \item \textbf{Classificazione ed evento}: \texttt{Event ID}, \texttt{Event Classification}, \texttt{Center}, \texttt{Center Classification Date}, \texttt{Status}, \texttt{Recall Details};
-    \item \textbf{Attributi di prodotto e causa}: \texttt{Product ID}, \texttt{Product Type}, \texttt{Product Classification}, \texttt{Product Description}, \texttt{Reason for Recall};
-    \item \textbf{Copertura logistica}: \texttt{Distribution Pattern}.
+    \item \texttt{[Bridge\_Origin]}: disaggrega il campo \texttt{origin} per associare correttamente ciascuna notifica a uno o più Paesi di provenienza della partita;
+    \item \texttt{[Bridge\_Hazards]}: espande il campo \texttt{hazards} separando i singoli pericoli segnalati ed estraendo in modo strutturato la \texttt{SostanzaContaminante} e la relativa \texttt{CategoriaPericolo} tramite espressioni \texttt{TextBetween(..., '\{', '\}')};
+    \item \textbf{Tabella di distribuzione}: normalizza l'elenco degli Stati coinvolti nella catena distributiva lungo la dimensione \texttt{PaeseDestinazione}.
 \end{itemize}
+Questa scomposizione relazionale consente l'esplorazione associativa bidirezionale tra qualsiasi Paese di origine, contaminante e Stato destinatario, prevenendo al contempo il doppio conteggio volumetrico nei KPI grazie all'aggregazione sistematica su \texttt{Count(DISTINCT NotificationID)}.
 
-È fondamentale osservare la granularità relazionale del dataset: un singolo \texttt{Event ID} (azione amministrativa di richiamo) può associarsi a uno o più \texttt{Product ID} distinti. Di conseguenza, le analisi volumetriche basate sul conteggio dei prodotti richiamati possono superare sensibilmente il numero di eventi univoci. \todo{Inserire l'intervallo temporale esatto delle date in Center Classification Date (data minima e massima), il numero totale di Event ID distinti, il numero di aziende univoche e la verifica della copertura geografica complessiva nel file recalls.xlsx.}
-
-\section{Pipeline ETL e Feature Engineering in Tableau}
-Secondo i principi del \textit{data warehousing} dimensionale \citep{kimball2013}, l'analisi affidabile di un registro amministrativo richiede una fase preliminare di pulizia, normalizzazione delle entità e derivazione di attributi analitici (\textit{feature engineering}) a partire dai campi testuali non strutturati. Nel rispetto delle funzionalità native di modellazione dell'ambiente Tableau \citep{tableau_docs}, il progetto ha introdotto 14 campi calcolati dedicati, progettati per risolvere tre criticità tipiche dei dati FDA:
+Sul piano delle trasformazioni semantiche e geospaziali, lo script di caricamento applica quattro interventi principali:
 \begin{enumerate}
-    \item \textbf{Normalizzazione anagrafica e geografica}: la presenza di varianti ortografiche, suffissi societari eterogenei e codifiche statali/cittadine non uniformi richiede la standardizzazione di ragioni sociali, stati e città notificanti.
-    \item \textbf{Estrazione semantica da testo libero}: i campi \texttt{Reason for Recall}, \texttt{Product Description} e \texttt{Distribution Pattern} contengono informazioni cliniche, logistiche e tecnologiche espresse in linguaggio naturale; tramite espressioni condizionali e ricerca di parole chiave, tali stringhe vengono mappate su tassonomie discrete (cause di richiamo, allergeni, packaging, conservazione e portata distributiva).
-    \item \textbf{Definizione della metrica volumetrica}: per evitare ambiguità tra conteggio delle righe ed entità di prodotto, il volume è formalizzato mediante la misura \texttt{Conteggio prodotti} (\texttt{COUNT([Product ID])}).
+    \item \textbf{Localizzazione dei domini}: traduzione integrale in italiano delle dimensioni \texttt{LivelloRischio}, \texttt{TipoNotifica}, \texttt{TipoProdotto}, \texttt{Categoria Alimento} e delle denominazioni nazionali;
+    \item \textbf{Separazione geospaziale}: distinzione esplicita tra l'attributo descrittivo \texttt{PaeseOrigine} (che valorizza i casi non attribuiti come \texttt{"Origine sconosciuta"}) e il campo cartografico \texttt{PaeseOrigine\_Geometria} (impostato a \texttt{Null} in assenza di origine certa, al fine di impedire geocoding errati sulle mappe);
+    \item \textbf{Consolidamento microbiologico}: unificazione delle molteplici varianti e sierotipi di Salmonella mediante la regola \texttt{WildMatch(Lower(\-SostanzaContaminante), '*salmonella*')} $\to$ \texttt{'Salmonella spp.'};
+    \item \textbf{Espressioni di Set Analysis}: formalizzazione dinamica degli indicatori decisionali, tra cui \texttt{\% Allarmi Immediati}, \texttt{\% Rischio Grave}, il confronto tra partite \texttt{Bloccate in Dogana} e \texttt{Distribuite a Scaffale}, nonché le \texttt{Richieste Follow-Up}.
 \end{enumerate}
 
-La Tabella~\ref{tab:calculated_fields} sintetizza i 14 campi calcolati implementati in \texttt{src/Tableau/dashsmash3.twb}, raggruppando la famiglia dei tre campi di scomposizione distributiva.
+% ============================================================================
+\section{Pipeline Tableau e Feature Engineering sui Richiami FDA}
+\label{sec:method_tableau}
+% ============================================================================
+
+Il secondo flusso metodologico esamina i richiami regolatori statunitensi pubblicati dalla \textit{U.S. Food and Drug Administration} (FDA) a partire dal file sorgente \texttt{data/recalls.xlsx} \citep{fda_recalls_portal,tableau_docs}. Il dataset comprende esattamente \textbf{104.537} righe --- ciascuna associata a un \texttt{Product ID} univoco --- descritte da \textbf{17} colonne originali: \texttt{FEI Number}, \texttt{Recalling Firm Name}, \texttt{Recalling Firm City}, \texttt{Recalling Firm State}, \texttt{Recalling Firm Country}, \texttt{Event ID}, \texttt{Event Classification}, \texttt{Center}, \texttt{Center Classification Date}, \texttt{Status}, \texttt{Recall Details}, \texttt{Product ID}, \texttt{Product Type}, \texttt{Product Classification}, \texttt{Product Description}, \texttt{Reason for Recall} e \texttt{Distribution Pattern}.
+
+La profilazione relazionale sull'arco temporale \textbf{08/06/2012}--\textbf{09/10/2026} evidenzia \textbf{37.848} \texttt{Event ID} distinti (con una molteplicità media pari a \textbf{2,76} prodotti per evento), \textbf{10.276} identificativi di stabilimento \texttt{FEI Number}, \textbf{10.991} ragioni sociali grezze poi consolidate in \textbf{10.113} entità aziendali pulite, \textbf{33.701} descrizioni causali distinte e \textbf{22.485} pattern distributivi distinti. Sul versante geografico sono rappresentati \textbf{57} Paesi, con \textbf{99.130} record attribuiti agli Stati Uniti (\textbf{94,83\%}) e \textbf{5.407} record extra-USA (\textbf{5,17\%}); all'interno del perimetro statunitense, la normalizzazione produce \textbf{53} entità statali e territoriali pulite in \texttt{Stato Notificante (Pulito)}.
+
+\subsection{Granularità della Severità e Architettura dei Workbook}
+Un passaggio metodologico essenziale riguarda la distinzione tra la severità definita a livello di singolo articolo (\texttt{Product Classification}) e quella attribuita all'intero procedimento amministrativo (\texttt{Event Classification}). I due campi divergono su \textbf{2.735} righe del dataset; poiché la metrica volumetrica delle viste adotta come unità elementare il singolo prodotto richiamato (\texttt{COUNT([Product ID])}), l'analisi di letalità utilizza coerentemente \texttt{Product Classification} \citep{fda_recall_classes}, ripartita in \textbf{Classe~I = 20.165} (\textbf{19,29\%}), \textbf{Classe~II = 75.339} (\textbf{72,07\%}) e \textbf{Classe~III = 9.033} (\textbf{8,64\%}).
+
+Sotto il profilo degli artefatti software, la cartella di lavoro \texttt{src/Tableau/dashsmash3.twb} conserva l'intero modello ETL composto dai \textbf{14 campi calcolati} (corredati da \textbf{53} alias di dominio) e i 4 fogli costitutivi della Dashboard~3, mentre le Dashboard~1 e~2 sono state realizzate su cartelle Tableau distinte condividendo esattamente il medesimo schema di campi calcolati.
+
+\subsection{Tassonomia dei 14 Campi Calcolati e Regole Lessicali}
+La Tabella~\ref{tab:calculated_fields} riepiloga i \textbf{14 campi calcolati} implementati in \texttt{src/Tableau/dashsmash3.twb} per trasformare i testi liberi FDA in dimensioni analitiche strutturate.
 
 \begin{table}[htbp]
 \centering
-\caption{Riepilogo dei 14 campi calcolati implementati in Tableau per pulizia, normalizzazione e derivazione analitica.}
+\caption{Riepilogo dei 14 campi calcolati implementati in Tableau per pulizia, normalizzazione e \textit{feature engineering} sui richiami FDA.}
 \label{tab:calculated_fields}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.8cm}>{\raggedright\arraybackslash}p{2.7cm}X@{}}
+\small
+\setlength{\tabcolsep}{4.5pt}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{4.6cm}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}X@{}}
 \toprule
-\textbf{Campo Calcolato} & \textbf{Dimensione Analitica} & \textbf{Funzione nel Modello ETL e Analitico} \\
+\textbf{Campo Calcolato} & \textbf{Dimensione} & \textbf{Funzione nel Modello ETL e Analitico} \\
 \midrule
-\texttt{Conteggio prodotti} & Metrica volumetrica & Calcola \texttt{COUNT([Product ID])} per quantificare i singoli articoli coinvolti nei richiami. \\
-\texttt{Ragione Sociale (Pulita)} & Anagrafica aziende & Uniforma le denominazioni in \texttt{Recalling Firm Name} consolidando varianti testuali della medesima impresa. \\
-\texttt{Stato Notificante (Pulito)} & Geografia & Standardizza \texttt{Recalling Firm State} per garantire il corretto \textit{geocoding} cartografico. \\
-\texttt{Città Notificante (IT)} & Geografia & Normalizza e traduce/adatta per la vista italiana le informazioni relative a \texttt{Recalling Firm City}. \\
-\texttt{Tipo Prodotto (Atomico)} & Merceologia & Scompone e consolida \texttt{Product Type} in settori merceologici omogenei per il confronto di letalità. \\
-\texttt{Categoria Ragione di Richiamo} & Tassonomia causale & Classifica \texttt{Reason for Recall} in macro-cause (es.\ Salmonella, Listeria, E.Coli, allergeni, corpi estranei, adulterazioni). \\
-\texttt{Dettaglio Allergene} & Sicurezza alimentare & Estrae la tipologia specifica di allergene non dichiarato dalle stringhe descrittive e causali. \\
-\texttt{Numero Allergeni Coinvolti} & Sicurezza alimentare & Quantifica la molteplicità degli allergeni interessati per singolo record o evento di richiamo. \\
-\texttt{Tipo Packaging} & Confezionamento & Identifica il materiale/formato prevalente (es.\ Plastica/Busta, Vetro, Cartone, Lattina/Metallo) da \texttt{Product Description}. \\
-\texttt{Modalità Conservazione} & Logistica e freddo & Distingue il regime termico del prodotto (Temperatura Ambiente/Altro, Refrigerato/Fresco, Surgelato). \\
-\texttt{Portata Distributiva} & Estensione mercato & Classifica l'ampiezza geografica da \texttt{Distribution Pattern} (Locale, Regionale, Nazionale, Internazionale/Export). \\
-\texttt{Distribuzione - Suddivisione 1}, \texttt{2}, \texttt{3} & Parsing distribuzione & Famiglia di tre campi dedicati alla segmentazione progressiva della stringa \texttt{Distribution Pattern} per l'analisi granulare delle aree servite. \\
+\texttt{Conteggio prodotti} & Metrica volumetrica & Calcola \texttt{COUNT([Product ID])} per quantificare i singoli articoli richiamati. \\
+\texttt{Ragione Sociale (Pulita)} & Anagrafica aziende & Consolida le 10.991 denominazioni grezze di \texttt{Recalling Firm Name} in 10.113 entità pulite. \\
+\texttt{Stato Notificante (Pulito)} & Geografia & Standardizza \texttt{Recalling Firm State} in 53 entità statali e territoriali USA valide. \\
+\texttt{Città Notificante (IT)} & Geografia & Normalizza e adatta per la vista italiana le località di \texttt{Recalling Firm City}. \\
+\texttt{Tipo Prodotto (Atomico)} & Merceologia & Separa \texttt{Food/Cosmetics} (29.907) in \texttt{Cibo e Bevande} e \texttt{Cosmetici} con 11 parole chiave. \\
+\texttt{Categoria Ragione di Richiamo} & Tassonomia causale & Classifica \texttt{Reason for Recall} tramite cascata \texttt{IF/ELSEIF} su 6 macro-cause più \texttt{Altro}. \\
+\texttt{Dettaglio Allergene} & Sicurezza alimentare & Estrae la tipologia di allergene non dichiarato mediante flag lessicali dedicati. \\
+\texttt{Numero Allergeni Coinvolti} & Sicurezza alimentare & Somma i flag binari degli allergeni rilevati per singolo prodotto richiamato. \\
+\texttt{Tipo Packaging} & Confezionamento & Identifica 4 famiglie di materiale da \texttt{Product Description} tramite parole chiave. \\
+\texttt{Modalità Conservazione} & Logistica e freddo & Classifica il regime termico (\texttt{Surgelato}, \texttt{Refrigerato / Fresco}, \texttt{Temperatura Ambiente / Altro}). \\
+\texttt{Portata Distributiva} & Estensione mercato & Classifica l'ampiezza della distribuzione da \texttt{Distribution Pattern}. \\
+\texttt{Distribuzione - Suddivisione 1, 2, 3} (3 campi) & Parsing logistico & Tre campi dedicati alla segmentazione progressiva di \texttt{Distribution Pattern} per aree servite. \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
-\todo{Documentare le regole puntuali (espressioni regolari o parole chiave) utilizzate nei campi calcolati Categoria Ragione di Richiamo, Tipo Packaging e Modalità Conservazione, verificando la percentuale esatta di record classificati nella categoria residuale ``Altro / Non specificato''.}
-
-\section{Scelte di Progettazione Visiva e Articolazione delle Dashboard}
-La progettazione delle viste segue i criteri di efficacia percettiva consolidati nella letteratura sulla \textit{Visual Analytics} \citep{few2013}:
+L'audit delle espressioni condizionali sull'intero universo di \textbf{104.537} record consente di documentare con precisione le regole lessicali adottate e l'incidenza esatta delle classi residuali:
 \begin{itemize}
-    \item \textbf{Gerarchia informativa e separazione dei contesti}: anziché sovraccaricare un'unica schermata, il modello è stato suddiviso in tre dashboard specializzate corrispondenti alle tre dimensioni delle domande di ricerca (geografia/responsabilità, tempo/cause, governance/logistica).
-    \item \textbf{Codifica cromatica coerente delle classi di rischio}: in tutte le viste in cui compare la severità clinica FDA, l'uso del colore è vincolato alle tre classi (Classe~I, Classe~II, Classe~III), consentendo all'osservatore di riconoscere immediatamente la quota di rischio critico rispetto a quella di rischio moderato o procedurale.
-    \item \textbf{Confronto quantitativo tramite lunghezze e matrici}: le classifiche aziendali, i profili settoriali e le correlazioni tra conservazione, packaging e cause ricorrono a barre orizzontali ordinate o impilate, mentre l'incrocio tra portata distributiva e severità clinica adotta una matrice tabellare a codifica di intensità per favorire la lettura simultanea di valori assoluti e incidenze relative.
+    \item \textbf{\texttt{Tipo Prodotto (Atomico)}}: scomposizione della categoria composita originale \texttt{Food/Cosmetics} (\textbf{29.907} record) mediante \textbf{11 parole chiave cosmetiche}, che isolano esattamente \textbf{29.737} prodotti in \texttt{Cibo e Bevande} e \textbf{170} in \texttt{Cosmetici}.
+    \item \textbf{\texttt{Categoria Ragione di Richiamo}}: cascata ordinata \texttt{IF/ELSEIF} applicata a \texttt{LOWER([Reason for Recall])}, nella quale le regole per l'individuazione di principi attivi farmaceutici sono valutate \emph{prima} del controllo generico sulla stringa \texttt{"undeclared"} per evitare falsi positivi nella classe degli allergeni. Le \textbf{6} macro-cause tracciate coprono \textbf{43.856} record (\textbf{41,95\%}), mentre la classe residuale \texttt{Altro} raccoglie \textbf{60.681} record (\textbf{58,05\%}).
+    \item \textbf{\texttt{Tipo Packaging}}: ricerca di parole chiave su \texttt{LOWER([Product Description])} articolata in quattro classi materiali (\texttt{glass}/\texttt{jar}/\texttt{bottle}; \texttt{plastic}/\texttt{pouch}/\texttt{bag}; \texttt{can}/\texttt{aluminum}/\texttt{metal}; \texttt{box}/\texttt{carton}/\texttt{paper}). I \textbf{4} materiali identificati coprono \textbf{28.995} record (\textbf{27,74\%}), lasciando nella classe residuale \texttt{Altro / Non specificato} i restanti \textbf{75.542} record (\textbf{72,26\%}).
+    \item \textbf{\texttt{Modalità Conservazione}}: ricerca lessicale su \texttt{LOWER([Product Description])} che mappa \texttt{frozen}/\texttt{ice cream} su \texttt{Surgelato} (\textbf{3.849} record, \textbf{3,68\%}) e \texttt{refrigerat}/\texttt{keep cold}/\texttt{fresh} su \texttt{Refrigerato / Fresco} (\textbf{3.884} record, \textbf{3,72\%}); la classe residuale \texttt{Temperatura Ambiente / Altro} assorbe \textbf{96.804} record (\textbf{92,60\%}).
+    \item \textbf{\texttt{Dettaglio Allergene} e \texttt{Numero Allergeni Coinvolti}}: la classificazione combina la somma di \textbf{7 flag binari} (\texttt{milk|dairy}, \texttt{peanut}, \texttt{soy}, \texttt{wheat|gluten}, \texttt{egg}, \texttt{nut|almond|\-walnut|\-cashew|\-pecan}, \texttt{sesame}) con ulteriori controlli dedicati a pesce/crostacei e solfiti. Sull'intero dataset, la classe \texttt{Non applicabile / Altro} comprende \textbf{94.478} record (\textbf{90,38\%}). Sotto il profilo tecnico, va segnalata la sovrapposizione lessicale tra la sottostringa \texttt{"peanut"} e la sottostringa \texttt{"nut"} nel flag della frutta a guscio, che eleva sistematicamente a $\ge 2$ il punteggio calcolato in \texttt{Numero Allergeni Coinvolti} per ogni richiamo contenente arachidi.
 \end{itemize}
+
+% ============================================================================
+\section{Pipeline Power BI, Star Schema e Modello DAX EFSA / WHO GEMS}
+\label{sec:method_powerbi}
+% ============================================================================
+
+Il terzo modulo del progetto opera sul dataset di sorveglianza chimica europea EFSA / WHO GEMS (\texttt{data/raw/Contamination\_european\_food.csv}) \citep{who_gems_efsa}. L'archivio sorgente comprende \textbf{2.424.475} determinazioni laboratoristiche su \textbf{18} colonne originali riferite all'arco temporale \textbf{1984--2017}, con \textbf{33} entità geografiche, \textbf{50} contaminanti, \textbf{22} gruppi alimentari e \textbf{348} alimenti distinti. Il file CSV grezzo, pari a \textbf{516,6~MB}, viene compresso a \textbf{69,3~MB} all'interno del motore colonnare VertiPaq del file \texttt{src/PowerBI/powerdash.pbix}, conseguendo una riduzione di occupazione su disco dell'\textbf{86,6\%}.
+
+\subsection{Star Schema a 1 Tabella dei Fatti e 4 Dimensioni in Power Query M}
+Seguendo la metodologia dimensionale di Kimball \citep{kimball2013,powerbi_docs}, gli script Power Query M archiviati nella cartella \texttt{src/PowerBI/queries/} implementano uno \textbf{Star Schema} puro composto da una tabella dei fatti e quattro tabelle dimensionali collegate tramite relazioni \texttt{1:N}:
+\begin{enumerate}
+    \item \textbf{\texttt{Fact\_Contaminazioni}} (\texttt{Fact\_Contaminazioni.m}): \textbf{2.424.475} righe $\times$ \textbf{15} colonne. Lo script rimuove 6 colonne testuali interamente ridondanti o delegate alle dimensioni (\texttt{GEMSFoodName}, \texttt{RegionCode}, \texttt{UnitName}, \texttt{CountryName}, \texttt{FoodGroupName}, \texttt{ContaminantName}), applica la tipizzazione \texttt{Int64} agli identificativi e \texttt{type number} con locale \texttt{"en-US"} su \texttt{ResultValue}, normalizza \texttt{SerialNumber} (rimozione degli spazi superflui e conversione delle stringhe vuote in \texttt{null}) e genera tre colonne analitiche derivate: \texttt{Esito Analisi}, il flag binario \texttt{Is\_Positive} e la discretizzazione logaritmica \texttt{Fascia Concentrazione} in \textbf{7} classi (\texttt{0..6}, da \texttt{0. Dato Mancante} fino a \texttt{6. Critica (\textgreater{}1.000)}).
+    \item \textbf{\texttt{Dim\_Geografia}} (\texttt{Dim\_Geografia.m}): \textbf{33} righe $\times$ \textbf{5} colonne. Separa esplicitamente i \textbf{32} Stati nazionali dall'aggregato sovranazionale \texttt{WHO European Region} (\texttt{CountryID = 333}) attraverso l'attributo \texttt{Tipo Entità Geografica} e imposta \texttt{Country\_Geo\_EN = null} per la voce OMS onde prevenire errate geocodificazioni cartografiche.
+    \item \textbf{\texttt{Dim\_Contaminanti}} (\texttt{Dim\_Contaminanti.m}): \textbf{50} righe $\times$ \textbf{5} colonne. Traduce le denominazioni chimiche in italiano, aggrega gli analiti in \textbf{5} classi tramite \texttt{Famiglia Contaminante} e introduce il flag \texttt{Contaminante Specifico} per isolare la voce generica \texttt{Other}.
+    \item \textbf{\texttt{Dim\_GruppiAlimentari}} (\texttt{Dim\_GruppiAlimentari.m}): \textbf{22} righe $\times$ \textbf{4} colonne. Affianca alla descrizione completa \texttt{Gruppo Alimentare (IT)} l'etichetta compatta \texttt{Gruppo Alimentare (breve)}, introdotta nell'ultimo affinamento progettuale per evitare il troncamento dei nodi nell'albero di scomposizione (\textit{Decomposition Tree}).
+    \item \textbf{\texttt{Dim\_Alimenti}} (\texttt{Dim\_Alimenti.m}): \textbf{348} righe $\times$ \textbf{3} colonne (\texttt{FoodID}, \texttt{FoodName\_EN} e \texttt{Alimento (IT)}).
+\end{enumerate}
+
+\subsection{Gestione dei Valori Nulli in \texttt{ResultValue} e Modello DAX}
+La verifica puntuale sul campo \texttt{ResultValue} evidenzia tre casistiche mutuamente esclusive sui \textbf{2.424.475} record del CSV: \textbf{959.424} determinazioni positive (\texttt{\textgreater{} 0}), \textbf{1.461.721} determinazioni negative sotto la soglia di rilevabilità (\texttt{= 0}, \texttt{\textless{} LOD}) e \textbf{3.330} record con risultato mancante (\texttt{null}, pari allo \textbf{0,14\%}). Poiché su un record privo di valore non è possibile stabilire l'esito positivo o negativo del test, la misura DAX \texttt{Tasso di Positività \%} esclude esplicitamente i \textbf{3.330} valori nulli dal denominatore mediante il filtro \texttt{NOT(ISBLANK(Fact\_Contaminazioni[ResultValue]))}:
+\begin{equation}
+\text{Tasso di Positività \%} = \frac{959.424}{2.421.145} = 39,63\%,
+\end{equation}
+evitando la sottostima che deriverebbe dall'inclusione delle righe nulle al denominatore ($959.424 / 2.424.475 = 39,57\%$).
+
+Accanto a \texttt{Tasso di Positività \%}, il livello semantico DAX definisce le misure principali \texttt{Totale Analisi}, \texttt{Campioni Fisici Distinti}, \texttt{Analisi Positive (\textgreater{} LOD)}, \texttt{Concentrazione P95 Positivi ($\mu\text{g/kg}$)} e \texttt{Positività Benchmark Generale \%}, nonché le due colonne calcolate su \texttt{SerialNumber} --- \texttt{Analiti Testati sul Campione} e \texttt{Fascia Pannello Multi-Analita} --- necessarie per quantificare la densità di screening multi-residuo per singolo campione fisico.
+
+% ============================================================================
+\section{Confronto Architetturale e Principi di Visual Analytics}
+\label{sec:method_comparison}
+% ============================================================================
+
+La Tabella~\ref{tab:methodology_comparison} sintetizza le scelte architetturali delle tre pipeline, evidenziando come il passaggio progressivo da dataset di medie dimensioni e schema semi-strutturato (RASFF) a registri amministrativi ad alto contenuto testuale (FDA) e archivi laboratoristici multi-milionari (EFSA / WHO GEMS) abbia guidato la scelta degli strumenti e dei modelli dati.
+
+\begin{table}[htbp]
+\centering
+\caption{Confronto architetturale tra le tre pipeline Business Intelligence sviluppate nel progetto DashMe.}
+\label{tab:methodology_comparison}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+\toprule
+\textbf{Criterio} & \textbf{Qlik Sense (RASFF)} & \textbf{Tableau (FDA)} & \textbf{Power BI (EFSA / OMS)} \\
+\midrule
+\textbf{Sorgente} & \texttt{data/raw/RASFF\_window.csv} (14 colonne) & \texttt{data/recalls.xlsx} (17 colonne) & \texttt{data/raw/Contamination\_} \texttt{european\_food.csv} (18 colonne) \\
+\addlinespace[2pt]
+\textbf{Volume dati} & 11.788 grezzi $\to$ 11.787 notifiche (2012--2025) & 104.537 prodotti / 37.848 eventi (2012--2026) & 2.424.475 analisi; CSV 516,6~MB $\to$ 69,3~MB VertiPaq ($-86,6\%$) \\
+\addlinespace[2pt]
+\textbf{Paradigma modello} & Associativo \texttt{1:N} con tabelle ponte (\texttt{[Bridge\_Origin]}, \texttt{[Bridge\_Hazards]}) & Tabella analitica arricchita (14 campi calcolati, 53 alias) & Star Schema (1 Fact + 4 Dimensioni) con misure DAX \\
+\addlinespace[2pt]
+\textbf{Pipeline ETL} & Script Qlik: \texttt{SubField()}, \texttt{TextBetween()}, \texttt{WildMatch()}, Set Analysis & Campi calcolati Tableau: \texttt{IF/ELSEIF} lessicali e flag binari & 5 script Power Query M (\texttt{Fact\_*} e \texttt{Dim\_*}) + colonne su \texttt{SerialNumber} \\
+\addlinespace[2pt]
+\textbf{Qualità dati} & Isolamento 4 righe CSV corrotte; \texttt{Null} geometrici per origine ignota & Pulizia 10.991 $\to$ 10.113 aziende; distinzione \texttt{Product} vs \texttt{Event Class.} & Esclusione 3.330 \texttt{null} dal denominatore ($39,63\%$); separazione aggregato OMS \\
+\addlinespace[2pt]
+\textbf{Numero di viste} & 4 fogli interattivi (Dashboard~1--4) & 3 dashboard analitiche (4 fogli nella Dashboard~3 in \texttt{dashsmash3.twb}) & 3 pagine/dashboard (incluse AI/Key Influencers e Decomposition Tree) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Nonostante la diversità tecnologica dei motori sottostanti, la progettazione dell'interfaccia visiva in tutti e tre i moduli segue principi unitari di \textit{Visual Analytics} \citep{few2013}:
+\begin{itemize}
+    \item \textbf{Separazione contestuale multi-dashboard}: anziché concentrare indicatori eterogenei in un'unica schermata sovraccarica, ciascun modulo articola l'esplorazione in tre o quattro viste specializzate dedicate progressivamente al quadro sintetico/geopolitico, al profilo di rischio per filiera o causa e alle dinamiche operative o statistiche di dettaglio.
+    \item \textbf{Codifica cromatica coerente della gravità e dell'esito}: il colore non svolge una funzione decorativa ma veicola sistematicamente il gradiente di criticità clinica o analitica (livelli di rischio RASFF, Classe~I--III FDA, esiti \texttt{\textless{} LOD} vs \texttt{\textgreater{} LOD} e fasce di concentrazione EFSA), assicurando continuità cognitiva tra viste adiacenti.
+    \item \textbf{Allineamento tra geometria del grafico e domanda analitica}: i confronti di ranking e incidenza settoriale privilegiano barre ordinate e barre impilate al 100\%, la distribuzione territoriale adotta mappe coropletiche o proporzionali depurate dalle entità prive di geometria certa (\texttt{Null}), le correlazioni tra volume e severità ricorrono a grafici a bolle/dispersione con soglie di riferimento, mentre l'indagine gerarchica e causale sfrutta rispettivamente alberi di scomposizione e componenti predittivi integrati.
+\end{itemize}
+
+\keyinsight{Sintesi Metodologica -- Complementarità delle Tre Architetture}{L'impiego combinato di Qlik Sense, Tableau e Power BI dimostra come la scelta dell'architettura dati dipenda direttamente dalla struttura del problema: il modello associativo con tabelle ponte \texttt{1:N} risolve nativamente la cardinalità multipla di origini e contaminanti RASFF senza doppio conteggio; i campi calcolati lessicali in Tableau trasformano oltre centomila descrizioni testuali FDA in tassonomie di rischio, allergeni e packaging; infine, lo Star Schema Power Query M e la compressione colonnare VertiPaq in Power BI consentono di interrogare oltre 2,42 milioni di analisi EFSA garantendo rigore statistico nella gestione dei valori nulli.}

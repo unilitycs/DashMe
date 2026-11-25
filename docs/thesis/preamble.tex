@@ -20,7 +20,7 @@
 \usepackage[a4paper, margin=2.3cm, headheight=15pt]{geometry}
 
 \usepackage{graphicx}
-\graphicspath{{../Tableau/}{figures/}}
+\graphicspath{{images/}{figures/}{../Tableau/}}
 
 \usepackage{booktabs}
 \usepackage{tabularx}
@@ -64,8 +64,8 @@
 % ----------------------------------------------------------------------------
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{\footnotesize Analisi BI dei Richiami FDA -- Progetto DashMe}
-\fancyhead[R]{\footnotesize UnivPM -- Project Management \& Business Intelligence}
+\fancyhead[L]{\footnotesize Progetto DashMe -- BI e Sicurezza Alimentare}
+\fancyhead[R]{\footnotesize UnivPM -- PM \& Business Intelligence}
 \fancyfoot[C]{\footnotesize\thepage}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
@@ -119,25 +119,29 @@
 }
 
 % 2) \dashboardfig[width]{filename}{caption}{label}:
-%    cerca in ../Tableau/ e poi in figures/; se assente mostra un segnaposto pulito
+%    cerca in images/, poi in figures/ e infine in ../Tableau/; se assente mostra un segnaposto pulito
 \newcommand{\dashboardfig}[4][\textwidth]{%
   \begin{figure}[htbp]
     \centering
-    \IfFileExists{../Tableau/#2}{%
-      \includegraphics[width=#1,keepaspectratio]{../Tableau/#2}%
+    \IfFileExists{images/#2}{%
+      \includegraphics[width=#1,keepaspectratio]{images/#2}%
     }{%
       \IfFileExists{figures/#2}{%
         \includegraphics[width=#1,keepaspectratio]{figures/#2}%
       }{%
-        {%
-          \setlength{\fboxsep}{10pt}%
-          \setlength{\fboxrule}{0.8pt}%
-          \fcolorbox{black!60}{black!4}{%
-            \parbox{\dimexpr0.92\linewidth-2\fboxsep-2\fboxrule\relax}{%
-              \centering\vspace{1.2em}
-              {\large\bfseries [Figura segnaposto: \texttt{\detokenize{#2}}]}\\[0.6em]
-              {\small Immagine non ancora esportata. Esportare la dashboard da Tableau e salvare il file in \texttt{docs/Tableau/\detokenize{#2}} (oppure in \texttt{docs/thesis/figures/\detokenize{#2}}), quindi ricompilare il documento.}%
-              \vspace{1.2em}
+        \IfFileExists{../Tableau/#2}{%
+          \includegraphics[width=#1,keepaspectratio]{../Tableau/#2}%
+        }{%
+          {%
+            \setlength{\fboxsep}{10pt}%
+            \setlength{\fboxrule}{0.8pt}%
+            \fcolorbox{black!60}{black!4}{%
+              \parbox{\dimexpr0.92\linewidth-2\fboxsep-2\fboxrule\relax}{%
+                \centering\vspace{1.2em}
+                {\large\bfseries [Figura segnaposto: \texttt{\detokenize{#2}}]}\\[0.6em]
+                {\small Immagine non ancora esportata. Salvare il file della dashboard in \texttt{docs/thesis/images/\detokenize{#2}} (oppure in \texttt{docs/thesis/figures/\detokenize{#2}} o \texttt{docs/Tableau/\detokenize{#2}}), quindi ricompilare il documento.}%
+                \vspace{1.2em}
+              }%
             }%
           }%
         }%
@@ -172,10 +176,10 @@
 \hypersetup{
   hidelinks,
   plainpages=false,
-  pdftitle={Analisi Business Intelligence dei Richiami FDA: Geografia Industriale, Profili di Rischio e Governance Operativa},
+  pdftitle={Analisi Business Intelligence per la Sicurezza Alimentare: Qlik Sense, Tableau e Power BI nel Progetto DashMe},
   pdfauthor={Gabriele Vianello},
   pdfsubject={Project Management e Business Intelligence -- Università Politecnica delle Marche},
-  pdfkeywords={Business Intelligence, Visual Analytics, Tableau, Richiami FDA, Gestione del Rischio}
+  pdfkeywords={Business Intelligence, Visual Analytics, Qlik Sense, Tableau, Power BI, RASFF, FDA, EFSA}
 }
 
 \makeatletter

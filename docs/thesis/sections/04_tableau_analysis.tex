@@ -1,0 +1,304 @@
+\chapter{Analisi Tableau: Richiami Regolatori Statunitensi FDA}
+\label{chap:tableau}
+
+Il presente capitolo costituisce il secondo pilastro analitico dell'elaborato --- collocato in sequenza tra l'analisi esplorativa in ambiente Qlik e la modellazione in Power BI --- ed espone i risultati ottenuti mediante la suite di \textit{Visual Analytics} sviluppata in Tableau sul registro dei richiami regolatori della \textit{U.S. Food and Drug Administration} (FDA) \citep{fda_recalls_portal,tableau_docs}. La base dati esaminata, acquisita dal file \texttt{data/recalls.xlsx} e consolidata nell'estrazione colonnare Hyper collegata al workbook Tableau, comprende \textbf{104.537 prodotti richiamati} associati a \textbf{37.848 eventi univoci} (con una molteplicità media pari a \textbf{2,76 prodotti per evento}) nell'arco temporale compreso tra l'\textbf{08/06/2012} e il \textbf{09/10/2026}. L'architettura visiva è articolata in tre dashboard complementari che affrontano, rispettivamente, la geografia industriale e la responsabilità aziendale (Dashboard~1), l'epidemiologia delle cause e il focus sugli allergeni (Dashboard~2) e la governance operativa lungo la filiera logistica e di confezionamento (Dashboard~3) \citep{few2013}.
+
+% ============================================================================
+\section{Dashboard 1: Geografia Industriale, Settori Merceologici e Responsabilità Aziendale}
+\label{sec:tableau_dash1}
+% ============================================================================
+
+La prima dashboard (\textit{``Geografia Industriale, Settori Merceologici e Responsabilità Aziendale''}, Figura~\ref{fig:tableau_dash1}) integra la distribuzione spaziale degli eventi negli Stati Uniti con il profilo di gravità clinica dei settori merceologici e la concentrazione dei volumi di richiamo presso i principali operatori industriali.
+
+\dashboardfig{tableau_dash1.jpeg}{Dashboard 1 Tableau: Geografia Industriale, Settori Merceologici e Responsabilità Aziendale.}{fig:tableau_dash1}
+
+\subsection{Concentrazione Territoriale negli Stati Uniti}
+
+La vista cartografica ``Concentrazione Territoriale USA per Stato'' utilizza espressamente la metrica di conteggio distinto degli eventi, ovvero \texttt{CNTD(ID Evento)} (etichettata nella vista come \texttt{N\textdegree{} Eventi di Richiamo}), e non il conteggio complessivo dei prodotti richiamati. Questa scelta progettuale evita che singoli richiami multi-prodotto ad altissima cardinalità distorcano la mappa della densità amministrativa delle notifiche. L'intervallo osservato varia da un minimo di 1 evento fino a un massimo di 4.522 eventi per singola giurisdizione.
+
+\begin{table}[htbp]
+\centering
+\caption{Primi 10 Stati statunitensi per numero di eventi di richiamo (\texttt{CNTD(ID Evento)}) nella Dashboard~1 Tableau, con indicazione dei volumi di prodotto per le prime cinque posizioni.}
+\label{tab:tableau_top_states}
+\begin{tabularx}{\textwidth}{@{}rXrr@{}}
+\toprule
+\textbf{Pos.} & \textbf{Stato Notificante} & \textbf{Eventi (\texttt{CNTD(ID Evento)})} & \textbf{Prodotti Richiamati} \\
+\midrule
+1 & California & 4.522 & 11.156 \\
+2 & New Jersey & 2.597 & 5.775 \\
+3 & Florida & 2.462 & 6.521 \\
+4 & Pennsylvania & 2.007 & 5.285 \\
+5 & Illinois & 1.993 & 7.363 \\
+6 & New York & 1.882 & --- \\
+7 & Texas & 1.727 & --- \\
+8 & Massachusetts & 1.712 & --- \\
+9 & Ohio & 1.614 & --- \\
+10 & Minnesota & 1.348 & --- \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Come sintetizzato nella Tabella~\ref{tab:tableau_top_states}, la geografia dei richiami mostra una marcata polarizzazione lungo la costa occidentale, il corridoio industriale nord-orientale, il Midwest e gli snodi portuali e logistici meridionali. La \textbf{California} guida nettamente la graduatoria con 4.522 eventi (corrispondenti a 11.156 prodotti richiamati), seguita dal \textbf{New Jersey} con 2.597 eventi (5.775 prodotti) e dalla \textbf{Florida} con 2.462 eventi (6.521 prodotti). Al quarto e quinto posto si collocano la \textbf{Pennsylvania} (2.007 eventi; 5.285 prodotti) e l'\textbf{Illinois} (1.993 eventi; 7.363 prodotti), quest'ultimo caratterizzato da un elevato rapporto medio tra prodotti coinvolti ed evento rispetto a Stati con un numero di azioni amministrative analogo o superiore. Completano le prime dieci posizioni \textbf{New York} (1.882 eventi), \textbf{Texas} (1.727 eventi), \textbf{Massachusetts} (1.712 eventi), \textbf{Ohio} (1.614 eventi) e \textbf{Minnesota} (1.348 eventi). Al di fuori dei cinquanta Stati continentali e insulari, la mappatura registra inoltre \textbf{135 eventi} a \textbf{Puerto Rico} --- importante polo manifatturiero farmaceutico e biomedicale --- e \textbf{1 evento} nel territorio di \textbf{Guam}.
+
+\subsection{Profilo di Letalità per Settore Merceologico}
+
+Il pannello ``Profilo di Letalità per Settore Merceologico'' incrocia la dimensione settoriale normalizzata \texttt{Tipo Prodotto (Atomico)} con il campo di severità a livello di singolo articolo \texttt{Product Classification} (Classe Prodotto), e \emph{non} con \texttt{Event Classification}. L'adozione della classificazione di prodotto garantisce la coerenza granulare con l'unità di misura volumetrica \texttt{COUNT([Product ID])}, consentendo di misurare la ripartizione esatta tra Classe~I (rischio di conseguenze gravi o fatali), Classe~II (rischio temporaneo o reversibile) e Classe~III (violazione normativa a improbabile impatto clinico) \citep{fda_recall_classes} su tutti i 104.537 record.
+
+\begin{table}[htbp]
+\centering
+\caption{Distribuzione percentuale dei prodotti richiamati per settore merceologico (\texttt{Tipo Prodotto (Atomico)}) e classe di rischio (\texttt{Product Classification}).}
+\label{tab:tableau_sector_lethality}
+\begin{tabularx}{\textwidth}{@{}Xrrrr@{}}
+\toprule
+\textbf{Settore Merceologico} & \textbf{Totale ($N$)} & \textbf{Classe I (\%)} & \textbf{Classe II (\%)} & \textbf{Classe III (\%)} \\
+\midrule
+Prodotti per Animali & 3.664 & 47,65 & 39,96 & 12,39 \\
+Cibo e Bevande & 29.737 & 43,57 & 50,43 & 6,00 \\
+Medicinali & 18.048 & 9,70 & 80,76 & 9,54 \\
+Dispositivi & 40.311 & 9,09 & 88,33 & 2,58 \\
+Cosmetici & 170 & 0,59 & 92,94 & 6,47 \\
+Prodotti Biologici & 12.598 & 0,37 & 67,70 & 31,93 \\
+Tabacco & 9 & 0,00 & 100,00 & 0,00 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+I dati riportati nella Tabella~\ref{tab:tableau_sector_lethality} evidenziano una netta dicotomia tra i comparti a maggior impatto volumetrico e quelli a maggiore pericolosità clinica relativa:
+\begin{itemize}
+    \item \textbf{Comparti ad alta incidenza di Classe~I}: i \textit{Prodotti per Animali} ($N = 3.664$) rappresentano il settore proporzionalmente più critico, con il 47,65\% di prodotti in Classe~I, il 39,96\% in Classe~II e il 12,39\% in Classe~III. Analoga esposizione al rischio estremo caratterizza \textit{Cibo e Bevande} ($N = 29.737$), dove la Classe~I raggiunge il 43,57\%, affiancata dal 50,43\% in Classe~II e dal 6,00\% in Classe~III.
+    \item \textbf{Comparti volumetrici dominati dalla Classe~II}: i \textit{Dispositivi} ($N = 40.311$, primo settore per numerosità) e i \textit{Medicinali} ($N = 18.048$) mostrano una forte prevalenza di Classe~II (rispettivamente 88,33\% e 80,76%), con una quota di Classe~I inferiore al 10\% (9,09\% nei dispositivi e 9,70\% nei medicinali) e una frazione di Classe~III pari al 2,58\% nei dispositivi e al 9,54\% nei medicinali. I \textit{Cosmetici} ($N = 170$) registrano il 92,94\% in Classe~II (0,59\% Classe~I, 6,47\% Classe~III), mentre il segmento residuale \textit{Tabacco} ($N = 9$) ricade integralmente in Classe~II (100,00\%).
+    \item \textbf{Specificità dei Prodotti Biologici}: il comparto \textit{Prodotti Biologici} ($N = 12.598$) presenta una quota di Classe~I trascurabile (0,37\%), ma registra la più alta incidenza di richiami procedurali di Classe~III dell'intero dataset (31,93\%), a fronte del 67,70\% in Classe~II, riflettendo la frequenza di deviazioni documentali o di conformità nella raccolta e gestione di emocomponenti e derivati biologici.
+\end{itemize}
+
+\subsection{Classifica Top 15 Aziende per Volume e Gravità}
+
+Il terzo pannello della Dashboard~1 ordina i primi 15 operatori per volume di prodotti richiamati sul campo \texttt{Ragione Sociale (Pulita)}, scomponendo ciascuna barra secondo la relativa \texttt{Product Classification} (Tabella~\ref{tab:tableau_top15_firms}).
+
+\begin{table}[htbp]
+\centering
+\caption{Classifica delle prime 15 aziende per numero di prodotti richiamati (\texttt{Ragione Sociale (Pulita)}) e scomposizione per \texttt{Product Classification}.}
+\label{tab:tableau_top15_firms}
+\begin{tabularx}{\textwidth}{@{}rXrrrr@{}}
+\toprule
+\textbf{Pos.} & \textbf{Ragione Sociale (Pulita)} & \textbf{Totale} & \textbf{Classe I} & \textbf{Classe II} & \textbf{Classe III} \\
+\midrule
+1 & ICU Medical & 937 & 87 & 837 & 13 \\
+2 & Zimmer Biomet & 875 & 3 & 872 & 0 \\
+3 & Medline Industries LP - Northfield & 822 & 72 & 750 & 0 \\
+4 & Siemens Medical Solutions USA & 776 & 16 & 759 & 1 \\
+5 & OneBlood & 767 & 0 & 664 & 103 \\
+6 & Siemens Healthcare Diagnostics & 699 & 13 & 643 & 43 \\
+7 & Customed & 682 & 412 & 270 & 0 \\
+8 & Newly Weds Foods & 657 & 220 & 432 & 5 \\
+9 & Boston Scientific & 654 & 141 & 507 & 6 \\
+10 & American National Red Cross (The) & 644 & 0 & 455 & 189 \\
+11 & Garden-Fresh Foods & 634 & 610 & 24 & 0 \\
+12 & GE Healthcare & 570 & 42 & 522 & 6 \\
+13 & Medline Industries LP & 557 & 87 & 469 & 1 \\
+14 & Aidapak Services & 538 & 0 & 538 & 0 \\
+15 & King Bio & 493 & 465 & 28 & 0 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+L'analisi della graduatoria mette in luce due profili aziendali distinti. Da un lato, i vertici volumetrici sono presidiati da grandi operatori di dispositivi medici, diagnostica, confezionamento sanitario e banche del sangue con prevalenza di Classe~II e Classe~III: \textit{ICU Medical} (937 prodotti: 87 Classe~I, 837 Classe~II, 13 Classe~III), \textit{Zimmer Biomet} (875: 3 Classe~I, 872 Classe~II), \textit{Siemens Medical Solutions USA} (776: 16 Classe~I, 759 Classe~II, 1 Classe~III), \textit{OneBlood} (767: 664 Classe~II, 103 Classe~III), \textit{Siemens Healthcare Diagnostics} (699: 13 Classe~I, 643 Classe~II, 43 Classe~III), \textit{Boston Scientific} (654: 141 Classe~I, 507 Classe~II, 6 Classe~III), \textit{American National Red Cross (The)} (644: 455 Classe~II, 189 Classe~III), \textit{GE Healthcare} (570: 42 Classe~I, 522 Classe~II, 6 Classe~III) e \textit{Aidapak Services} (538: 538 Classe~II).
+
+Dall'altro lato, emergono operatori caratterizzati da un'incidenza elevatissima di Classe~I: \textit{Garden-Fresh Foods} registra 610 prodotti in Classe~I su 634 totali (96,21\%, con soli 24 in Classe~II), \textit{King Bio} presenta 465 prodotti in Classe~I su 493 (94,32\%, 28 in Classe~II), \textit{Customed} conta 412 prodotti in Classe~I su 682 (60,41\%, 270 in Classe~II) e \textit{Newly Weds Foods} somma 220 prodotti in Classe~I su 657 (33,49\%, oltre a 432 Classe~II e 5 Classe~III).
+
+Infine, sotto il profilo della qualità del dato anagrafico, la classifica evidenzia un residuo effetto di frammentazione su \textbf{Medline Industries LP}: nonostante le regole di normalizzazione applicate in \texttt{Ragione Sociale (Pulita)}, la sede di Northfield rimane isolata come entità distinta al 3\textdegree{} posto (\textit{Medline Industries LP - Northfield}, 822 prodotti: 72 Classe~I, 750 Classe~II) rispetto al nucleo principale al 13\textdegree{} posto (\textit{Medline Industries LP}, 557 prodotti: 87 Classe~I, 469 Classe~II, 1 Classe~III). Un consolidamento completo delle due denominazioni porterebbe il gruppo a 1.379 prodotti richiamati complessivi, collocandolo nettamente al primo posto assoluto.
+
+\keyinsight{Evidenza Chiave -- Dashboard 1}{La geografia degli eventi (\texttt{CNTD(ID Evento)}) concentra i richiami in California (4.522), New Jersey (2.597) e Florida (2.462), mentre l'incrocio tra settore e \texttt{Product Classification} dimostra che il rischio clinico estremo non segue i volumi aggregati: i \textit{Dispositivi} guidano per numerosità ($N = 40.311$, 88,33\% Classe~II), ma \textit{Prodotti per Animali} (47,65\% Classe~I) e \textit{Cibo e Bevande} (43,57\% Classe~I) detengono i profili più letali, riflessi dall'altissima quota di Classe~I di operatori come \textit{Garden-Fresh Foods} e \textit{King Bio}.}
+
+% ============================================================================
+\section{Dashboard 2: Epidemiologia delle Cause, Focus Allergeni e Trend Storico}
+\label{sec:tableau_dash2}
+% ============================================================================
+
+La seconda dashboard (\textit{``Epidemiologia delle Cause, Focus Allergeni e Trend Storico''}, Figura~\ref{fig:tableau_dash2}) sposta l'indagine sulle determinanti cliniche e chimico-microbiologiche dei richiami, sulla loro traiettoria diacronica annuale e sulla struttura specifica degli allergeni non dichiarati.
+
+\dashboardfig{tableau_dash2.png}{Dashboard 2 Tableau: Epidemiologia delle Cause, Focus Allergeni e Trend Storico.}{fig:tableau_dash2}
+
+\subsection{Confronto Frequenza vs Letalità delle Sei Cause di Richiamo}
+
+La vista ``Confronto Frequenza vs Letalità'' esclude intenzionalmente la classe residuale \texttt{Altro} (pari a 60.681 prodotti, ovvero il 58,05\% del dataset, riconducibile a difetti meccanici, errori etichetta generici o non conformità procedurali) per isolare i \textbf{43.856 prodotti} (41,95\% del totale) classificati nelle sei macro-cause epidemiologiche definite dal campo calcolato \texttt{Categoria Ragione di Richiamo}. La Tabella~\ref{tab:tableau_causes_lethality} riporta i volumi assoluti e la relativa ripartizione per \texttt{Product Classification}.
+
+\begin{table}[htbp]
+\centering
+\caption{Distribuzione dei 43.856 prodotti ricadenti nelle sei macro-cause di richiamo (esclusa la categoria residuale \textit{Altro}) per \texttt{Product Classification}.}
+\label{tab:tableau_causes_lethality}
+\begin{tabularx}{\textwidth}{@{}Xrrrr@{}}
+\toprule
+\textbf{Macro-Causa} & \textbf{Totale} & \textbf{Classe I} & \textbf{Classe II} & \textbf{Classe III} \\
+\midrule
+Adulterazioni farmaci & 17.574 & 1.226 (6,98\%) & 15.200 (86,49\%) & 1.148 (6,53\%) \\
+Listeria & 7.654 & 6.283 (82,09\%) & 1.361 (17,78\%) & 10 (0,13\%) \\
+Allergeni non dichiarati & 7.651 & 2.609 (34,10\%) & 4.510 (58,95\%) & 532 (6,95\%) \\
+Corpi estranei & 6.186 & 728 (11,77\%) & 5.164 (83,48\%) & 294 (4,75\%) \\
+Salmonella & 4.228 & 3.665 (86,68\%) & 559 (13,22\%) & 4 (0,09\%) \\
+E.Coli & 563 & 361 (64,12\%) & 182 (32,33\%) & 20 (3,55\%) \\
+\midrule
+\textbf{Totale 6 Macro-Cause} & \textbf{43.856} & \textbf{14.872 (33,91\%)} & \textbf{26.976 (61,51\%)} & \textbf{2.008 (4,58\%)} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Il confronto mette in evidenza un'inversione netta tra frequenza volumetrica e severità clinica:
+\begin{itemize}
+    \item Le \textbf{adulterazioni dei farmaci} rappresentano la causa più frequente (17.574 prodotti), ma presentano la più bassa proporzione di Classe~I (6,98\%, 1.226 prodotti), risultando concentrate in Classe~II all'86,49\% (15.200 prodotti, con 1.148 in Classe~III).
+    \item Le contaminazioni microbiologiche mostrano, al contrario, un profilo di letalità altissimo: la \textbf{Salmonella} registra l'86,68\% di Classe~I (3.665 su 4.228 prodotti), la \textbf{Listeria} raggiunge l'82,09\% di Classe~I (6.283 su 7.654 prodotti, primo contributore assoluto di Classe~I tra le sei macro-cause) e l'\textbf{E.Coli}, pur avendo il volume minore (563 prodotti), ricade per il 64,12\% in Classe~I (361 prodotti).
+    \item Gli \textbf{allergeni non dichiarati} totalizzano 7.651 prodotti --- sostanzialmente appaiati alla \textit{Listeria} --- con una distribuzione bilanciata tra Classe~I (34,10\%, 2.609 prodotti) e Classe~II (58,95\%, 4.510 prodotti), mentre i \textbf{corpi estranei} (6.186 prodotti) gravitano principalmente in Classe~II (83,48\%, 5.164 prodotti; 11,77\% in Classe~I).
+\end{itemize}
+
+\subsection{Evoluzione Storica Annuale (2012--2026)}
+
+Il pannello temporale ad aree impilate ``Evoluzione Storica delle Cause di Richiamo'' adotta una granularità esclusivamente \textbf{annuale} sull'arco 2012--2026 (senza scomposizione mensile), filtrata sulle sei macro-cause epidemiologiche descritte in precedenza.
+
+La serie storica si apre nel \textbf{2012} con \textbf{2.258 prodotti} richiamati nelle sei cause e cresce rapidamente fino a raggiungere il \textbf{picco assoluto nel 2015 con 4.846 prodotti}, trainato dall'esplosione concomitante di \textit{Adulterazioni farmaci} (2.332 prodotti) e \textit{Listeria} (1.218 prodotti). Negli anni immediatamente successivi il volume aggregato flette progressivamente pur segnando i massimi storici delle singole cause residue: nel \textbf{2016} si registrano \textbf{4.125 prodotti} con il picco di \textit{E.Coli} (225 prodotti), nel \textbf{2017} si scende a \textbf{3.812 prodotti} in corrispondenza del picco di \textit{Allergeni non dichiarati} (1.267 prodotti), mentre nel \textbf{2019} (\textbf{3.418 prodotti}) si tocca il massimo per \textit{Corpi estranei} (664 prodotti).
+
+Il biennio pandemico determina una brusca contrazione delle attività ispettive e di notifica: nel \textbf{2020} il totale sulle sei cause scende a \textbf{2.213 prodotti}, toccando il \textbf{minimo storico nel 2021 con 2.037 prodotti}. Segue un netto \textbf{rimbalzo nel 2023 a 3.312 prodotti}, prima di una nuova moderazione nel \textbf{2024} (\textbf{2.424 prodotti}) e nel \textbf{2025} (\textbf{2.180 prodotti}). L'anno \textbf{2026}, rilevato in modo parziale fino al 9 ottobre 2026, contabilizza \textbf{1.732 prodotti} sulle sei macro-cause (a fronte di \textbf{4.670 prodotti complessivi} nell'intero dataset comprensivo della categoria \textit{Altro}).
+
+\subsection{Mappa degli Allergeni Reali}
+
+La vista a bolle (\textit{packed bubbles}) ``Mappa degli Allergeni Reali'' filtra il dataset sulle sei macro-cause ed esclude la voce \texttt{Non applicabile / Altro}, isolando \textbf{7.954 prodotti} distribuiti in \textbf{9 bolle distinte}, come dettagliato nella Tabella~\ref{tab:tableau_allergens}.
+
+\begin{table}[htbp]
+\centering
+\caption{Ripartizione dei 7.954 prodotti nella vista ``Mappa degli Allergeni Reali'' (9 categorie visibili).}
+\label{tab:tableau_allergens}
+\begin{tabularx}{\textwidth}{@{}rXrr@{}}
+\toprule
+\textbf{Pos.} & \textbf{Categoria (\texttt{Dettaglio Allergene})} & \textbf{Prodotti} & \textbf{Quota (\%)} \\
+\midrule
+1 & Più Allergeni Contemporaneamente & 2.766 & 34,77 \\
+2 & Latte / Latticini & 2.084 & 26,20 \\
+3 & Frutta a guscio & 870 & 10,94 \\
+4 & Soia & 726 & 9,13 \\
+5 & Grano / Glutine & 519 & 6,52 \\
+6 & Uova & 448 & 5,63 \\
+7 & Solfiti & 231 & 2,90 \\
+8 & Pesce / Crostacei & 216 & 2,72 \\
+9 & Sesamo & 94 & 1,18 \\
+\midrule
+ & \textbf{Totale Mappa Allergeni} & \textbf{7.954} & \textbf{100,00} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La categoria più numerosa risulta \textit{Più Allergeni Contemporaneamente} con 2.766 prodotti (34,77\%), seguita da \textit{Latte / Latticini} (2.084 prodotti; 26,20\%), \textit{Frutta a guscio} (870; 10,94\%), \textit{Soia} (726; 9,13\%) e \textit{Grano / Glutine} (519; 6,52%); quote inferiori spettano a \textit{Uova} (448; 5,63\%), \textit{Solfiti} (231; 2,90\%), \textit{Pesce / Crostacei} (216; 2,72\%) e \textit{Sesamo} (94; 1,18\%).
+
+È necessario esplicitare una rilevante anomalia logica derivante dall'implementazione del campo calcolato \texttt{Dettaglio Allergene}: nella vista è infatti \textbf{completamente assente la bolla ``Arachidi''}. L'assenza non indica una mancata presenza di richiami da arachidi nei dati FDA, bensì un effetto di collisione delle sottostringhe nel calcolo della molteplicità allergenica: la formula che somma i flag booleani dei singoli allergeni verifica contemporaneamente \texttt{CONTAINS(..., "peanut")} e \texttt{CONTAINS(..., "nut")}. Poiché la sottostringa \texttt{"nut"} è lessicalmente inclusa in \texttt{"peanut"}, ogni descrizione contenente il termine \texttt{"peanut"} soddisfa entrambe le condizioni e riceve un punteggio $\ge 2$, venendo automaticamente convogliata nella classe \textit{Più Allergeni Contemporaneamente}. L'ispezione puntuale dei record conferma che \textbf{1.046 richiami mono-allergene da arachidi} (su un totale di \textbf{1.600 menzioni complessive} del termine nel dataset) vengono assorbiti in \textit{Più Allergeni Contemporaneamente}, gonfiando quest'ultima categoria e occultando visivamente l'incidenza autonoma delle arachidi.
+
+\keyinsight{Evidenza Chiave -- Dashboard 2}{Le sei macro-cause (43.856 prodotti, 41,95\% del totale) mostrano una netta divergenza tra volume e rischio: \textit{Adulterazioni farmaci} guida per frequenza (17.574; 86,49\% Classe~II), mentre \textit{Salmonella} (86,68\% Classe~I), \textit{Listeria} (82,09\% Classe~I) ed \textit{E.Coli} (64,12\% Classe~I) concentrano la massima letalità. Storicamente il picco assoluto cade nel 2015 (4.846 prodotti), seguito dal minimo pandemico del 2021 (2.037) e dal rimbalzo del 2023 (3.312). Sul fronte allergeni (7.954 prodotti), il bug di inclusione lessicale tra \texttt{"peanut"} e \texttt{"nut"} dirotta 1.046 richiami mono-allergene da arachidi nella bolla \textit{Più Allergeni Contemporaneamente} (2.766).}
+
+% ============================================================================
+\section{Dashboard 3: Governance Operativa, Portata Distributiva, Conservazione e Packaging}
+\label{sec:tableau_dash3}
+% ============================================================================
+
+La terza dashboard (\textit{``Governance Operativa, Portata Distributiva, Conservazione e Packaging''}, Figura~\ref{fig:tableau_dash3}) sposta l'analisi sulla gestione post-vendita dei richiami e sulle vulnerabilità operative associate al regime termico di conservazione, ai materiali di confezionamento e all'ampiezza della rete distributiva.
+
+\dashboardfig{tableau_dash3.png}{Dashboard 3 Tableau: Governance Operativa, Portata Distributiva, Conservazione e Packaging.}{fig:tableau_dash3}
+
+\subsection{Quote di Richiami sul Mercato e Stato di Chiusura}
+
+Il grafico ``Quote di Richiami sul Mercato'' esamina l'avanzamento amministrativo sul campo \texttt{Status} per l'intero universo di \textbf{104.537 prodotti richiamati}:
+\begin{itemize}
+    \item \textbf{Terminato} (\textit{Terminated}): \textbf{84.502 prodotti} (\textbf{80,83\%}), corrispondenti a campagne di ritiro concluse con verifica finale della conformità da parte dell'autorità;
+    \item \textbf{In corso} (\textit{Ongoing}): \textbf{18.555 prodotti} (\textbf{17,75\%}), rappresentanti procedure tuttora aperte che richiedono monitoraggio attivo della filiera distributiva e dei lotti residui sul mercato;
+    \item \textbf{Completato} (\textit{Completed}): \textbf{1.480 prodotti} (\textbf{1,42\%}), relativi ad azioni portate a termine dall'azienda in attesa di chiusura formale definitiva.
+\end{itemize}
+La presenza di quasi un quinto dei prodotti (17,75\%) ancora in stato ``In corso'' sottolinea come l'efficacia della governance non si esaurisca nell'identificazione del difetto, ma dipenda dalla capacità logistica di tracciamento e rientro dei lotti.
+
+\subsection{Ruolo della Catena del Freddo}
+
+Il pannello ``Ruolo della Catena del Freddo'' rappresenta mediante barre impilate in \textbf{valori assoluti} l'incrocio tra \texttt{Modalità Conservazione} e le sei macro-cause epidemiologiche (\textbf{43.856 prodotti} complessivi, escluso \textit{Altro}), evidenziando profili di rischio profondamente differenziati in funzione del regime termico (Tabella~\ref{tab:tableau_cold_chain}).
+
+\begin{table}[htbp]
+\centering
+\caption{Ripartizione delle sei macro-cause di richiamo (43.856 prodotti) per regime termico (\texttt{Modalità Conservazione}), espressa in valori assoluti e incidenza percentuale sul singolo regime.}
+\label{tab:tableau_cold_chain}
+\begin{tabularx}{\textwidth}{@{}Xrrr@{}}
+\toprule
+\textbf{Macro-Causa} & \textbf{Temp.\ Amb.\ / Altro} & \textbf{Refr.\ / Fresco} & \textbf{Surgelato} \\
+\midrule
+Adulterazioni farmaci & 17.255 (45,1\%) & 199 (6,6\%) & 120 (4,7\%) \\
+Allergeni non dichiarati & 6.552 (17,1\%) & 426 (14,1\%) & 673 (26,4\%) \\
+Corpi estranei & 5.745 (15,0\%) & 194 (6,4\%) & 247 (9,7\%) \\
+Listeria & 4.625 (12,1\%) & 1.690 (55,8\%) & 1.339 (52,4\%) \\
+Salmonella & 3.619 (9,5\%) & 463 (15,3\%) & 146 (5,7\%) \\
+E.Coli & 478 (1,2\%) & 56 (1,8\%) & 29 (1,1\%) \\
+\midrule
+\textbf{Totale Regime} & \textbf{38.274 (100,0\%)} & \textbf{3.028 (100,0\%)} & \textbf{2.554 (100,0\%)} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La fascia \textit{Temperatura Ambiente / Altro} raccoglie la grande maggioranza dei casi (38.274 prodotti), trainata dalle \textit{adulterazioni farmaci} (17.255; 45,1\%), seguite da \textit{Allergeni} (6.552; 17,1\%), \textit{Corpi estranei} (5.745; 15,0\%), \textit{Listeria} (4.625; 12,1\%), \textit{Salmonella} (3.619; 9,5\%) ed \textit{E.Coli} (478; 1,2\%). Nei regimi controllati della catena del freddo emerge invece una dominanza netta della contaminazione da \textit{Listeria}: nel segmento \textit{Refrigerato / Fresco} (3.028 prodotti) la \textit{Listeria} copre il 55,8\% (1.690 prodotti), seguita da \textit{Salmonella} (463; 15,3%) e \textit{Allergeni} (426; 14,1%), con quote minoritarie per \textit{adulterazioni farmaci} (199; 6,6%), \textit{Corpi estranei} (194; 6,4\%) ed \textit{E.Coli} (56; 1,8%). Analogamente, nel segmento \textit{Surgelato} (2.554 prodotti) la \textit{Listeria} si conferma al primo posto con il 52,4\% (1.339 prodotti), affiancata da una quota molto rilevante di \textit{Allergeni} (673; 26,4\%) e da \textit{Corpi estranei} (247; 9,7%), \textit{Salmonella} (146; 5,7\%), \textit{adulterazioni farmaci} (120; 4,7\%) ed \textit{E.Coli} (29; 1,1%).
+
+\subsection{Correlazione tra Packaging e Rischi}
+
+La vista ``Correlazione tra Packaging e Rischi'' incrocia i quattro materiali di confezionamento esplicitamente riconosciuti da \texttt{Tipo Packaging} con le sei macro-cause di richiamo, coprendo un totale di \textbf{17.665 prodotti} (al netto dei record non classificati su una delle due dimensioni). I conteggi esatti e le quote percentuali per materiale sono riportati nella Tabella~\ref{tab:tableau_packaging}.
+
+\begin{table}[htbp]
+\centering
+\caption{Incrocio tra materiale di confezionamento (\texttt{Tipo Packaging}) e sei macro-cause di richiamo (17.665 prodotti totali), con incidenza percentuale sul singolo materiale.}
+\label{tab:tableau_packaging}
+{\small
+\begin{tabularx}{\textwidth}{@{}Xrrrr@{}}
+\toprule
+\textbf{Macro-Causa} & \textbf{Plastica / Busta} & \textbf{Vetro / Bottiglia} & \textbf{Cartone / Scatola} & \textbf{Lattina / Metallo} \\
+\midrule
+Adulterazioni farmaci & 1.858 (22,1\%) & 3.569 (74,4\%) & 812 (34,5\%) & 710 (33,6\%) \\
+Listeria & 2.064 (24,6\%) & 55 (1,1\%) & 510 (21,7\%) & 258 (12,2\%) \\
+Allergeni non dichiarati & 1.951 (23,2\%) & 502 (10,5\%) & 444 (18,9\%) & 445 (21,0\%) \\
+Salmonella & 1.399 (16,7\%) & 189 (3,9\%) & 327 (13,9\%) & 233 (11,0\%) \\
+Corpi estranei & 879 (10,5\%) & 463 (9,6\%) & 248 (10,5\%) & 450 (21,3\%) \\
+E.Coli & 244 (2,9\%) & 22 (0,5\%) & 14 (0,6\%) & 19 (0,9\%) \\
+\midrule
+\textbf{Totale Materiale} & \textbf{8.395 (100,0\%)} & \textbf{4.800 (100,0\%)} & \textbf{2.355 (100,0\%)} & \textbf{2.115 (100,0\%)} \\
+\bottomrule
+\end{tabularx}
+}
+\end{table}
+
+I profili di rischio mostrano chiare specificità tecnologiche:
+\begin{itemize}
+    \item \textbf{Plastica / Busta} (8.395 prodotti, primo materiale per volume): evidenzia una distribuzione articolata su più minacce alimentari e farmacologiche, guidata da \textit{Listeria} (2.064; 24,6\%) e \textit{Allergeni} (1.951; 23,2%), seguiti da \textit{adulterazioni farmaci} (1.858; 22,1\%), \textit{Salmonella} (1.399; 16,7\%), \textit{Corpi estranei} (879; 10,5\%) ed \textit{E.Coli} (244; 2,9\%).
+    \item \textbf{Vetro / Bottiglia / Barattolo} (4.800 prodotti): risulta \textbf{nettamente dominato al 74,4\% da \textit{adulterazioni farmaci} (3.569 prodotti)}, coerentemente con l'impiego di flaconi e fiale vitree nel comparto farmaceutico e degli integratori; seguono a forte distanza \textit{Allergeni} (502; 10,5\%), \textit{Corpi estranei} (463; 9,6%, legati anche al rischio di frammentazione del vetro), \textit{Salmonella} (189; 3,9\%), \textit{Listeria} (55; 1,1\%) ed \textit{E.Coli} (22; 0,5%).
+    \item \textbf{Cartone / Scatola} (2.355 prodotti): vede prevalere \textit{adulterazioni farmaci} (812; 34,5\%), \textit{Listeria} (510; 21,7\%) e \textit{Allergeni} (444; 18,9%), seguiti da \textit{Salmonella} (327; 13,9\%), \textit{Corpi estranei} (248; 10,5\%) ed \textit{E.Coli} (14; 0,6%).
+    \item \textbf{Lattina / Metallo} (2.115 prodotti): è caratterizzato da \textit{adulterazioni farmaci} (710; 33,6%) e da un'elevata quota relativa di \textit{Corpi estranei} (450; 21,3%) e \textit{Allergeni} (445; 21,0%), oltre a \textit{Listeria} (258; 12,2%), \textit{Salmonella} (233; 11,0\%) ed \textit{E.Coli} (19; 0,9%).
+\end{itemize}
+
+Sotto il profilo della progettazione visiva, si segnala una criticità cromatica nella legenda della vista Tableau: le categorie \textit{adulterazioni farmaci} e \textit{Salmonella} condividono il medesimo codice colore azzurro (\texttt{\#529ee0}). Tale collisione cromatica rende indispensabile il ricorso ai dati numerici sottostanti, poiché a una lettura puramente visiva la barra \textit{Vetro / Bottiglia / Barattolo} --- dominata al 74,4\% dalle adulterazioni farmacologiche --- potrebbe essere erroneamente interpretata come prevalenza di contaminazione da \textit{Salmonella}.
+
+\subsection{Matrice Portata Distributiva vs Severità Clinica}
+
+Il pannello ``Matrice Portata Distributiva vs Severità Clinica'' incrocia i quattro livelli di \texttt{Portata Distributiva} con la \texttt{Product Classification} sull'intero dataset di \textbf{104.537 prodotti}. Nel grafico a matrice di Tableau, la dimensione e la saturazione cromatica dei cerchi codificano il volume assoluto di ciascuna intersezione senza etichette testuali sovraimpresse; la Tabella~\ref{tab:tableau_matrix} esplicita i conteggi esatti e le incidenze percentuali di riga per tutte le 12 celle della matrice.
+
+\begin{table}[htbp]
+\centering
+\caption{Valori esatti delle 12 celle della matrice ``Portata Distributiva vs Severità Clinica'' (104.537 prodotti totali), con incidenza percentuale per livello distributivo.}
+\label{tab:tableau_matrix}
+\begin{tabularx}{\textwidth}{@{}Xrrrr@{}}
+\toprule
+\textbf{Portata Distributiva} & \textbf{Totale} & \textbf{Classe I} & \textbf{Classe II} & \textbf{Classe III} \\
+\midrule
+Internazionale / Export & 33.155 & 6.958 (20,99\%) & 25.089 (75,67\%) & 1.108 (3,34\%) \\
+Nazionale (Tutti gli USA) & 28.633 & 3.378 (11,80\%) & 23.026 (80,42\%) & 2.229 (7,78\%) \\
+Regionale (Multi-Stato) & 23.745 & 7.700 (32,43\%) & 14.323 (60,32\%) & 1.722 (7,25\%) \\
+Locale (Singolo Stato) & 19.004 & 2.129 (11,20\%) & 12.901 (67,89\%) & 3.974 (20,91\%) \\
+\midrule
+\textbf{Totale Complessivo} & \textbf{104.537} & \textbf{20.165 (19,29\%)} & \textbf{75.339 (72,07\%)} & \textbf{9.033 (8,64\%)} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+La distribuzione evidenzia come la \textit{Classe~II} costituisca la fascia predominante su ogni estensione geografica (dal 60,32\% al 80,42\%), con il picco assoluto nella cella \textit{Internazionale / Export -- Classe~II} (25.089 prodotti). Tuttavia, l'analisi delle incidenze rivela asimmetrie operative significative:
+\begin{itemize}
+    \item La portata \textbf{Regionale (Multi-Stato)} (23.745 prodotti) presenta la più alta incidenza proporzionale di rischio critico \textbf{Classe~I} (\textbf{32,43\%}, pari a 7.700 prodotti, valore massimo assoluto in Classe~I tra le quattro portate), riflettendo le difficoltà di coordinamento rapido nei richiami alimentari freschi distribuiti su reti interstatali.
+    \item La portata \textbf{Internazionale / Export} (33.155 prodotti, prima fascia per volume complessivo) associa all'elevata estensione transfrontaliera un rilevante 20,99\% in Classe~I (6.958 prodotti) e appena il 3,34\% in Classe~III (1.108 prodotti).
+    \item La portata \textbf{Nazionale (Tutti gli USA)} (28.633 prodotti) è la più concentrata in Classe~II (80,42\%, 23.026 prodotti), con l'11,80\% in Classe~I (3.378) e il 7,78\% in Classe~III (2.229).
+    \item La portata \textbf{Locale (Singolo Stato)} (19.004 prodotti), pur mostrando la quota inferiore di Classe~I (11,20\%, 2.129 prodotti), registra la maggiore incidenza di Classe~III (\textbf{20,91\%}, 3.974 prodotti), coerentemente con richiami procedurali ed etichettature non conformi intercettati su scala circoscritta.
+\end{itemize}
+
+\keyinsight{Evidenza Chiave -- Dashboard 3}{Sul piano della governance operativa, 18.555 prodotti (17,75\%) risultano ancora ``In corso'' di ritiro rispetto a 84.502 ``Terminato'' (80,83\%) e 1.480 ``Completato'' (1,42\%). L'analisi logistica mostra che la catena del freddo (\textit{Refrigerato} 3.028 e \textit{Surgelato} 2.554) è dominata oltre il 52\% dalla \textit{Listeria}, mentre nel confezionamento (17.665 prodotti sui 4 materiali principali) il \textit{Vetro / Bottiglia / Barattolo} (4.800) è trainato al 74,4\% da \textit{adulterazioni farmaci} (3.569, dato critico da disambiguare rispetto alla collisione cromatica \texttt{\#529ee0} con \textit{Salmonella}). Infine, la matrice distributiva conferma che le reti \textit{Regionale (Multi-Stato)} (32,43\% Classe~I) e \textit{Internazionale / Export} (20,99\% Classe~I) concentrano la massima complessità clinico-logistica.}

@@ -33,6 +33,35 @@ let
         #"22" = "Altri alimenti",
         #"23" = "Bevande stimolanti, secche e diluite (esclusi i prodotti a base di cacao)"
     ],
-    ConTraduzione = Table.AddColumn(Ordinati, "Gruppo Alimentare (IT)", each Record.FieldOrDefault(Traduzioni, Text.From([FoodGroupID]), [FoodGroupName]), type text)
+    // Etichette brevi (chiave = FoodGroupID) per i visual con poco spazio, es. l'albero di scomposizione
+    // (i nodi troncano a circa 22 caratteri). Il nome completo resta in "Gruppo Alimentare (IT)":
+    // usarlo nel tooltip e nelle tabelle della tesina.
+    TraduzioniBrevi = [
+        #"1"  = "Cereali e derivati",
+        #"2"  = "Ortaggi e derivati",
+        #"3"  = "Radici e tuberi",
+        #"4"  = "Legumi",
+        #"5"  = "Noci e semi oleosi",
+        #"6"  = "Frutta e derivati",
+        #"7"  = "Carne e derivati",
+        #"8"  = "Pesce e prodotti ittici",
+        #"9"  = "Latte e latticini",
+        #"10" = "Uova e ovoprodotti",
+        #"11" = "Zucchero e dolciumi",
+        #"12" = "Grassi e oli",
+        #"13" = "Succhi vegetali",
+        #"14" = "Bevande analcoliche",
+        #"15" = "Bevande alcoliche",
+        #"16" = "Acqua potabile",
+        #"18" = "Alimenti infanzia",
+        #"19" = "Nutrizione speciale",
+        #"20" = "Alimenti composti",
+        #"21" = "Snack e dessert",
+        #"22" = "Altri alimenti",
+        #"23" = "Bevande stimolanti"
+    ],
+    ConTraduzione = Table.AddColumn(Ordinati, "Gruppo Alimentare (IT)", each Record.FieldOrDefault(Traduzioni, Text.From([FoodGroupID]), [FoodGroupName]), type text),
+    // Se un ID non ha etichetta breve, ripiega sul nome completo (nessuna cella vuota)
+    ConBreve = Table.AddColumn(ConTraduzione, "Gruppo Alimentare (breve)", each Record.FieldOrDefault(TraduzioniBrevi, Text.From([FoodGroupID]), [#"Gruppo Alimentare (IT)"]), type text)
 in
-    ConTraduzione
+    ConBreve

@@ -12,7 +12,7 @@ misc
 # IDEs
 .idea
 .vscode
-
+docs/thesis/.bex-build
 # AI
 .claude
 .antigravity

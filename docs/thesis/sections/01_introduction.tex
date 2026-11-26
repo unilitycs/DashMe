@@ -1,21 +1,14 @@
 \chapter{Introduzione}
 \label{chap:introduction}
 
-La sicurezza alimentare e la vigilanza sui prodotti regolamentati sono rilevanti per la salute pubblica e per la gestione delle filiere. Le autorità rendono disponibili archivi eterogenei per granularità, metodi di rilevazione e finalità; la Business Intelligence permette di renderli esplorabili e di confrontarne le prospettive. Il progetto DashMe applica questo approccio a tre ambiti complementari: monitoraggio chimico, allerte e controlli di frontiera, richiami post-vendita. Le fonti analizzate non sono collegate a livello di singolo evento, perciò il loro confronto non consente di ricostruire una catena causale tra questi stadi.
+La sicurezza alimentare e la vigilanza sui prodotti regolamentati sono rilevanti per la salute pubblica e per la gestione delle filiere. Le autorità rendono disponibili archivi eterogenei per granularità, metodi di rilevazione e finalità; la Business Intelligence permette di renderli esplorabili e di confrontarne le prospettive. Il seguente lavoro applica questo approccio a tre ambiti complementari: allerte e controlli di frontiera, richiami post-vendita, monitoraggio chimico. Le fonti analizzate sono tra loro indipendenti, pertanto il loro confronto non consente di ricostruire una catena causale degli eventi, ma forniscono un quadro generale del contesto in esame.
 
-Il lavoro sviluppa tre moduli analitici, ciascuno associato a una fonte e a una piattaforma:
-
-\begin{enumerate}
-    \item \textbf{Qlik Sense -- RASFF}: analisi delle notifiche europee di allerta rapida, con attenzione ai flussi geografici, alle tipologie di rischio e alla tracciabilità \citep{rasff_portal}.
-    \item \textbf{Tableau -- FDA}: analisi dei richiami statunitensi, dalla distribuzione territoriale ai profili di severità, alle cause e alla gestione operativa \citep{fda_recalls_portal,fda_recall_classes}.
-    \item \textbf{Power BI -- EFSA / WHO GEMS}: analisi delle rilevazioni chimiche europee, dei tassi di positività, delle filiere alimentari e dei fattori associati agli esiti \citep{who_gems_efsa}.
-\end{enumerate}
-
-Alla luce di tale architettura multi-piattaforma, il presente elaborato si propone di rispondere a quattro domande di ricerca (\textit{Research Questions}, RQ):
+Il progetto si articola lungo tre moduli analitici, ciascuno associato a una fonte e a una piattaforma:
 
 \begin{enumerate}
-    \item \textbf{RQ1 (Qlik Sense -- Sorveglianza e allerta rapida UE RASFF)}: quali trend storici, flussi geopolitici di confine, matrici alimentare-pericolo e dinamiche di tracciabilità emergono dalle notifiche RASFF?
-    \item \textbf{RQ2 (Tableau -- Richiami regolatori USA FDA)}: come si articolano geografia industriale, profili di severità clinica (Classi I--III), epidemiologia delle cause/allergeni e governance operativa (catena del freddo, packaging, portata distributiva) nei richiami FDA?
-    \item \textbf{RQ3 (Power BI -- Sorveglianza chimica europea EFSA / WHO GEMS)}: quali relazioni intercorrono tra volume di campionamento, tassi di positività al netto dei valori nulli, fasce di concentrazione per filiera, screening multi-analita e fattori di influenza AI?
-    \item \textbf{RQ4 (Valutazione comparativa multi-piattaforma)}: quali vantaggi e compromessi emergono dall'uso di Qlik Sense, Tableau e Power BI nei rispettivi contesti analitici?
+    \item \textbf{Qlik Cloud - RASFF}: (\textit{Rapid Alert System for Food and Feed}) analisi delle notifiche europee di allerta rapida, con attenzione ai flussi geografici, alle tipologie di rischio e alla tracciabilità \citep{rasff_portal}.
+    
+    \item \textbf{Tableau - FDA}: (\textit{Food and Drugs Administration}) analisi dei richiami statunitensi, dalla distribuzione territoriale ai profili di severità, alle cause e alla gestione operativa \citep{fda_recalls_portal,fda_recall_classes}.
+    
+    \item \textbf{Power BI - EFSA / WHO GEMS}: (\textit{European Food Safety Authority, World Health Organization} / \textit{Global Environment Monitoring System}) analisi delle rilevazioni chimiche europee, dei tassi di positività, delle filiere alimentari, dei fattori associati agli esiti \citep{who_gems_efsa} e con un focus sull \textit{baby-food}.
 \end{enumerate}

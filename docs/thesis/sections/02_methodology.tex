@@ -1,19 +1,20 @@
 \chapter{Metodologia, Architetture Dati e Progettazione Visiva}
 \label{chap:methodology}
 
-L'architettura analitica del progetto DashMe integra tre piattaforme di Business Intelligence --- \textit{Qlik Sense}, \textit{Tableau} e \textit{Microsoft Power BI} --- applicate rispettivamente alla sorveglianza europea delle allerte alimentari (RASFF), al monitoraggio regolatorio statunitense dei richiami di prodotto (FDA) e alla rilevazione laboratoristica preventiva dei contaminanti chimici in Europa (EFSA / WHO GEMS). Ciascun modulo adotta il paradigma di modellazione ed estrazione più aderente alla struttura del proprio dataset sorgente, mantenendo al contempo criteri condivisi di pulizia del dato, normalizzazione linguistica in italiano e progettazione visiva \citep{kimball2013,few2013}.
+L'architettura del progetto addotta, per ciascun dataset, il paradigma di modellazione ed estrazione più aderente alla struttura del proprio dataset sorgente; sono stati usati criteri condivisi di pulizia del dato, normalizzazione linguistica in italiano e progettazione visiva.
 
 % ============================================================================
-\section{Pipeline Qlik Sense e Modello Associativo RASFF}
+\section{Pipeline ETL Qlik Cloud e RASFF}
 \label{sec:method_qlik}
 % ============================================================================
 
-Il primo flusso metodologico opera sul dataset europeo del sistema di allerta rapida per alimenti e mangimi RASFF (\texttt{data/raw/RASFF\_window.csv}) \citep{rasff_portal}. Il tracciato grezzo si compone di \textbf{11.788} record descritti da \textbf{14} colonne originali: \texttt{reference}, \texttt{category}, \texttt{type}, \texttt{subject}, \texttt{date}, \texttt{notifying\_country}, \texttt{classification}, \texttt{risk\_decision}, \texttt{distribution}, \texttt{forAttention}, \texttt{forFollowUp}, \texttt{operator}, \texttt{origin} e \texttt{hazards}. L'arco temporale complessivo si estende dal \textbf{24/01/2012} al \textbf{31/12/2025}, con oltre il \textbf{98,8\%} delle notifiche concentrate nel periodo \textbf{2020--2025}.
+La prima analisi è stata eseguita sul dataset RASFF \citep{rasff_portal}, dove i dati originali sono formati da 11.788 record descritti da 14 colonne: \texttt{reference}, \texttt{category}, \texttt{type}, \texttt{subject}, \texttt{date}, \texttt{notifying\_country}, \texttt{classification}, \texttt{risk\_decision}, \texttt{distribution}, \texttt{forAttention}, \texttt{forFollowUp}, \texttt{operator}, \texttt{origin} e \texttt{hazards}. L'arco temporale considerato si estende dal 24/01/2012 al 31/12/2025.
 
-\subsection{Dizionario Dati del Tracciato Sorgente RASFF}
-La Tabella~\ref{tab:rasff_data_dictionary} descrive nel dettaglio i 14 campi originali del file \texttt{RASFF\_window.csv}, riportando il ruolo assunto nel modello associativo di Qlik Sense, l'incidenza effettiva delle celle vuote nel tracciato grezzo e il relativo trattamento ETL.
+\subsection{Dizionario Dati RASFF}
+La Tabella~\ref{tab:rasff_data_dictionary} descrive nel dettaglio i 14 campi originali del file \texttt{RASFF\_window.csv}, riportando il ruolo assunto nel modello associativo di Qlik Cloud, l'incidenza effettiva dei valori mancanti e la relativa ETL.
 
-\begin{table}[htbp]
+
+\begin{table}[H]
 \centering
 \caption{Dizionario dati delle 14 colonne originali del dataset RASFF (\texttt{RASFF\_window.csv}, 11.788 record grezzi).}
 \label{tab:rasff_data_dictionary}
@@ -42,10 +43,10 @@ La Tabella~\ref{tab:rasff_data_dictionary} descrive nel dettaglio i 14 campi ori
 \end{table}
 
 \subsection{Profilazione Qualitativa e Gestione delle Anomalie CSV}
-L'ispezione preliminare del file sorgente ha evidenziato una specifica anomalia sintattica su \textbf{4} righe del tracciato (\texttt{2024.6416}, \texttt{2024.4612}, \texttt{2023.7176} e \texttt{2021.2621}): la presenza di doppi apici non correttamente gestiti all'interno del campo testuale \texttt{subject} provocava, in fase di lettura grezza, uno slittamento di colonna verso destra che trasferiva frammenti descrittivi dentro il campo \texttt{notifying\_country}, generando false entità nazionali. Il trattamento di parsing e validazione implementato nello script di caricamento Qlik Sense ha risolto tali disallineamenti consolidando un perimetro valido pari a \textbf{11.787} notifiche distinte (\textbf{11,79k}), \textbf{30} Paesi/entità notificanti effettive (i 27 Stati membri dell'Unione Europea affiancati dai Paesi EFTA e dalla Commissione Europea) e \textbf{141} Paesi di origine delle merci.
+L'ispezione preliminare del file sorgente ha evidenziato una specifica anomalia sintattica: la presenza di doppi apici non correttamente gestiti all'interno del campo testuale \texttt{subject} provocava, in fase di lettura, uno slittamento di colonna verso destra che trasferiva frammenti descrittivi dentro il campo \texttt{notifying\_country}, generando false entità nazionali. Il trattamento di parsing e validazione implementato nello script di caricamento ha risolto tali disallineamenti consolidando un perimetro valido pari a 11.787 notifiche distinte, 30 Paesi/entità notificanti effettive (i 27 Stati membri dell'Unione Europea affiancati dai Paesi EFTA e dalla Commissione Europea) e 141 Paesi di origine delle merci.
 
 \subsection{Modello Associativo, Normalizzazione \texttt{1:N} e Set Analysis}
-In coerenza con il motore associativo in-memory di Qlik Sense \citep{qlik_docs}, il modello evita la denormalizzazione piatta dei campi multivalore attraverso una struttura stellata centrata sulla tabella dei fatti \texttt{[Notifiche]}, identificata dalla chiave primaria testuale \texttt{NotificationID = Text(reference)}. I campi contenenti liste separate da delimitatori vengono scomposti mediante la funzione \texttt{SubField()} in tabelle ponte con cardinalità \texttt{1:N}:
+In coerenza con il motore associativo in-memory di Qlik Cloud \citep{qlik_docs}, il modello evita la denormalizzazione piatta dei campi multivalore attraverso una struttura stellata centrata sulla tabella dei fatti \texttt{[Notifiche]}, identificata dalla chiave primaria testuale \texttt{NotificationID = Text(reference)}. I campi contenenti liste separate da delimitatori vengono scomposti mediante la funzione \texttt{SubField()} in tabelle ponte con cardinalità \texttt{1:N}:
 \begin{itemize}
     \item \texttt{[Bridge\_Origin]}: disaggrega il campo \texttt{origin} per associare correttamente ciascuna notifica a uno o più Paesi di provenienza della partita;
     \item \texttt{[Bridge\_Hazards]}: espande il campo \texttt{hazards} separando i singoli pericoli segnalati ed estraendo in modo strutturato la \texttt{SostanzaContaminante} e la relativa \texttt{CategoriaPericolo} tramite espressioni \texttt{TextBetween(..., '\{', '\}')};
@@ -222,7 +223,7 @@ La Tabella~\ref{tab:methodology_comparison} sintetizza le scelte architetturali 
 \setlength{\tabcolsep}{4pt}
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.7cm}>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
 \toprule
-\textbf{Criterio} & \textbf{Qlik Sense (RASFF)} & \textbf{Tableau (FDA)} & \textbf{Power BI (EFSA / OMS)} \\
+\textbf{Criterio} & \textbf{Qlik Cloud (RASFF)} & \textbf{Tableau (FDA)} & \textbf{Power BI (EFSA / OMS)} \\
 \midrule
 \textbf{Sorgente} & \texttt{data/raw/RASFF\_window.csv} (14 colonne) & \texttt{data/recalls.xlsx} (17 colonne) & \texttt{data/raw/Contamination\_} \texttt{european\_food.csv} (18 colonne) \\
 \addlinespace[2pt]

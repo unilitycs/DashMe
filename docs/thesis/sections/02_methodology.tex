@@ -1,7 +1,7 @@
 \chapter{Metodologia, Architetture Dati e Progettazione Visiva}
 \label{chap:methodology}
 
-L'architettura del progetto addotta, per ciascun dataset, il paradigma di modellazione ed estrazione più aderente alla struttura del proprio dataset sorgente; sono stati usati criteri condivisi di pulizia del dato, normalizzazione linguistica in italiano e progettazione visiva.
+L'architettura del progetto adotta, per ciascun dataset, il paradigma di modellazione ed estrazione più aderente alla struttura del proprio dataset sorgente; sono stati usati criteri condivisi di pulizia del dato, normalizzazione linguistica in italiano e progettazione visiva.
 
 % ============================================================================
 \section{Pipeline ETL Qlik Cloud e RASFF}
@@ -10,7 +10,8 @@ L'architettura del progetto addotta, per ciascun dataset, il paradigma di modell
 
 La prima analisi è stata eseguita sul dataset RASFF \citep{rasff_portal}, dove i dati originali sono formati da 11.788 record descritti da 14 colonne: \texttt{reference}, \texttt{category}, \texttt{type}, \texttt{subject}, \texttt{date}, \texttt{notifying\_country}, \texttt{classification}, \texttt{risk\_decision}, \texttt{distribution}, \texttt{forAttention}, \texttt{forFollowUp}, \texttt{operator}, \texttt{origin} e \texttt{hazards}. L'arco temporale considerato si estende dal 24/01/2012 al 31/12/2025.
 
-\subsection{Dizionario Dati RASFF}
+% \subsection{Dizionario Dati RASFF}
+\noindent
 La Tabella~\ref{tab:rasff_data_dictionary} descrive nel dettaglio i 14 campi originali del file \texttt{RASFF\_window.csv}, riportando il ruolo assunto nel modello associativo di Qlik Cloud, l'incidenza effettiva dei valori mancanti e la relativa ETL.
 
 
@@ -20,24 +21,26 @@ La Tabella~\ref{tab:rasff_data_dictionary} descrive nel dettaglio i 14 campi ori
 \label{tab:rasff_data_dictionary}
 \footnotesize
 \setlength{\tabcolsep}{4pt}
-\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedleft\arraybackslash}p{1.3cm}>{\raggedright\arraybackslash}X@{}}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{2.9cm}>{\raggedright\arraybackslash}p{2.8cm}>{\raggedright\arraybackslash}X@{}}
 \toprule
-\textbf{Colonna} & \textbf{Ruolo Qlik} & \textbf{Vuoti} & \textbf{Significato semantico e trattamento ETL} \\
+\rowcolors{1}{white}{gray!15}
+
+\textbf{Colonna} & \textbf{Ruolo Qlik} & \textbf{Significato semantico e trattamento ETL} \\
 \midrule
-\texttt{reference} & Chiave primaria (\texttt{NotificationID}) & 0,00\% & Codice univoco della notifica (\texttt{ANNO.NUMERO}, es.\ \texttt{2025.10488}); aggregato via \texttt{Count(DISTINCT)} per evitare doppi conteggi. \\
-\texttt{category} & Dimensione (\texttt{Categoria Alimento}) & 0,00\% & Sottocategoria merceologica del prodotto segnalato (37 classi distinte, es.\ \textit{herbs and spices}), tradotta in italiano. \\
-\texttt{type} & Dimensione (\texttt{TipoProdotto}) & 0,00\% & Macro-comparto regolatorio: \textit{food} (10.502), \textit{feed} (842), \textit{food contact material} (437), \textit{animals} (4) e \textit{other} (3). \\
-\texttt{subject} & Testo descrittivo & 0,01\% & Titolo sintetico di prodotto, contaminante e origine; 4 righe presentano doppi apici non gestiti che causano slittamento di colonna. \\
-\texttt{date} & Timestamp & 0,00\% & Data e ora di notifica (\texttt{DD-MM-YYYY HH:MM:SS}, 24/01/2012--31/12/2025), base per \texttt{Anno} e \texttt{Mese}. \\
-\texttt{notifying\_country} & Dimensione geo (\texttt{PaeseNotificante}) & 0,00\% & Stato membro UE/EFTA o ente segnalante (30 entità valide dopo il trattamento delle 4 righe CSV corrotte). \\
-\texttt{classification} & Dimensione (\texttt{TipoNotifica}) & 0,00\% & Classe procedurale: \textit{alert notification} (5.132), \textit{information notification for attention} (3.498), \textit{information notification for follow-up} (1.863), \textit{border rejection notification} (1.291). \\
-\texttt{risk\_decision} & Dimensione (\texttt{LivelloRischio}) & 0,00\% & Gravità clinica: \textit{serious} (7.842), \textit{not serious} (1.628), \textit{potentially serious} (1.261), \textit{potential risk} (959) e \textit{no risk} (94). \\
-\texttt{distribution} & Lista CSV $\to$ Bridge (\texttt{PaeseDestinazione}) & 0,00\% & Elenco degli Stati destinatari della partita distribuita, normalizzato in tabella ponte \texttt{1:N}. \\
-\texttt{forAttention} & Lista CSV $\to$ Bridge & 30,30\% & Paesi o reti (es.\ INFOSAN) informati per presa visione senza richiesta di azione immediata (3.572 righe vuote). \\
-\texttt{forFollowUp} & Lista CSV $\to$ Bridge & 37,12\% & Stati cui è richiesta una verifica di tracciabilità o seguito istruttorio (4.376 righe vuote). \\
-\texttt{operator} & Lista CSV $\to$ Bridge & 0,01\% & Paesi di sede degli operatori coinvolti lungo la catena di fornitura. \\
-\texttt{origin} & Lista CSV $\to$ \texttt{[Bridge\_Origin]} & 0,00\% & Paese/i di origine della partita (141 entità valide), separato in \texttt{PaeseOrigine} e \texttt{PaeseOrigine\_Geometria}. \\
-\texttt{hazards} & Lista strutturata $\to$ \texttt{[Bridge\_Hazards]} & 0,01\% & Elenco pericoli con famiglia tra graffe \texttt{\{...\}}, scomposto con \texttt{SubField()} e \texttt{TextBetween()} (con \texttt{WildMatch} per \textit{Salmonella spp.}). \\
+\texttt{reference} & Chiave primaria (\texttt{NotificationID}) & Codice univoco della notifica (\texttt{ANNO.NUMERO}, es.\ \texttt{2025.10488}); aggregato via \texttt{Count(DISTINCT)} per evitare doppi conteggi. \\
+\texttt{category} & Dimensione (\texttt{Categoria Alimento}) & Sottocategoria merceologica del prodotto segnalato (37 classi distinte, es.\ \textit{herbs and spices}), tradotta in italiano. \\
+\texttt{type} & Dimensione (\texttt{TipoProdotto}) & Macro-comparto regolatorio: \textit{food} (10.502), \textit{feed} (842), \textit{food contact material} (437), \textit{animals} (4) e \textit{other} (3). \\
+\texttt{subject} & Testo descrittivo & Titolo sintetico di prodotto, contaminante e origine; 4 righe presentano doppi apici non gestiti che causano slittamento di colonna. \\
+\texttt{date} & Timestamp & Data e ora di notifica (\texttt{DD-MM-YYYY HH:MM:SS}, 24/01/2012--31/12/2025), base per \texttt{Anno} e \texttt{Mese}. \\
+\texttt{notifying\_country} & Dimensione geo (\texttt{PaeseNotificante}) & Stato membro UE/EFTA o ente segnalante (30 entità valide dopo il trattamento delle 4 righe CSV corrotte). \\
+\texttt{classification} & Dimensione (\texttt{TipoNotifica}) & Classe procedurale: \textit{alert notification} (5.132), \textit{information notification for attention} (3.498), \textit{information notification for follow-up} (1.863), \textit{border rejection notification} (1.291). \\
+\texttt{risk\_decision} & Dimensione (\texttt{LivelloRischio}) & Gravità clinica: \textit{serious} (7.842), \textit{not serious} (1.628), \textit{potentially serious} (1.261), \textit{potential risk} (959) e \textit{no risk} (94). \\
+\texttt{distribution} & Lista CSV $\to$ Bridge (\texttt{PaeseDestinazione}) & Elenco degli Stati destinatari della partita distribuita, normalizzato in tabella ponte \texttt{1:N}. \\
+\texttt{forAttention} & Lista CSV $\to$ Bridge & Paesi o reti (es.\ INFOSAN) informati per presa visione senza richiesta di azione immediata (3.572 righe vuote). \\
+\texttt{forFollowUp} & Lista CSV $\to$ Bridge & Stati cui è richiesta una verifica di tracciabilità o seguito istruttorio (4.376 righe vuote). \\
+\texttt{operator} & Lista CSV $\to$ Bridge & Paesi di sede degli operatori coinvolti lungo la catena di fornitura. \\
+\texttt{origin} & Lista CSV $\to$ \texttt{[Bridge\_Origin]} & Paese/i di origine della partita (141 entità valide), separato in \texttt{PaeseOrigine} e \texttt{PaeseOrigine\_Geometria}. \\
+\texttt{hazards} & Lista strutturata $\to$ \texttt{[Bridge\_Hazards]} & Elenco pericoli con famiglia tra graffe \texttt{\{...\}}, scomposto con \texttt{SubField()} e \texttt{TextBetween()} (con \texttt{WildMatch} per \textit{Salmonella spp.}). \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -46,7 +49,7 @@ La Tabella~\ref{tab:rasff_data_dictionary} descrive nel dettaglio i 14 campi ori
 L'ispezione preliminare del file sorgente ha evidenziato una specifica anomalia sintattica: la presenza di doppi apici non correttamente gestiti all'interno del campo testuale \texttt{subject} provocava, in fase di lettura, uno slittamento di colonna verso destra che trasferiva frammenti descrittivi dentro il campo \texttt{notifying\_country}, generando false entità nazionali. Il trattamento di parsing e validazione implementato nello script di caricamento ha risolto tali disallineamenti consolidando un perimetro valido pari a 11.787 notifiche distinte, 30 Paesi/entità notificanti effettive (i 27 Stati membri dell'Unione Europea affiancati dai Paesi EFTA e dalla Commissione Europea) e 141 Paesi di origine delle merci.
 
 \subsection{Modello Associativo, Normalizzazione \texttt{1:N} e Set Analysis}
-In coerenza con il motore associativo in-memory di Qlik Cloud \citep{qlik_docs}, il modello evita la denormalizzazione piatta dei campi multivalore attraverso una struttura stellata centrata sulla tabella dei fatti \texttt{[Notifiche]}, identificata dalla chiave primaria testuale \texttt{NotificationID = Text(reference)}. I campi contenenti liste separate da delimitatori vengono scomposti mediante la funzione \texttt{SubField()} in tabelle ponte con cardinalità \texttt{1:N}:
+Sfruttando il motore associativo di Qlik Cloud \citep{qlik_docs}, si evita la denormalizzazione piatta dei campi multivalore attraverso una struttura stellata centrata sulla tabella dei fatti \texttt{[Notifiche]}, identificata dalla chiave primaria testuale \texttt{NotificationID = Text(reference)}. I campi contenenti liste separate da delimitatori vengono scomposti mediante la funzione \texttt{SubField()} in tabelle ponte con cardinalità \texttt{1:N}:
 \begin{itemize}
     \item \texttt{[Bridge\_Origin]}: disaggrega il campo \texttt{origin} per associare correttamente ciascuna notifica a uno o più Paesi di provenienza della partita;
     \item \texttt{[Bridge\_Hazards]}: espande il campo \texttt{hazards} separando i singoli pericoli segnalati ed estraendo in modo strutturato la \texttt{SostanzaContaminante} e la relativa \texttt{CategoriaPericolo} tramite espressioni \texttt{TextBetween(..., '\{', '\}')};
